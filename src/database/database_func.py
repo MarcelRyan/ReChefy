@@ -129,83 +129,159 @@ def addAlatResep(connection, id_bahan, id_resep, kuantitas_bahan, satuan_kuantit
 
 # Function to add rows or tuple to Komentar table
 def addKomentar(connection, komentar_foto, komentar_teks, id_resep):
-    add_new_komentar = """INSERT INTO Komentar (komentarFoto, komentarTeks, tanggalKomentar, idResep) VALUES (?, ?, ?, ?)"""
+    add_new_komentar = """INSERT INTO Komentar (komentarFoto, komentarTeks, tanggalKomentar, idResep) VALUES (?, ?, ?, ?);"""
     connect = connection.cursor()
     connect.execute(add_new_komentar, (komentar_foto, komentar_teks, date.today(), id_resep))
     connection.commit()
 
 # Function to add rows or tuple to Artikel table
 def addArtikel(connection, foto_artikel, judul_artikel, isi_artikel, tanggal_publikasi):
-    add_new_artikel = """INSERT INTO Artikel (fotoArtikel, judulArtikel, isiArtikel, tanggalPublikasi)"""
+    add_new_artikel = """INSERT INTO Artikel (fotoArtikel, judulArtikel, isiArtikel, tanggalPublikasi) VALUES (?, ?, ?, ?);"""
     connect = connection.cursor()
     connect.execute(add_new_artikel, (foto_artikel, judul_artikel, isi_artikel, tanggal_publikasi))
     connection.commit()
 
-# Function to create view for every data in Resep
-def daftarResepView(connection):
+# Function to get every data in Resep
+def getDaftarResep(connection):
     connect = connection.cursor()
-    connect.execute("DROP VIEW IF EXISTS DaftarResepView")
-    connect.execute("SELECT gambarMasakan, namaMasakan, deskripsiMasakan, langkahMemasak FROM Resep")
+    connect.execute("SELECT * FROM Resep;")
     data = connect.fetchall()
     return data
 
-# Function to create view for data with idResep = resep_id in Resep, Alat, and Bahan table
-def resepView(connection, resep_id):
+# Function to get data with idResep = resep_id in Resep, Alat, and Bahan table
+def getResep(connection, resep_id):
     connect = connection.cursor()
-    connect.execute("DROP VIEW IF EXISTS ResepView")
 
-    query = """SELECT gambarMasakan, namaMasakan, deskripsiMasakan, langkahMemasak, namaAlat, namaBahan, kuantitasBahan, satuanKuantitasBahan
+    query = """SELECT *
                FROM Resep
                NATURAL JOIN Alat
                NATURAL JOIN Bahan
-               WHERE idResep = ?"""
+               WHERE idResep = ?;"""
     
     connect.execute(query, (resep_id))
     data = connect.fetchall()
     return data
 
-# Function to create view for every data in Artikel table
-def daftarArtikelView(connection):
+# Function to get every data in Artikel table
+def getDaftarArtikel(connection):
     connect = connection.cursor()
-    connect.execute("DROP VIEW IF EXISTS DaftarArtikelView")
-    connect.execute("SELECT fotoArtikel, judulArtikel, isiArtikel, tanggalPublikasi FROM Artikel")
+    connect.execute("SELECT * FROM Artikel;")
     data = connect.fetchall()
     return data
 
-# Function to create view for data with idArtikel = artikel_id in Artikel table
-def artikelView(connection, artikel_id):
+# Function to get data with idArtikel = artikel_id in Artikel table
+def getArtikel(connection, artikel_id):
     connect = connection.cursor()
-    connect.execute("DROP VIEW IF EXISTS ArtikelView")
-    connect.execute("SELECT fotoArtikel, judulArtikel, isiArtikel, tanggalPublikasi FROM Artikel WHERE idArtikel = ?", (artikel_id))
+    connect.execute("SELECT * FROM Artikel WHERE idArtikel = ?;", (artikel_id))
     data = connect.fetchone()
     return data
 
-# Function to create view for every data with idResep = resep_id in Komentar table
-def komentarView(connection, resep_id):
+# Function to get every data with idResep = resep_id in Komentar table
+def getKomentar(connection, resep_id):
     connect = connection.cursor()
-    connect.execute("DROP VIEW IF EXISTS KomentarView")
-    connect.execute("SELECT komentarFoto, komentarTeks, tanggalKomentar FROM KOMENTAR WHERE idResep = ?", (resep_id))
+    connect.execute("SELECT * FROM KOMENTAR WHERE idResep = ?;", (resep_id))
     data = connect.fetchall()
+    return data
+
+# Function to get data where namaAlat = alat_name in Alat table
+def getIdAlat(connection, alat_name):
+    connect = connection.cursor()
+    connect.execute("SELECT * FROM Alat WHERE namaAlat = ?;", (alat_name))
+    data = connect.fetchone()
+    return data
+
+# Function to get data where namaBahan = bahan_name in Bahan table
+def getIdBahan(connection, bahan_name):
+    connect = connection.cursor()
+    connect.execute("SELECT * FROM Bahan WHERE namaBahan = ?;", (bahan_name))
+    data = connect.fetchone()
     return data
 
 # Function to create view for every data with namaResep contains keyword substring in Resep table
 def searchResepView(connection, keyword):
     connect = connection.cursor()
-    connect.execute("DROP VIEW IF EXISTS SearchResepView")
-    connect.execute("SELECT gambarMasakan, namaMasakan, deskripsiMasakan, langkahMemasak FROM Resep WHERE namaMasakan LIKE '%?%'", (keyword))
+    connect.execute("DROP VIEW IF EXISTS SearchResepView;")
+    connect.execute("CREATE VIEW SearchResepView AS SELECT * FROM Resep WHERE namaMasakan LIKE '%?%';", (keyword))
     data = connect.fetchall()
+    connection.commit()
     return data
+
+# Function to create a dummy view for AlatResep table so that data will only be deleted in the database if user confirm their action
+def alatResepView(connection):
+    connect = connection.cursor()
+    connect.execute("DROP VIEW IF EXISTS AlatResepView;")
+    connect.execute("CREATE VIEW AlatResepView AS SELECT * FROM AlatResep;")
+    data = connect.fetchall()
+    connection.commit()
+    return data
+
+# Function to create a dummy for BahanResep table view so that data will only be deleted in the database if user confirm their action
+def bahanResepView(connection):
+    connect = connection.cursor()
+    connect.execute("DROP VIEW IF EXISTS BahanResepView;")
+    connect.execute("CREATE BahanResepView AS SELECT * FROM BahanResep;")
+    data = connect.fetchall()
+    connection.commit()
+    return data
+
+# Function to delete data with idAlat = alat_id from AlatResepView
+def deleteAlatResepView(connection, alat_id):
+    connect = connection.cursor()
+    connect.execute("DELETE FROM AlatResepView WHERE idAlat = ?;", (alat_id))
+    connection.commit()
+
+# Function to delete data with idBahan = bahan_id from BahanResepView
+def deleteAlatResepView(connection, bahan_id):
+    connect = connection.cursor()
+    connect.execute("DELETE FROM BahanResepView WHERE idBahan = ?;", (bahan_id))
+    connection.commit()
+
+# Function to insert data into AlatResepView
+def addAlatResepView(connection, resep_id, alat_id):
+    connect = connection.cursor()
+    connect.execute("INSERT INTO AlatResepView (idResep, idAlat) VALUES (?, ?)", (resep_id, alat_id))
+    connection.commit()
+
+# Function to insert data into AlatResepView
+def addBahanResepView(connection, resep_id, bahan_id):
+    connect = connection.cursor()
+    connect.execute("INSERT INTO BahanResepView (idResep, idBahan) VALUES (?, ?)", (resep_id, bahan_id))
+    connection.commit()
+
+# Function to delete data from AlatResep table if idAlat is not in AlatResepView
+def deleteAlatResepDatabase(connection):
+    connect = connection.cursor()
+    connect.execute("DELETE FROM AlatResep WHERE idAlat NOT IN (SELECT idAlat FROM AlatResepView);")
+    connection.commit()
+
+# Function to delete data from BahanResep table if idBahan is not in BahanResepView
+def deleteBahanResepDatabase(connection):
+    connect = connection.cursor()
+    connect.execute("DELETE FROM BahanResep WHERE idBahan NOT IN (SELECT idBahan FROM BahanResepView);")
+    connection.commit()
+
+# Function to insert data into AlatResep table if idAlat from AlatResepView is not in AlatResep
+def addAlatResepDatabase(connection):
+    connect = connection.cursor()
+    connect.execute("INSERT INTO AlatResep (idResep, idAlat) SELECT * FROM AlatResepView WHERE idAlat NOT IN (SELECT idAlat FROM AlatResep);") 
+    connection.commit()
+
+# Function to insert data into BahanResep table if idBahan from BahanResepView is not in BahanResep
+def addBahanResepDatabase(connection):
+    connect = connection.cursor()
+    connect.execute("INSERT INTO BahanResep (idResep, idBahan) SELECT * FROM BahanResepView WHERE idBahan NOT IN (SELECT idBahan FROM BahanResep);") 
+    connection.commit()
 
 # Function to delete tuples from AlatResep table
 def deleteAlatResep(connection, resep_id):
     connect = connection.cursor()
-    connect.execute("DELETE FROM AlatResep WHERE idResep = ?", (resep_id))
+    connect.execute("DELETE FROM AlatResep WHERE idResep = ?;", (resep_id))
     connect.commit()
 
 # Function to delete tuples from BahanResep table
 def deleteBahanResep(connection, resep_id):
     connect = connection.cursor()
-    connect.execute("DELETE FROM BahanResep WHERE idResep = ?", (resep_id))
+    connect.execute("DELETE FROM BahanResep WHERE idResep = ?;", (resep_id))
     connect.commit()
 
 # Function to delete a tuple from Resep table
@@ -213,20 +289,21 @@ def deleteResep(connection, resep_id):
     connect = connection.cursor()
     deleteAlatResep(connection, resep_id)
     deleteBahanResep(connection, resep_id)
-    connect.execute("DELETE FROM Resep WHERE idResep = ?", (resep_id))
+    connect.execute("DELETE FROM Resep WHERE idResep = ?;", (resep_id))
     connect.commit()
 
 # Function to delete a tuple from Komentar table
 def deleteKomentar(connection, komentar_id):
     connect = connection.cursor()
-    connect.execute("DELETE FROM Komentar WHERE idKomentar = ?", (komentar_id))
+    connect.execute("DELETE FROM Komentar WHERE idKomentar = ?;", (komentar_id))
     connect.commit()
 
 # Function to update a tuple in Resep table
 def editResep(connection, resep_id, gambar_masakan, nama_masakan, deskripsi_masakan, langkah_memasak):
     connect = connection.cursor()
-    connect.execute("UPDATE Resep SET gambarMasakan = ?, namaMasakan = ?, deskripsiMasakan = ?, langkahMemasak = ? WHERE idResep = ?", (gambar_masakan, nama_masakan, deskripsi_masakan, langkah_memasak, resep_id))
+    connect.execute("UPDATE Resep SET gambarMasakan = ?, namaMasakan = ?, deskripsiMasakan = ?, langkahMemasak = ? WHERE idResep = ?;", (gambar_masakan, nama_masakan, deskripsi_masakan, langkah_memasak, resep_id))
     connect.commit()
+
 
 
 
