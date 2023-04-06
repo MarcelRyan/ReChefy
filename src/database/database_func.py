@@ -182,7 +182,7 @@ def getAlatResep(connection, resep_id):
 # Function to get every material needed in a recipe from Bahan table
 def getBahanResep(connection, resep_id):
     connect = connection.cursor()
-    connect.execute("SELECT idBahan, namaBahan FROM Resep NATURAL JOIN BahanResep NATURAL JOIN Bahan WHERE idResep = ?;", (resep_id,))
+    connect.execute("SELECT idBahan, namaBahan, kuantitasBahan, satuanKuantitasBahan FROM Resep NATURAL JOIN BahanResep NATURAL JOIN Bahan WHERE idResep = ?;", (resep_id,))
     data = connect.fetchall()
     return data
 
