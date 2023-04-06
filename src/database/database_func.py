@@ -88,10 +88,22 @@ def imageToBlob(filename):
         blobData = file.read()
     return blobData
 
+# Function to write blob data back to image
 def writeTofile(data, filename):
     # Convert binary data to proper format and write it on Hard Disk
     with open(filename, 'wb') as file:
         file.write(data)
+
+# Function to change blob data back to image and store the file in images
+def blobToImage(connection, id_resep):
+    connect = connection.cursor()
+    connect.execute("SELECT * FROM Resep WHERE idResep = ?", (id_resep,))
+    data = connect.fetchall()
+    path = r".\images"
+    for row in data:
+        name = row[2].replace(" ", "")
+        path += "\\" + name + ".png"
+        writeTofile(row[1], path)
 
 # Function to convert string to datetime format
 def stringToDatetime(date):
@@ -119,14 +131,14 @@ def addBahan(connection, nama_bahan):
     connection.commit()
 
 # Function to add rows or tuple to AlatResep table
-def addAlatResep(connection, id_alat, id_resep):
+def addAlatResep(connection, id_resep, id_alat):
     add_new_alatresep = """INSERT INTO AlatResep (idResep, idAlat) VALUES (?, ?);"""
     connect = connection.cursor()
     connect.execute(add_new_alatresep, (id_resep, id_alat))
     connection.commit()
 
 # Function to add rows or tuple to BahanResep table
-def addAlatResep(connection, id_bahan, id_resep, kuantitas_bahan, satuan_kuantitas_bahan):
+def addBahanResep(connection, id_resep, id_bahan, kuantitas_bahan, satuan_kuantitas_bahan):
     add_new_bahanresep = """INSERT INTO BahanResep (idResep, idBahan, kuantitasBahan, satuanKuantitasBahan) VALUES (?, ?, ?, ?);"""
     connect = connection.cursor()
     connect.execute(add_new_bahanresep, (id_resep, id_bahan, kuantitas_bahan, satuan_kuantitas_bahan))
@@ -153,11 +165,24 @@ def getDaftarResep(connection):
     data = connect.fetchall()
     return data
 
-# Function to get data with idResep = resep_id in Resep, Alat, and Bahan table
+# Function to get data with idResep = resep_id in Resep
 def getResep(connection, resep_id):
     connect = connection.cursor()
-    
-    connect.execute("SELECT * FROM Resep NATURAL JOIN AlatResep NATURAL JOIN BahanResep NATURAL JOIN Alat NATURAL JOIN Bahan WHERE idResep = ?;" , (resep_id,))
+    connect.execute("SELECT * FROM Resep WHERE idResep = ?;" , (resep_id,))
+    data = connect.fetchall()
+    return data
+
+# Function to get every tool needed in a recipe from Alat table
+def getAlatResep(connection, resep_id):
+    connect = connection.cursor()
+    connect.execute("SELECT idAlat, namaAlat FROM Resep NATURAL JOIN AlatResep NATURAL JOIN Alat WHERE idResep = ?;", (resep_id,))
+    data = connect.fetchall()
+    return data
+
+# Function to get every material needed in a recipe from Bahan table
+def getBahanResep(connection, resep_id):
+    connect = connection.cursor()
+    connect.execute("SELECT idBahan, namaBahan FROM Resep NATURAL JOIN BahanResep NATURAL JOIN Bahan WHERE idResep = ?;", (resep_id,))
     data = connect.fetchall()
     return data
 
