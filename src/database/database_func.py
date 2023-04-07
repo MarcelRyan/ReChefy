@@ -65,7 +65,7 @@ def initializeTable(connection):
                             fotoArtikel BLOB NOT NULL,
                             judulArtikel VARCHAR(1000) NOT NULL,
                             isiArtikel VARCHAR(100000) NOT NULL,
-                            tanggalPublikasi DATETIME NOT NULL
+                            tanggalPublikasi DATE NOT NULL
                         ); """
     
     # Execute all commands above
@@ -94,20 +94,40 @@ def writeTofile(data, filename):
     with open(filename, 'wb') as file:
         file.write(data)
 
-# Function to change blob data back to image and store the file in images
-def blobToImage(connection, id_resep):
+# Function to change blob data back to image for Resep and store the file in images/resep folder
+def resepBlobToImage(connection, id_resep):
     connect = connection.cursor()
     connect.execute("SELECT * FROM Resep WHERE idResep = ?", (id_resep,))
     data = connect.fetchall()
-    path = r".\images"
+    path = r".\images\resep"
     for row in data:
         name = row[2].replace(" ", "")
         path += "\\" + name + ".png"
         writeTofile(row[1], path)
 
+# Function to change blob data back to image for artikel and store the file in images/artikel folder
+def artikelBlobToImage(connection, id_artikel):
+    connect = connection.cursor()
+    connect.execute("SELECT * FROM Artikel WHERE idArtikel = ?", (id_artikel,))
+    data = connect.fetchall()
+    path = r".\images\artikel"
+    for row in data:
+        path += "\\artikel" + str(row[0]) + ".png"
+        writeTofile(row[1], path)
+
+# Function to change blob data back to image for komentar and store the file in images/komentar folder
+def komentarBlobToImage(connection, id_komentar):
+    connect = connection.cursor()
+    connect.execute("SELECT * FROM Komentar WHERE idKomentar = ?", (id_komentar,))
+    data = connect.fetchall()
+    path = r".\images\komentar"
+    for row in data:
+        path += "\\komentar" + str(row[0]) + ".png"
+        writeTofile(row[1], path)
+
 # Function to convert string to datetime format
 def stringToDatetime(date):
-    return datetime.strptime(date, "%Y-%m-%d")
+    return datetime.strptime(date, "%Y-%m-%d").date()
 
 # Function to add rows or tuple to Resep table
 def addResep(connection, nama_masakan, deskripsi_masakan, gambar_masakan, langkah_memasak):
