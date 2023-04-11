@@ -9,50 +9,62 @@ file = r".\src\database\rechefy.db"
 connection = database_func.connectToDatabase(file)
 database_func.initializeTable(connection)
 
-langkahMemasak = """1. Isi tumis bawang putih dan sampai harum. Tambahkan daging. Aduk hingga matang dan berbulir bulir, angkat
-2. Aduk tumisan daging, daun bawang, telur, garam, dan merica bubuk
-3. Ambil selembar kulit lumpia. Sendokkan bahan isi, lipat seperti amplop, rekatkan dengan telur
-4. Panaskan minyak dalam wajan datar. Masukkan martabak. Goreng sampai matang sambil disiram minyak."""
+langkahMemasak = """1. Lelehkan coklat dan mentega dengan cara ditim
+2. Kocok telur dan gula dengan mixer, nggak perlu sampai mengembang cukup sampai tercampur rata. Lalu masukkan cokelat yang sudah dilelehkan tadi dalam telur. Aduk-aduk tanpa mixer sampai rata
+3. Masukkan tepung, cokelat bubuk, baking powder, milo sambil diayak dengan saringan. Aduk
+4. Agar adonan tidak terlalu kental, tambahkan susu cair sampai adonan agak encer. Tambahkan sejumput garam dan aduk lagi
+5. Siapkan cetakan kue balok. Panaskan terlebih dahulu di atas kompor dengan api kecil, setelah panas oleskan mentega, masukkan bahan ke loyang
+6. Tutup dan tunggu sampai matang sekitar 5 menit, angkat dan sajikan."""
 
-namaMasakan = """Martabak Telur"""
+namaMasakan = """Kue Balok"""
 
-gambarMasakan = database_func.imageToBlob(r".\src\database\martabak.jpg")
+# gambarMasakan = database_func.imageToBlob(r".\src\database\kuebalok.jpg")
 
-deskripsiMasakan = """Martabak telur merupakan panganan dengan rasa gurih. Sayur, daging, dan berbagai bumbu lainnya digabung menjadi satu dalam sebuah kulit adonan padat yang ditipiskan secukupnya, kemudian dilipat, kemudian digoreng hingga matang. Panganan ini cukup digemari di Indonesia dan banyak dijual mulai dari tempat makan hingga di gerobak pinggir jalan."""
+deskripsiMasakan = """Para penjajah Belanda yang tinggal di Indonesia, khususnya di kawasan Bandung sangat suka makan kue dan roti. Masuknya tepung terigu ke Indonesia membuat dua makanan ini mudah diolah.
+
+Kue balok jadi makanan sehari-hari warga Belanda. Resep kue padat ini lambat laun diketahui warga Bandung yang mulai mencoba membuat kue balok.
+
+Ternyata kue ini disukai banyak orang dan dipilih sebagai menu sarapan. Teksturnya yang padat membuat cepat kenyang sehingga popularitas kue balok mengalahkan roti pada saat itu."""
 
 # Bagian tambah resep
 # database_func.addResep(connection, namaMasakan, deskripsiMasakan, gambarMasakan, langkahMemasak)
 
-# Bagian tambah bahan
-# database_func.addBahan(connection, "Kulit Lumpia")
-# database_func.addBahan(connection, "Daging Giling")
-# database_func.addBahan(connection, "Telur Ayam")
-# database_func.addBahan(connection, "Merica")
-# database_func.addBahan(connection, "Royco")
-# database_func.addBahan(connection, "Margarin")
-# database_func.addBahan(connection, "Ketumbar")
+# Bagian tambah bahan (WARNING TAMBAH BAHAN YANG BELUM ADA DI DATABASE SAJA)
+# database_func.addBahan(connection, "Dark Chocolate")
+# database_func.addBahan(connection, "Mentega")
+# database_func.addBahan(connection, "Tepung Terigu")
+# database_func.addBahan(connection, "Dark Chocolate Bubuk")
+# database_func.addBahan(connection, "Sachet Milo")
+# database_func.addBahan(connection, "Baking Powder")
+# database_func.addBahan(connection, "Susu")
 
 # Bagian tambah bahanresep
-# database_func.addBahanResep(connection, 6, 37, 10, "buah")
-# database_func.addBahanResep(connection, 6, 38, 200, "gram")
-# database_func.addBahanResep(connection, 6, 13, 3, "siung")
-# database_func.addBahanResep(connection, 6, 28, 200, "gram")
-# database_func.addBahanResep(connection, 6, 39, 3, "butir")
-# database_func.addBahanResep(connection, 6, 40, 0.5, "sdt")
-# database_func.addBahanResep(connection, 6, 9, 1.25, "sdt")
-# database_func.addBahanResep(connection, 5, 36, 2, "batang")
+# database_func.addBahanResep(connection, 7, 41, 150, "gram")
+# database_func.addBahanResep(connection, 7, 42, 75, "gram")
+# database_func.addBahanResep(connection, 7, 2, 3, "butir")
+# database_func.addBahanResep(connection, 7, 8, 45, "gram")
+# database_func.addBahanResep(connection, 7, 43, 150, "gram")
+# database_func.addBahanResep(connection, 7, 44, 1.5, "sdm")
+# database_func.addBahanResep(connection, 7, 45, 2, "bungkus")
+# database_func.addBahanResep(connection, 7, 46, 1.5, "sdt")
+# database_func.addBahanResep(connection, 7, 47, 250, "ml")
+# database_func.addBahanResep(connection, 7, 9, 1, "jumput")
 
-# Bagian tambah alat
+# Bagian tambah alat (WARNING TAMBAH ALAT YANG BELUM ADA DI DATABASE AJA)
 
 
 # Bagian tambah alatresep
-# database_func.addAlatResep(connection, 6, 1)
-# database_func.addAlatResep(connection, 6, 2)
-# database_func.addAlatResep(connection, 6, 3)
-# database_func.addAlatResep(connection, 6, 4)
-# database_func.addAlatResep(connection, 6, 5)
-# database_func.addAlatResep(connection, 6, 6)
-# database_func.addAlatResep(connection, 6, 9)
-# database_func.addAlatResep(connection, 6, 8)
-# database_func.addAlatResep(connection, 6, 16)
-# database_func.addAlatResep(connection, 6, 17)
+# database_func.addAlatResep(connection, 7, 1)
+# database_func.addAlatResep(connection, 7, 2)
+# database_func.addAlatResep(connection, 7, 3)
+# database_func.addAlatResep(connection, 7, 4)
+# database_func.addAlatResep(connection, 7, 5)
+# database_func.addAlatResep(connection, 7, 6)
+# database_func.addAlatResep(connection, 7, 9)
+# database_func.addAlatResep(connection, 7, 8)
+# database_func.addAlatResep(connection, 7, 7)
+# database_func.addAlatResep(connection, 7, 11)
+# database_func.addAlatResep(connection, 7, 10)
+# database_func.addAlatResep(connection, 7, 14)
+# database_func.addAlatResep(connection, 7, 16)
+# database_func.addAlatResep(connection, 7, 17)
