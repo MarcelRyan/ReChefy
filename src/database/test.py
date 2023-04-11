@@ -9,55 +9,50 @@ file = r".\src\database\rechefy.db"
 connection = database_func.connectToDatabase(file)
 database_func.initializeTable(connection)
 
-# print(database_func.imageToBlob("tes.jpg"))
+langkahMemasak = """1. Isi tumis bawang putih dan sampai harum. Tambahkan daging. Aduk hingga matang dan berbulir bulir, angkat
+2. Aduk tumisan daging, daun bawang, telur, garam, dan merica bubuk
+3. Ambil selembar kulit lumpia. Sendokkan bahan isi, lipat seperti amplop, rekatkan dengan telur
+4. Panaskan minyak dalam wajan datar. Masukkan martabak. Goreng sampai matang sambil disiram minyak."""
 
-# lihat = Image.open(io.BytesIO(database_func.imageToBlob("tes.jpg")))
-# lihat.show()
+namaMasakan = """Martabak Telur"""
 
-langkahMemasak = """- Goreng kentang sisihkan.
-                    - Panaskan minyak tumis bahan halus sampai kering dan pecah minyak.
-                    - Masukkan ayam tumis sebentar kemudian masukkan santan dengan air aduk rata.
-                    - Masukkan kerisik, daun jeruk, daun salam, dan daun kunyit.
-                    - Kemudian masukkan kentang dan telur rebus tambahkan garam, gula malaka dan perasa.
-                    - Masak dengan api kecil sampai air kering, jika ingin berkuah jangan masak sampai kering"""
+gambarMasakan = database_func.imageToBlob(r".\src\database\martabak.jpg")
 
-namaMasakan = """ Rendang paha ayam """
-# gambarMasakan = database_func.imageToBlob("rendangayam.jpg")
+deskripsiMasakan = """Martabak telur merupakan panganan dengan rasa gurih. Sayur, daging, dan berbagai bumbu lainnya digabung menjadi satu dalam sebuah kulit adonan padat yang ditipiskan secukupnya, kemudian dilipat, kemudian digoreng hingga matang. Panganan ini cukup digemari di Indonesia dan banyak dijual mulai dari tempat makan hingga di gerobak pinggir jalan."""
 
-deskripsiMasakan = """ Rendang ayam yang dibuat dengan resep khas dan cinta :) """
+# Bagian tambah resep
+# database_func.addResep(connection, namaMasakan, deskripsiMasakan, gambarMasakan, langkahMemasak)
 
-connect = connection.cursor()
+# Bagian tambah bahan
+# database_func.addBahan(connection, "Kulit Lumpia")
+# database_func.addBahan(connection, "Daging Giling")
+# database_func.addBahan(connection, "Telur Ayam")
+# database_func.addBahan(connection, "Merica")
+# database_func.addBahan(connection, "Royco")
+# database_func.addBahan(connection, "Margarin")
+# database_func.addBahan(connection, "Ketumbar")
 
-isiArtikel = """Jagung merupakan salah satu bahan makanan yang digemari berbagai kalangan. Selain rasanya yang lezat dan mengenyangkan, jagung mudah diolah menjadi berbagai macam makanan mulai dari camilan, kudapan hingga lauk. Salah satu olahan jagung yang paling banyak digemari adalah jagung rebus. Apalagi kalau jajan jagung rebus di abang-abang keliling, baunya saja sudah nikmat menggoda~
+# Bagian tambah bahanresep
+# database_func.addBahanResep(connection, 6, 37, 10, "buah")
+# database_func.addBahanResep(connection, 6, 38, 200, "gram")
+# database_func.addBahanResep(connection, 6, 13, 3, "siung")
+# database_func.addBahanResep(connection, 6, 28, 200, "gram")
+# database_func.addBahanResep(connection, 6, 39, 3, "butir")
+# database_func.addBahanResep(connection, 6, 40, 0.5, "sdt")
+# database_func.addBahanResep(connection, 6, 9, 1.25, "sdt")
+# database_func.addBahanResep(connection, 5, 36, 2, "batang")
 
-Meski sangat mudah dibanding olahan jagung lainnya, tapi masih banyak yang belum bisa menghasilkan jagung rebus yang empuk, manis, dan harum. Bahkan sering kali jagung berubah mengkerut setelah direbus. Selain itu, masih banyak yang merebus jagung terlalu lama supaya empuk, padahal bisa merusak kandungan gizinya. Nah, supaya menghasilkan jagung yang matang sempurna dan gizinya tetap terjaga, berikut ini Hipwee Tips bagikan cara merebus jagung manis yang tepat. Yuk, simak!
+# Bagian tambah alat
 
-Sebelum merebus jagung, kamu harus memastikan jagungmu benar-benar manis dan empuk setelah direbus. Caranya, pilih jagung yang benar-benar segar. Jika kamu membeli jagung kupas, maka pilih yang bijinya masih kencang alias belum keriput, dan warnanya masih kuning keruh dan segar. Jagung yang berwarna kuning keputih-putihan biasanya kurang manis jika direbus, karena kandungan patinya cukup tinggi.
 
-Jika kamu membeli jagung yang masih ada kulitnya, maka pilih yang kulit dan rambutnya masih segar. Jagung segar biasanya tetap enak dikonsumsi sampai 3 hari setelah dipanen jika disimpan di suhu ruang dan 7 hari di dalam kulkas. Semakin segar, maka semakin cepat empuk saat direbus, rasanya juga lebih manis dan aromanya lebih harum.
-
-Setelah memilih jagung yang bagus, kamu bisa mengupas seluruh kulitnya jika ingin lebih cepat empuk. Cara merebus jagung ini cukup mudah, tinggal rebus air hingga mendidih, kemudian tambahkan 1 sendok makan garam dan aduk hingga larut. Penambahan garam disesuaikan dengan air dan jagungnya ya, nggak perlu asin tapi penambahan garam ini bertujuan untuk mempercepat perebusan dan menambah cita rasa.
-
-Setelah itu, masukkan jagung yang sudah dikupas ke dalam panci. Usahakan semuanya terendam air. Nah, jika ukuran jagung terlalu besar, maka bisa dipotong sesuai selera. Kemudian, tutup panci dan tunggu 5-10 menit. Tanda jagung sudah matang biasanya warnanya berubah dari kuning keruh menjadi kuning terang, jadi nggak perlu menunggu bijinya terkelupas sendiri ya, karena bisa merusak kandungan gizinya.
-
-Jika kamu ingin membuat jagung rebus rumahan tapi memiliki aroma khas seperti yang dijual abang-abang keliling, maka kamu bisa menambahkan beberapa lembar kulit jagung pada air rebusan. Kulit jagung yang direbus memang bisa menghasilkan aroma khas yang tentunya bisa menambah kenikmatan jagung. Selain kulit jagung, kamu juga bisa menambahkan beberapa lembar daun salam supaya makin lezat dan aromanya makin nikmat. Ini nih, yang jadi rahasia jagung rebus di abang-abang jualan~
-
-Buat kamu yang hobi jajan jagung rebus, karena rasanya cukup beda jika merebus sendiri di rumah, maka coba nih cara merebus jagung yang benar. Merebus jagung tanpa mengupas kulitnya memang terasa lebih nikmat, tapi kamu harus rela merebusnya lebih lama. Kulit jangung memiliki pori-pori yang cukup kecil dan tahan air. Mesti tanpa mengupas kulit, usahakan buka 2-3 lembar kulit terluar dan beri sedikit lubang seperempat bagian jagung atau sayatan memanjang.
-
-Sebelum merebus jagung tanpa mengupas kulitnya, pastikan sudah dicuci bersih, ya. Kemudian dimasukkan ke dalam panci yang sudah berisi air mendidih dan diberi garam serta daun  salam. Pastikan semuanya terendam air, lalu tutup rapat. Rebus jagung selama 15-30 menit. Semakin segar jagung, otomatis semakin cepat matang. Tanda jagung sudah matang, kulitnya layu dan bijinya berwarna kuning terang.
-
-Satu lagi rahasia jagung rebus keliling yang bisa kamu coba di rumah. Beberapa penjual jagung rebus menyiasati aroma dan rasa jagung rebusannya dengan air kelapa. Ya, supaya rasanya lebih manis dan aromanya lebih kuat, jagung direbus dengan air kelapa. Caranya pun cukup mudah, kamu bisa menggunakan air kelapa murni, atau hanya sebagai campuran air biasa dengan perbandingan 1:1. Proses lainnya tetap sama, hanya airnya saja yang diganti.
-
-Salah satu tantangan merebus jagung selain waktu perebusan yang tepat adalah hasilnya rebusan yang kurang bagus. Biasanya jagung rebus akan menyusut sehingga membuat bijinya jadi keriput. Hal ini karena jagung kurang segar atau sudah lebih dari 3 hari. Untuk menyiasati hal ini, selain memilih jagung yang bagus, kamu juga bisa merendam jagung lebih dulu setelah direbus.
-
-Cara merebus jagung memang terlihat simpel dan mudah, tapi perlu diingat juga jika merebus jagung terlalu lama bisa merusak kandungan gizinya. Maka dari itu, penting untuk memilih jagung yang masih segar sehingga proses perebusan cukup 5-10 menit saja. Selain itu, pastikan panci tertutup rapat supaya panasnya bisa maksimal. Ciri-ciri jagung overcook hingga kandungan gizinya rusak biasanya bijinya sangat lunak sehingga saat diangkat jadi mudah hancur. Gimana, bisa nggak buat jagung rebus yang manis, aromanya harum dan gizinya tetap oke? Selamat mencoba!
-"""
-
-judulArtikel = """6 Cara Merebus Jagung Manis Biar Empuk"""
-
-tanggalPublikasi = database_func.stringToDatetime("2023-03-30")
-
-gambarArtikel = database_func.imageToBlob(r".\src\database\jagung.jpg")
-
-database_func.addArtikel(connection, gambarArtikel, judulArtikel, isiArtikel, tanggalPublikasi)
-
+# Bagian tambah alatresep
+# database_func.addAlatResep(connection, 6, 1)
+# database_func.addAlatResep(connection, 6, 2)
+# database_func.addAlatResep(connection, 6, 3)
+# database_func.addAlatResep(connection, 6, 4)
+# database_func.addAlatResep(connection, 6, 5)
+# database_func.addAlatResep(connection, 6, 6)
+# database_func.addAlatResep(connection, 6, 9)
+# database_func.addAlatResep(connection, 6, 8)
+# database_func.addAlatResep(connection, 6, 16)
+# database_func.addAlatResep(connection, 6, 17)
