@@ -9,62 +9,63 @@ file = r".\src\database\rechefy.db"
 connection = database_func.connectToDatabase(file)
 database_func.initializeTable(connection)
 
-langkahMemasak = """1. Lelehkan coklat dan mentega dengan cara ditim
-2. Kocok telur dan gula dengan mixer, nggak perlu sampai mengembang cukup sampai tercampur rata. Lalu masukkan cokelat yang sudah dilelehkan tadi dalam telur. Aduk-aduk tanpa mixer sampai rata
-3. Masukkan tepung, cokelat bubuk, baking powder, milo sambil diayak dengan saringan. Aduk
-4. Agar adonan tidak terlalu kental, tambahkan susu cair sampai adonan agak encer. Tambahkan sejumput garam dan aduk lagi
-5. Siapkan cetakan kue balok. Panaskan terlebih dahulu di atas kompor dengan api kecil, setelah panas oleskan mentega, masukkan bahan ke loyang
-6. Tutup dan tunggu sampai matang sekitar 5 menit, angkat dan sajikan."""
+langkahMemasak = """1. Campurkan daging kepiting, daun bawang, bawang putih, seledri, wortel, susu cair, keju, tapioka, dan telur (sisakan sedikit sebagai bahan oles).
+2. Tambahkan saus tiram, kecap asin, minyak wijen, dan gula, aduk hingga merata.
+3. Ambil satu lembar kulit pangsit. Kemudian, oles pinggiran kulit pangsit dengan putih telur. Taruh adonan crab rangoon di atasnya.
+4. Lekatkan pinggiran kulit pangsit satu sama lain agar menempel dan adonan tidak keluar.
+5. Panaskan minyak di atas wajan. Masukkan pangsit berisi adonan crab rangoon lalu goreng hingga matang dan berubah warna keemasan. Angkat lalu tiriskan.
+6. Sajikan crab rangoon bersama saus atau mayonaise sesuai selera kamu."""
 
-namaMasakan = """Kue Balok"""
+namaMasakan = """Brown Sugar Chocochips Cookies"""
 
-# gambarMasakan = database_func.imageToBlob(r".\src\database\kuebalok.jpg")
+# gambarMasakan = database_func.imageToBlob(r".\src\database\crab.jpg")
 
-deskripsiMasakan = """Para penjajah Belanda yang tinggal di Indonesia, khususnya di kawasan Bandung sangat suka makan kue dan roti. Masuknya tepung terigu ke Indonesia membuat dua makanan ini mudah diolah.
-
-Kue balok jadi makanan sehari-hari warga Belanda. Resep kue padat ini lambat laun diketahui warga Bandung yang mulai mencoba membuat kue balok.
-
-Ternyata kue ini disukai banyak orang dan dipilih sebagai menu sarapan. Teksturnya yang padat membuat cepat kenyang sehingga popularitas kue balok mengalahkan roti pada saat itu."""
+deskripsiMasakan = """Rasanya yang crunchy dan gurih cocok banget untuk nemenin kamu nonton film favorit sambil nyemil santai. Bahan utama dari crab rangoon ini tentu kepiting. Namun, kalau kamu sulit mendapat kepiting, kamu bisa ganti dengan bahan yang lebih simple dan mudah ditemukan yaitu crab stick. Penasaran resepnya? Ini dia!"""
 
 # Bagian tambah resep
 # database_func.addResep(connection, namaMasakan, deskripsiMasakan, gambarMasakan, langkahMemasak)
 
 # Bagian tambah bahan (WARNING TAMBAH BAHAN YANG BELUM ADA DI DATABASE SAJA)
-# database_func.addBahan(connection, "Dark Chocolate")
-# database_func.addBahan(connection, "Mentega")
-# database_func.addBahan(connection, "Tepung Terigu")
-# database_func.addBahan(connection, "Dark Chocolate Bubuk")
-# database_func.addBahan(connection, "Sachet Milo")
-# database_func.addBahan(connection, "Baking Powder")
-# database_func.addBahan(connection, "Susu")
+# database_func.addBahan(connection, "Daging Kepiting")
+# database_func.addBahan(connection, "Seledri")
+# database_func.addBahan(connection, "Wortel Parut")
+# database_func.addBahan(connection, "Keju Parut")
+# database_func.addBahan(connection, "Bawang Putih Bubuk")
+# database_func.addBahan(connection, "Kulit Pangsit")
+# database_func.addBahan(connection, "Minyak Wijen")
 
 # Bagian tambah bahanresep
-# database_func.addBahanResep(connection, 7, 41, 150, "gram")
-# database_func.addBahanResep(connection, 7, 42, 75, "gram")
-# database_func.addBahanResep(connection, 7, 2, 3, "butir")
-# database_func.addBahanResep(connection, 7, 8, 45, "gram")
-# database_func.addBahanResep(connection, 7, 43, 150, "gram")
-# database_func.addBahanResep(connection, 7, 44, 1.5, "sdm")
-# database_func.addBahanResep(connection, 7, 45, 2, "bungkus")
-# database_func.addBahanResep(connection, 7, 46, 1.5, "sdt")
-# database_func.addBahanResep(connection, 7, 47, 250, "ml")
-# database_func.addBahanResep(connection, 7, 9, 1, "jumput")
+# database_func.addBahanResep(connection, 15, 78, 100, "gram")
+# database_func.addBahanResep(connection, 15, 28, 0.5, "batang")
+# database_func.addBahanResep(connection, 15, 79, 1, "lembar")
+# database_func.addBahanResep(connection, 15, 80, 50, "gram")
+# database_func.addBahanResep(connection, 15, 81, 30, "gram")
+# database_func.addBahanResep(connection, 15, 82, 0.5, "sdm")
+# database_func.addBahanResep(connection, 15, 2, 1, "butir")
+# database_func.addBahanResep(connection, 15, 47, 3, "sdm")
+# database_func.addBahanResep(connection, 15, 52, 2, "sdm")
+# database_func.addBahanResep(connection, 15, 83, 12, "lembar")
+# database_func.addBahanResep(connection, 15, 24, 1, "sdt")
+# database_func.addBahanResep(connection, 15, 84, 1, "sdt")
+# database_func.addBahanResep(connection, 15, 72, 1, "sdt")
+# database_func.addBahanResep(connection, 15, 8, 1, "sdt")
+# database_func.addBahanResep(connection, 10, 40, 5, "gram")
 
 # Bagian tambah alat (WARNING TAMBAH ALAT YANG BELUM ADA DI DATABASE AJA)
 
 
 # Bagian tambah alatresep
-# database_func.addAlatResep(connection, 7, 1)
-# database_func.addAlatResep(connection, 7, 2)
-# database_func.addAlatResep(connection, 7, 3)
-# database_func.addAlatResep(connection, 7, 4)
-# database_func.addAlatResep(connection, 7, 5)
-# database_func.addAlatResep(connection, 7, 6)
-# database_func.addAlatResep(connection, 7, 9)
-# database_func.addAlatResep(connection, 7, 8)
-# database_func.addAlatResep(connection, 7, 7)
-# database_func.addAlatResep(connection, 7, 11)
-# database_func.addAlatResep(connection, 7, 10)
-# database_func.addAlatResep(connection, 7, 14)
-# database_func.addAlatResep(connection, 7, 16)
-# database_func.addAlatResep(connection, 7, 17)
+# database_func.addAlatResep(connection, 15, 1)
+# database_func.addAlatResep(connection, 15, 2)
+# database_func.addAlatResep(connection, 15, 3)
+# database_func.addAlatResep(connection, 15, 4)
+# database_func.addAlatResep(connection, 15, 5)
+# database_func.addAlatResep(connection, 15, 6)
+# database_func.addAlatResep(connection, 15, 9)
+# database_func.addAlatResep(connection, 15, 8)
+# database_func.addAlatResep(connection, 15, 7)
+# database_func.addAlatResep(connection, 15, 11)
+# database_func.addAlatResep(connection, 15, 10)
+# database_func.addAlatResep(connection, 15, 14)
+# database_func.addAlatResep(connection, 15, 16)
+# database_func.addAlatResep(connection, 15, 17)
