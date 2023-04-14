@@ -22,6 +22,7 @@ class DaftarResep(QtWidgets.QMainWindow):
         self.titleLabel.setText("Daftar Resep")
         self.titleLabel.setStyleSheet("font: 75 28pt;")
         
+        
         '''
         self.searchButton = QtWidgets.QPushButton()
         #self.searchButton.setStyleSheet("border-image: url(../img/button_addResep.png);background-color:none;border: none")
