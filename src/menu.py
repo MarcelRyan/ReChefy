@@ -6,7 +6,7 @@ class Menu(QtWidgets.QMainWindow):
     
     def __init__(self, main_window):
         super(Menu, self).__init__()
-        uic.loadUi("src/menu.ui", self)
+        uic.loadUi("menu.ui", self)
         self.main_window = main_window
         self.setFixedWidth(1200)
         self.setFixedHeight(850)

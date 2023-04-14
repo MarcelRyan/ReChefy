@@ -6,7 +6,7 @@ class WelcomePage(QtWidgets.QMainWindow):
     
     def __init__(self, main_window):
         super(WelcomePage, self).__init__()
-        uic.loadUi("src/welcomePage.ui", self)
+        uic.loadUi("welcomePage.ui", self)
         self.main_window = main_window
         self.setFixedHeight(850)
         self.setFixedWidth(1200)
