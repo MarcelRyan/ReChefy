@@ -68,7 +68,7 @@ border-radius: 10px;
 padding: 8px;</string>
     </property>
    </widget>
-   <widget class="QPushButton" name="buttonAddResep">
+   <widget class="QPushButton" name="addResepButton">
     <property name="geometry">
      <rect>
       <x>1020</x>
@@ -86,7 +86,7 @@ border: none</string>
      <string/>
     </property>
    </widget>
-   <widget class="QPushButton" name="pushButton">
+   <widget class="QPushButton" name="searchButton">
     <property name="geometry">
      <rect>
       <x>1080</x>

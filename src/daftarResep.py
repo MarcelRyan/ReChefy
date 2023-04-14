@@ -23,24 +23,15 @@ class DaftarResep(QtWidgets.QMainWindow):
         self.titleLabel.setStyleSheet("font: 75 28pt;")
         
         
-        '''
-        self.searchButton = QtWidgets.QPushButton()
-        #self.searchButton.setStyleSheet("border-image: url(../img/button_addResep.png);background-color:none;border: none")
-        self.searchButton.setGeometry(1080,130,31,31)
-        self.searchButton.setIcon(QIcon(QPixmap("../img/button_search.jpg")))
+        self.searchButton.setStyleSheet("border-image: url(../img/button_search.png);background-color:none;border: none")
         self.searchButton.setIconSize(QSize(31, 31))
         self.searchButton.setFixedSize(QSize(31, 31))
-        #self.searchButton.setStyleSheet("background-color: #EE9C20;border-radius: 15px;")
-        '''
+        self.searchButton.move(1080,130)
         
-        self.buttonAddResep = QtWidgets.QPushButton()
-        #self.buttonAddResep.setParent(none)
-        #self.buttonAddResep.setIcon(QIcon(QPixmap("../img/button_addResep.png")))
-        self.buttonAddResep.setStyleSheet("border-image: url(../img/button_addResep.png);background-color:none;border: none")
-        self.buttonAddResep.setIconSize(QSize(170, 170))
-        self.buttonAddResep.setFixedSize(QSize(170, 170))
-        #self.buttonAddResep.setScaledContents(True)
-        self.buttonAddResep.move(1020,620)
+        self.addResepButton.setStyleSheet("border-image: url(../img/button_addResep.png);background-color:none;border: none")
+        self.addResepButton.setIconSize(QSize(170, 170))
+        self.addResepButton.setFixedSize(QSize(170, 170))
+        self.addResepButton.move(1020,620)
         
         self.scrollResep = QtWidgets.QWidget()    
         self.gridLayoutResep = QtWidgets.QGridLayout()
@@ -52,7 +43,7 @@ class DaftarResep(QtWidgets.QMainWindow):
             self.createResep(i)
             
         
-        self.buttonAddResep.raise_()
+        self.addResepButton.raise_()
         
             
     def createResep(self, idx):
