@@ -10,6 +10,9 @@
     <height>800</height>
    </rect>
   </property>
+  <property name="acceptDrops">
+   <bool>false</bool>
+  </property>
   <property name="windowTitle">
    <string>MainWindow</string>
   </property>
@@ -17,6 +20,9 @@
    <string notr="true">background-color:#FFF6E5;</string>
   </property>
   <widget class="QWidget" name="centralwidget">
+   <property name="styleSheet">
+    <string notr="true"/>
+   </property>
    <widget class="QScrollArea" name="scrollArea">
     <property name="geometry">
      <rect>
@@ -38,42 +44,27 @@
        <height>619</height>
       </rect>
      </property>
-     <widget class="QWidget" name="gridLayoutWidget">
+     <widget class="QWidget" name="horizontalLayoutWidget">
       <property name="geometry">
        <rect>
         <x>70</x>
         <y>20</y>
-        <width>1041</width>
-        <height>601</height>
+        <width>1051</width>
+        <height>191</height>
        </rect>
       </property>
-      <layout class="QGridLayout" name="gridLayoutResep"/>
+      <layout class="QHBoxLayout" name="artikelLayout"/>
      </widget>
     </widget>
    </widget>
-   <widget class="QLineEdit" name="lineEdit">
+   <widget class="QLabel" name="headerLabel">
     <property name="geometry">
      <rect>
-      <x>880</x>
-      <y>130</y>
-      <width>231</width>
-      <height>31</height>
+      <x>0</x>
+      <y>0</y>
+      <width>1200</width>
+      <height>91</height>
      </rect>
-    </property>
-   </widget>
-   <widget class="QPushButton" name="buttonAddResep">
-    <property name="geometry">
-     <rect>
-      <x>1020</x>
-      <y>620</y>
-      <width>170</width>
-      <height>170</height>
-     </rect>
-    </property>
-    <property name="styleSheet">
-     <string notr="true">border-image: url(:/newPrefix/button_addResep.png);
-background-color:none;
-border: none</string>
     </property>
     <property name="text">
      <string/>
@@ -82,7 +73,7 @@ border: none</string>
   </widget>
  </widget>
  <resources>
-  <include location="../img/daftarResep.qrc"/>
+  <include location="../img/daftarArtikel.qrc"/>
  </resources>
  <connections/>
 </ui>
