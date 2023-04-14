@@ -61,11 +61,15 @@
      </rect>
     </property>
     <property name="styleSheet">
-     <string notr="true">font: 75 10pt;
+     <string notr="true">color: #F75008;
+font: 75 10pt;
 background-color: #FDE7BD;
 border: none;
-border-radius: 10px;
-padding: 8px;</string>
+border-radius: 15px;
+padding: 5px;</string>
+    </property>
+    <property name="placeholderText">
+     <string>cari resep...</string>
     </property>
    </widget>
    <widget class="QPushButton" name="addResepButton">

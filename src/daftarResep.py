@@ -27,6 +27,7 @@ class DaftarResep(QtWidgets.QMainWindow):
         self.searchButton.setIconSize(QSize(31, 31))
         self.searchButton.setFixedSize(QSize(31, 31))
         self.searchButton.move(1080,130)
+        self.searchButton.clicked.connect(lambda : self.searchResep(""))
         
         self.addResepButton.setStyleSheet("border-image: url(../img/button_addResep.png);background-color:none;border: none")
         self.addResepButton.setIconSize(QSize(170, 170))
@@ -81,6 +82,20 @@ class DaftarResep(QtWidgets.QMainWindow):
         self.gridLayoutResep.addWidget(resepWidget, idx//4, idx%4, alignment=Qt.AlignCenter)
         self.scrollResep.setLayout(self.gridLayoutResep)
         #self.counter += 1
+        
+    def searchResep(self, keyword):
+        self.clearGrid()
+        
+    def clearGrid(self):
+        while self.gridLayoutResep.count():
+            item = self.gridLayoutResep.takeAt(0)
+            widget = item.widget()
+            if widget is not None:
+                widget.deleteLater()
+            else:
+                self.gridLayoutResep.removeItem(item)
+        if self.gridLayoutResep.count() == 0:
+            self.scrollArea.setVerticalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
     
         
 if __name__ == '__main__':
