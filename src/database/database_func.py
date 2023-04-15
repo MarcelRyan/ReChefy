@@ -275,6 +275,13 @@ def getLastIdResep(connection):
     data = connect.fetchone()
     return data[0]
 
+# Function to get all satuanKuantitasBahan that is unique in BahanResep
+def getSatuanKuantitasBahan(connection):
+    connect = connection.cursor()
+    connect.execute("SELECT DISTINCT satuanKuantitasBahan FROM BahanResep;")
+    data = connect.fetchall()
+    return data
+
 # Function to create view for every data with namaResep contains keyword substring in Resep table
 def searchResepView(connection, keyword):
     connect = connection.cursor()
