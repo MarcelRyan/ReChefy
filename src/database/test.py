@@ -1,11 +1,11 @@
 import database_func
+from datetime import datetime
 from PIL import Image
 import base64
 import io
 import os
 
 file = r".\src\database\rechefy.db"
-# print(file)
 connection = database_func.connectToDatabase(file)
 database_func.initializeTable(connection)
 
@@ -22,10 +22,18 @@ namaMasakan = """Kue Cubit Mini Mangga"""
 
 deskripsiMasakan = """Kue cubit dengan tambahan buah mangga merupakan perpaduan yang menyegarkan sekaligus memberikan rasa manis"""
 
-connect = connection.cursor()
+# connect = connection.cursor()
 
-connect.execute("UPDATE Resep SET langkahMemasak = ? WHERE idResep = 1;", (langkahMemasak, ))
-connection.commit()
+# connect.execute("UPDATE Resep SET langkahMemasak = ? WHERE idResep = 1;", (langkahMemasak, ))
+# connection.commit()
+
+resep = database_func.getResep(connection, 1)
+alatresep = database_func.getAlatResep(connection, 1)
+bahanresep = database_func.getBahanResep(connection, 1)
+path = database_func.resepBlobToImage(connection, 1)
+
+artikel = database_func.getDaftarArtikel(connection)
+pathartikel = database_func.artikelBlobToImage(connection, 3)
 
 # Bagian tambah resep
 # database_func.addResep(connection, namaMasakan, deskripsiMasakan, gambarMasakan, langkahMemasak)
