@@ -233,8 +233,6 @@ class lihatResep(QMainWindow) :
                 self.isiKomentar_0.setAlignment(QtCore.Qt.AlignJustify|QtCore.Qt.AlignTop)
                 self.isiKomentar_0.setWordWrapMode(True)
                 self.isiKomentar_0.setReadOnly(True)
-                self.isiKomentar_0.setVerticalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
-                self.isiKomentar_0.setHorizontalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
                 self.isiKomentar_0.setObjectName("isiKomentar_" + str(self.counter+1))
                 self.isiKomentar_0.setText(self.text)
                 self.isiKomentar_0.setLineWrapMode(QTextEdit.WidgetWidth)
