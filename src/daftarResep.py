@@ -1,7 +1,7 @@
 from PyQt5.QtWidgets import *
 from PyQt5.QtGui import QIcon, QPixmap
 from PyQt5.QtCore import QSize, Qt
-from PyQt5 import uic, QtWidgets
+from PyQt5 import uic, QtWidgets, QtCore, QtGui
 import sys
 from database import database_func
 
@@ -22,22 +22,54 @@ class DaftarResep(QtWidgets.QMainWindow):
         #self.layoutkosong = QtWidgets.QHBoxLayout()
         
         # load header label
-        self.headerLabel = QtWidgets.QLabel(self)
-        self.headerLabel.setGeometry(0,0,1200,125)
-        self.headerLabel.setStyleSheet("background-image: url('images/icon/header.png');")
+        #self.headerLabel = QtWidgets.QLabel(self)
+        #self.headerLabel.setGeometry(0,0,1200,125)
+        #self.headerLabel.setStyleSheet("background-image: url('images/icon/header.png');")
+        self.verticalLayoutWidget = QtWidgets.QWidget(self.centralwidget)
+        self.verticalLayoutWidget.setGeometry(QtCore.QRect(0, 0, 1201, 111))
+        self.verticalLayoutWidget.setObjectName("verticalLayoutWidget")
+        self.verticalLayout_1 = QtWidgets.QVBoxLayout(self.verticalLayoutWidget)
+        self.verticalLayout_1.setContentsMargins(0, 0, 0, 0)
+        self.verticalLayout_1.setObjectName("verticalLayout_1")
+        self.Navbar = QtWidgets.QFrame(self.verticalLayoutWidget)
+        self.Navbar.setStyleSheet("background-color:rgb(253, 231, 189)")
+        self.Navbar.setFrameShape(QtWidgets.QFrame.StyledPanel)
+        self.Navbar.setFrameShadow(QtWidgets.QFrame.Raised)
+        self.Navbar.setObjectName("Navbar")
+        self.backButton = QtWidgets.QPushButton(self.Navbar)
+        self.backButton.setGeometry(QtCore.QRect(40, 30, 51, 51))
+        self.backButton.setStyleSheet("border : None;")
+        self.backButton.setText("")
+        icon = QtGui.QIcon()
+        icon.addPixmap(QtGui.QPixmap("images/icon/button_back.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.backButton.setIcon(icon)
+        self.backButton.setIconSize(QtCore.QSize(50, 70))
+        self.backButton.setObjectName("backButton")
+        self.homeButton = QtWidgets.QPushButton(self.Navbar)
+        self.homeButton.setGeometry(QtCore.QRect(460, 0, 231, 101))
+        self.homeButton.setStyleSheet("border : None;")
+        self.homeButton.setText("")
+        icon1 = QtGui.QIcon()
+        icon1.addPixmap(QtGui.QPixmap("images/icon/logo.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.homeButton.setIcon(icon1)
+        self.homeButton.setIconSize(QtCore.QSize(190, 80))
+        self.homeButton.setObjectName("homeButton")
+        self.verticalLayout_1.addWidget(self.Navbar)
+        self.verticalLayoutWidget_2 = QtWidgets.QWidget(self.centralwidget)
+        self.verticalLayoutWidget.raise_()
         
         # load back button
-        self.backButton = QtWidgets.QPushButton(self)
-        self.backButton.setStyleSheet("border-image: url(images/icon/button_back.png);background-color:none;border: none")
-        self.backButton.setIconSize(QSize(31, 31))
-        self.backButton.setFixedSize(QSize(31, 31))
-        self.backButton.move(52,38)
+        #self.backButton = QtWidgets.QPushButton(self)
+        #self.backButton.setStyleSheet("border-image: url(images/icon/button_back.png);background-color:none;border: none")
+        #self.backButton.setIconSize(QSize(31, 31))
+        #self.backButton.setFixedSize(QSize(31, 31))
+        #self.backButton.move(52,38)
         
         # load title "Daftar Resep" label
         self.titleLabel = QtWidgets.QLabel(self)
-        self.titleLabel.setGeometry(70,102,320,70)
+        self.titleLabel.setGeometry(70,108,320,70)
         self.titleLabel.setText("Daftar Resep")
-        self.titleLabel.setStyleSheet("font: 75 28pt;")
+        self.titleLabel.setStyleSheet("font: 75 26pt;background-color: none;")
         
         # load search button
         self.searchButton.setStyleSheet("border-image: url(images/icon/button_search.png);background-color:none;border: none")
