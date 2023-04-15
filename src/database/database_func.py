@@ -18,19 +18,21 @@ def initializeTable(connection):
     create_table_resep = """CREATE TABLE IF NOT EXISTS Resep (
                             idResep INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
                             gambarMasakan BLOB NOT NULL,
-                            namaMasakan VARCHAR(100) NOT NULL,
-                            deskripsiMasakan VARCHAR(10000) NOT NULL,
-                            langkahMemasak VARCHAR(20000) NOT NULL
+                            namaMasakan TEXT NOT NULL,
+                            deskripsiMasakan TEXT NOT NULL,
+                            langkahMemasak TEXT NOT NULL,
+                            isDefault INTEGER NOT NULL DEFAULT 0,
+                            CHECK (isDefault = 0 OR isDefault = 1)
                         ); """
     
     create_table_bahan = """CREATE TABLE IF NOT EXISTS Bahan (
                             idBahan INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
-                            namaBahan VARCHAR(100) NOT NULL
+                            namaBahan TEXT NOT NULL
                         ); """
     
     create_table_alat = """CREATE TABLE IF NOT EXISTS Alat (
                             idAlat INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
-                            namaAlat VARCHAR(100) NOT NULL
+                            namaAlat TEXT NOT NULL
                         ); """
     
     create_table_alatresep = """CREATE TABLE IF NOT EXISTS AlatResep (
@@ -44,8 +46,8 @@ def initializeTable(connection):
     create_table_bahanresep = """CREATE TABLE IF NOT EXISTS BahanResep (
                                 idResep INTEGER NOT NULL,
                                 idBahan INTEGER NOT NULL,
-                                kuantitasBahan INTEGER NOT NULL,
-                                satuanKuantitasBahan VARCHAR(20) NOT NULL,
+                                kuantitasBahan REAL NOT NULL,
+                                satuanKuantitasBahan TEXT NOT NULL,
                                 PRIMARY KEY (idResep, idBahan),
                                 FOREIGN KEY (idResep) REFERENCES Resep(idResep),
                                 FOREIGN KEY (idBahan) REFERENCES Bahan(idBahan)
@@ -54,8 +56,8 @@ def initializeTable(connection):
     create_table_komentar = """CREATE TABLE IF NOT EXISTS Komentar (
                             idKomentar INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
                             komentarFoto BLOB NOT NULL,
-                            komentarTeks VARCHAR(1000) NOT NULL,
-                            tanggalKomentar DATETIME NOT NULL,
+                            komentarTeks TEXT NOT NULL,
+                            tanggalKomentar TEXT NOT NULL,
                             idResep INTEGER NOT NULL,
                             FOREIGN KEY (idResep) REFERENCES Resep(idResep)
                             ); """
@@ -63,9 +65,9 @@ def initializeTable(connection):
     create_table_artikel = """CREATE TABLE IF NOT EXISTS Artikel (
                             idArtikel INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
                             fotoArtikel BLOB NOT NULL,
-                            judulArtikel VARCHAR(1000) NOT NULL,
-                            isiArtikel VARCHAR(100000) NOT NULL,
-                            tanggalPublikasi DATE NOT NULL
+                            judulArtikel TEXT NOT NULL,
+                            isiArtikel TEXT NOT NULL,
+                            tanggalPublikasi TEXT NOT NULL
                         ); """
     
     # Execute all commands above
@@ -130,13 +132,13 @@ def komentarBlobToImage(connection, id_komentar):
 
 # Function to convert string to datetime format
 def stringToDatetime(date):
-    return datetime.strptime(date, "%Y-%m-%d").date()
+    return datetime.strptime(date, "%Y-%m-%d %H:%M:%S")
 
 # Function to add rows or tuple to Resep table
-def addResep(connection, nama_masakan, deskripsi_masakan, gambar_masakan, langkah_memasak):
-    add_new_resep = """INSERT INTO Resep (gambarMasakan, namaMasakan, deskripsiMasakan, langkahMemasak) VALUES (?, ?, ?, ?);"""
+def addResep(connection, nama_masakan, deskripsi_masakan, gambar_masakan, langkah_memasak, isDefault):
+    add_new_resep = """INSERT INTO Resep (gambarMasakan, namaMasakan, deskripsiMasakan, langkahMemasak, isDefault) VALUES (?, ?, ?, ?, ?);"""
     connect = connection.cursor()
-    connect.execute(add_new_resep, (gambar_masakan, nama_masakan, deskripsi_masakan, langkah_memasak))
+    connect.execute(add_new_resep, (gambar_masakan, nama_masakan, deskripsi_masakan, langkah_memasak, isDefault))
     connection.commit()
 
 # Function to add rows or tuple to Alat table
@@ -171,7 +173,8 @@ def addBahanResep(connection, id_resep, id_bahan, kuantitas_bahan, satuan_kuanti
 def addKomentar(connection, komentar_foto, komentar_teks, id_resep):
     add_new_komentar = """INSERT INTO Komentar (komentarFoto, komentarTeks, tanggalKomentar, idResep) VALUES (?, ?, ?, ?);"""
     connect = connection.cursor()
-    connect.execute(add_new_komentar, (komentar_foto, komentar_teks, date.today(), id_resep))
+    time = datetime.now()
+    connect.execute(add_new_komentar, (komentar_foto, komentar_teks, time.strftime("%Y-%m-%d %H:%M:%S"), id_resep))
     connection.commit()
 
 # Function to add rows or tuple to Artikel table
