@@ -276,7 +276,9 @@ def getLastIdResep(connection):
 def searchResepView(connection, keyword):
     connect = connection.cursor()
     connect.execute("DROP VIEW IF EXISTS SearchResepView;")
-    connect.execute("CREATE VIEW SearchResepView AS SELECT * FROM Resep WHERE namaMasakan LIKE '%?%';", (keyword, ))
+    query = "CREATE VIEW SearchResepView AS SELECT * FROM Resep WHERE namaMasakan LIKE " + "'%" + keyword + "%';"
+    connect.execute(query)
+    connect.execute("SELECT * FROM SearchResepView;")
     data = connect.fetchall()
     connection.commit()
     return data
