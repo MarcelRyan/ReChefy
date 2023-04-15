@@ -82,18 +82,22 @@ class lihatResep(QMainWindow) :
         self.tanggalKomentar_0.setScaledContents(False)
         self.tanggalKomentar_0.setWordWrap(False)
         self.tanggalKomentar_0.setObjectName("namaKomentar_" + str(self.counter+1))
-        self.isiKomentar_0 = QtWidgets.QLabel(self.komentarFrame_0)
-        self.isiKomentar_0.setGeometry(QtCore.QRect(0, 70, 661, 61))
+        self.isiKomentar_0 = QtWidgets.QTextEdit(self.komentarFrame_0)
+        self.isiKomentar_0.setGeometry(QtCore.QRect(0, 70, 661, 161))
         self.isiKomentar_0.setStyleSheet("border: 0px solid #555;\n"
 "border-radius: 8px;\n"
 "border-style: outset;\n"
 "background-color: rgb(253, 231, 189);\n"
 "padding: 10px;")
         self.isiKomentar_0.setAlignment(QtCore.Qt.AlignJustify|QtCore.Qt.AlignTop)
-        self.isiKomentar_0.setWordWrap(True)
+        self.isiKomentar_0.setWordWrapMode(True)
+        self.isiKomentar_0.setReadOnly(True)
+        self.isiKomentar_0.setVerticalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
+        self.isiKomentar_0.setHorizontalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
         self.isiKomentar_0.setObjectName("isiKomentar_" + str(self.counter+1))
         text = self.textEdit.toPlainText()
         self.isiKomentar_0.setText(text)
+        self.isiKomentar_0.setLineWrapMode(QTextEdit.WidgetWidth)
         self.fotoKomentar_0 = QtWidgets.QLabel(self.komentarFrame_0)
         self.fotoKomentar_0.setGeometry(QtCore.QRect(670, 70, 361, 181))
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Preferred)
