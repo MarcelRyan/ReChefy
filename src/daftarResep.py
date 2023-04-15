@@ -115,7 +115,7 @@ class DaftarResep(QtWidgets.QMainWindow):
         if (isDefault==1):
             labelResepku = QtWidgets.QLabel(resepWidget)
             labelResepku.setFixedSize(120,120)
-            labelResepku.setStyleSheet("border-image: url('images/icon/icon_resepku2.png');background-color: none;")
+            labelResepku.setStyleSheet("border-image: url('images/icon/icon_resepku.png');background-color: none;")
             labelResepku.move(110,0)
             labelResepku.raise_()
         #verticalResep.addWidget(labelResepku)
