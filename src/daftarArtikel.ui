@@ -57,19 +57,6 @@
      </widget>
     </widget>
    </widget>
-   <widget class="QLabel" name="headerLabel">
-    <property name="geometry">
-     <rect>
-      <x>0</x>
-      <y>0</y>
-      <width>1200</width>
-      <height>91</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string/>
-    </property>
-   </widget>
   </widget>
  </widget>
  <resources>
