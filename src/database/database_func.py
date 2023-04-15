@@ -244,25 +244,41 @@ def getKomentar(connection, resep_id):
     data = connect.fetchall()
     return data
 
-# Function to get data where namaAlat = alat_name in Alat table
+# Function to get idAlat where namaAlat = alat_name in Alat table
 def getIdAlat(connection, alat_name):
     connect = connection.cursor()
-    connect.execute("SELECT * FROM Alat WHERE namaAlat = ?;", (alat_name, ))
+    connect.execute("SELECT idAlat FROM Alat WHERE namaAlat = ?;", (alat_name, ))
     data = connect.fetchone()
-    return data
+    return data[0]
 
-# Function to get data where namaBahan = bahan_name in Bahan table
+# Function to get idBahan where namaBahan = bahan_name in Bahan table
 def getIdBahan(connection, bahan_name):
     connect = connection.cursor()
-    connect.execute("SELECT * FROM Bahan WHERE namaBahan = ?;", (bahan_name, ))
+    connect.execute("SELECT idBahan FROM Bahan WHERE namaBahan = ?;", (bahan_name, ))
     data = connect.fetchone()
-    return data
+    return data[0]
+
+# Funciton to get idResep where namaMasakan = resep_name in Resep table
+def getIdResep(connection, resep_name):
+    connect = connection.cursor()
+    connect.execute("SELECT idResep FROM Resep WHERE namaMasakan = ?;", (resep_name, ))
+    data = connect.fetchone()
+    return data[0]
+
+# Function to get the last ID Resep in database
+def getLastIdResep(connection):
+    connect = connection.cursor()
+    connect.execute("SELECT seq FROM sqlite_sequence WHERE name ='Resep';")
+    data = connect.fetchone()
+    return data[0]
 
 # Function to create view for every data with namaResep contains keyword substring in Resep table
 def searchResepView(connection, keyword):
     connect = connection.cursor()
     connect.execute("DROP VIEW IF EXISTS SearchResepView;")
-    connect.execute("CREATE VIEW SearchResepView AS SELECT * FROM Resep WHERE namaMasakan LIKE '%?%';", (keyword, ))
+    query = "CREATE VIEW SearchResepView AS SELECT * FROM Resep WHERE namaMasakan LIKE " + "'%" + keyword + "%';"
+    connect.execute(query)
+    connect.execute("SELECT * FROM SearchResepView;")
     data = connect.fetchall()
     connection.commit()
     return data
@@ -337,13 +353,13 @@ def addBahanResepDatabase(connection):
 def deleteAlatResep(connection, resep_id):
     connect = connection.cursor()
     connect.execute("DELETE FROM AlatResep WHERE idResep = ?;", (resep_id, ))
-    connect.commit()
+    connection.commit()
 
 # Function to delete tuples from BahanResep table
 def deleteBahanResep(connection, resep_id):
     connect = connection.cursor()
     connect.execute("DELETE FROM BahanResep WHERE idResep = ?;", (resep_id, ))
-    connect.commit()
+    connection.commit()
 
 # Function to delete a tuple from Resep table
 def deleteResep(connection, resep_id):
@@ -351,19 +367,19 @@ def deleteResep(connection, resep_id):
     deleteAlatResep(connection, resep_id)
     deleteBahanResep(connection, resep_id)
     connect.execute("DELETE FROM Resep WHERE idResep = ?;", (resep_id, ))
-    connect.commit()
+    connection.commit()
 
 # Function to delete a tuple from Komentar table
 def deleteKomentar(connection, komentar_id):
     connect = connection.cursor()
     connect.execute("DELETE FROM Komentar WHERE idKomentar = ?;", (komentar_id, ))
-    connect.commit()
+    connection.commit()
 
 # Function to update a tuple in Resep table
 def editResep(connection, resep_id, gambar_masakan, nama_masakan, deskripsi_masakan, langkah_memasak):
     connect = connection.cursor()
     connect.execute("UPDATE Resep SET gambarMasakan = ?, namaMasakan = ?, deskripsiMasakan = ?, langkahMemasak = ? WHERE idResep = ?;", (gambar_masakan, nama_masakan, deskripsi_masakan, langkah_memasak, resep_id))
-    connect.commit()
+    connection.commit()
 
 
 
