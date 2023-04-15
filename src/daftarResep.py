@@ -105,21 +105,20 @@ class DaftarResep(QtWidgets.QMainWindow):
             verticalResep.addWidget(imageWidget)
 
             label_judul = QtWidgets.QLabel()
-            label_judul.setText(namaResep)
-            #if (isDefault==1):
-                #label_judul.setText(label_judul.text() + "\n(resepku)")
-                
-                #labelResepku = QtWidgets.QLabel(self)
-                #labelResepku.setStyleSheet("border-image: url('images/icon/icon_resepku.png');")
-                #labelResepku.move(0,0)
-                
+            label_judul.setText(namaResep)                
             label_judul.setWordWrap(True)
             label_judul.setStyleSheet("font: 75 12pt;")
             label_judul.setAlignment(Qt.AlignCenter)
             verticalResep.addWidget(label_judul)
-            #verticalResep.addWidget(labelResepku)
-        
+                    
         resepWidget.setLayout(verticalResep)
+        if (isDefault==1):
+            labelResepku = QtWidgets.QLabel(resepWidget)
+            labelResepku.setFixedSize(120,120)
+            labelResepku.setStyleSheet("border-image: url('images/icon/icon_resepku2.png');background-color: none;")
+            labelResepku.move(110,0)
+            labelResepku.raise_()
+        #verticalResep.addWidget(labelResepku)
         self.gridLayoutResep.addWidget(resepWidget, idx//4, idx%4, alignment=Qt.AlignCenter)
         self.scrollResep.setLayout(self.gridLayoutResep)
         
