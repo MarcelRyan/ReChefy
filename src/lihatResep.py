@@ -69,6 +69,8 @@ class lihatResep(QMainWindow) :
         self.path = "img/noPhoto.jpg"
         self.text = ""
 
+        self.attachButton.setStyleSheet("border-image: url(img/attach.png);background-color:none;border: none")
+
         self.sendButton.clicked.connect(self.addKomentar)
         self.deleteResepButton.clicked.connect(self.deleteResep)
         self.attachButton.clicked.connect(self.addFotoKomentar)
@@ -97,7 +99,15 @@ class lihatResep(QMainWindow) :
                 result += f"{number}. "
                 for j in range (column) :
                         if j != 0 :
-                                result += str(self.bahanResep[i][j])
+                                if j == 2 :
+                                        kuantitas = str(self.bahanResep[i][j])
+                                        check = ".0"
+                                        if check in kuantitas :
+                                                result += str(int(self.bahanResep[i][j]))
+                                        else :
+                                                result += str(self.bahanResep[i][j])
+                                else :
+                                        result += str(self.bahanResep[i][j])
                                 if j != column-1 :
                                         result += " "
                 number +=1
@@ -177,7 +187,7 @@ class lihatResep(QMainWindow) :
                 self.tanggalKomentar_0.setWordWrap(False)
                 self.tanggalKomentar_0.setObjectName("namaKomentar_" + str(self.counter+1))
                 self.isiKomentar_0 = QtWidgets.QTextEdit(self.komentarFrame_0)
-                self.isiKomentar_0.setGeometry(QtCore.QRect(0, 70, 661, 161))
+                self.isiKomentar_0.setGeometry(QtCore.QRect(0, 70, 661, 181))
                 self.isiKomentar_0.setStyleSheet("border: 0px solid #555;\n"
         "border-radius: 8px;\n"
         "border-style: outset;\n"
@@ -250,7 +260,7 @@ class lihatResep(QMainWindow) :
                 self.tanggalKomentar_0.setWordWrap(False)
                 self.tanggalKomentar_0.setObjectName("namaKomentar_" + str(self.counter+1))
                 self.isiKomentar_0 = QtWidgets.QTextEdit(self.komentarFrame_0)
-                self.isiKomentar_0.setGeometry(QtCore.QRect(0, 70, 661, 161))
+                self.isiKomentar_0.setGeometry(QtCore.QRect(0, 70, 661, 181))
                 self.isiKomentar_0.setStyleSheet("border: 0px solid #555;\n"
         "border-radius: 8px;\n"
         "border-style: outset;\n"

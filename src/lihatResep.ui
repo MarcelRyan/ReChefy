@@ -804,10 +804,6 @@ border-style: outset;</string>
              <property name="text">
               <string/>
              </property>
-             <property name="icon">
-              <iconset>
-               <normaloff>../img/attach.png</normaloff>../img/attach.png</iconset>
-             </property>
              <property name="iconSize">
               <size>
                <width>30</width>
