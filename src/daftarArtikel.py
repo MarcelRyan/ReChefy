@@ -17,6 +17,12 @@ class DaftarArtikel(QtWidgets.QMainWindow):
         self.headerLabel.setGeometry(0,0,1200,125)
         self.headerLabel.setStyleSheet("background-image: url('../img/header.png');")
         
+        self.backButton = QtWidgets.QPushButton(self)
+        self.backButton.setStyleSheet("border-image: url(../img/button_back.png);background-color:none;border: none")
+        self.backButton.setIconSize(QSize(31, 31))
+        self.backButton.setFixedSize(QSize(31, 31))
+        self.backButton.move(52,38)
+        
         self.titleLabel = QtWidgets.QLabel(self)
         self.titleLabel.setGeometry(70,102,320,70)
         self.titleLabel.setText("Daftar Artikel")
@@ -25,6 +31,12 @@ class DaftarArtikel(QtWidgets.QMainWindow):
         self.scrollArtikel = QtWidgets.QWidget()    
         self.layoutScroll = QtWidgets.QVBoxLayout()    
         self.scrollArea.setWidget(self.scrollArtikel)
+        self.scrollArea.verticalScrollBar().setStyleSheet("QScrollBar:vertical {background-color: #FDE7BD; border: none; border-radius: 15px; width: 8px; margin: 0px 0px 0px 0px;}\
+                                                QScrollBar::handle:vertical {background-color: #EE9C20;border-radius: 15px; min-height: 20px;}\
+                                                QScrollBar::add-line:vertical {border: none; background: none;}\
+                                                QScrollBar::sub-line:vertical {border: none; background: none;}")
+
+        
         self.counter = 0
         for i in range(4):
             self.createArtikel()
