@@ -94,7 +94,7 @@ def writeTofile(data, filename):
     with open(filename, 'wb') as file:
         file.write(data)
 
-# Function to change blob data back to image for Resep and store the file in images/resep folder
+# Function to change blob data back to image for Resep and store the file in images/resep folder and return the path for the image
 def resepBlobToImage(connection, id_resep):
     connect = connection.cursor()
     connect.execute("SELECT * FROM Resep WHERE idResep = ?", (id_resep,))
@@ -104,8 +104,9 @@ def resepBlobToImage(connection, id_resep):
         name = row[2].replace(" ", "")
         path += "\\" + name + ".png"
         writeTofile(row[1], path)
+    return path
 
-# Function to change blob data back to image for artikel and store the file in images/artikel folder
+# Function to change blob data back to image for artikel and store the file in images/artikel folder and return the path for the image
 def artikelBlobToImage(connection, id_artikel):
     connect = connection.cursor()
     connect.execute("SELECT * FROM Artikel WHERE idArtikel = ?", (id_artikel,))
@@ -114,8 +115,9 @@ def artikelBlobToImage(connection, id_artikel):
     for row in data:
         path += "\\artikel" + str(row[0]) + ".png"
         writeTofile(row[1], path)
+    return path
 
-# Function to change blob data back to image for komentar and store the file in images/komentar folder
+# Function to change blob data back to image for komentar and store the file in images/komentar folder and return the path for the image
 def komentarBlobToImage(connection, id_komentar):
     connect = connection.cursor()
     connect.execute("SELECT * FROM Komentar WHERE idKomentar = ?", (id_komentar,))
@@ -124,6 +126,7 @@ def komentarBlobToImage(connection, id_komentar):
     for row in data:
         path += "\\komentar" + str(row[0]) + ".png"
         writeTofile(row[1], path)
+    return path
 
 # Function to convert string to datetime format
 def stringToDatetime(date):
@@ -189,6 +192,20 @@ def getDaftarResep(connection):
 def getResep(connection, resep_id):
     connect = connection.cursor()
     connect.execute("SELECT * FROM Resep WHERE idResep = ?;" , (resep_id,))
+    data = connect.fetchall()
+    return data
+
+# Function to get all data from Alat table
+def getAlat(connection):
+    connect = connection.cursor()
+    connect.execute("SELECT * FROM Alat;")
+    data = connect.fetchall()
+    return data
+
+# Function to get all data from Bahan table
+def getBahan(connection):
+    connect = connection.cursor()
+    connect.execute("SELECT * FROM Bahan;")
     data = connect.fetchall()
     return data
 
