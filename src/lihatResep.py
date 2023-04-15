@@ -41,6 +41,27 @@ class lihatResep(QMainWindow) :
         self.bahan_isi.setText(self.bahanResepCombined)
         self.alat_isi.setText(self.alatResepCombined)
 
+        self.scrollArea.verticalScrollBar().setStyleSheet("QScrollBar:vertical {background-color: #FDE7BD; border: none; border-radius: 15px; width: 8px; margin: 0px 0px 0px 0px;}\
+                QScrollBar::handle:vertical {background-color: #EE9C20;border-radius: 15px; min-height: 20px;}\
+                QScrollBar::add-line:vertical {border: none; background: none;}\
+                QScrollBar::sub-line:vertical {border: none; background: none;}")
+        self.scrollArea_2.verticalScrollBar().setStyleSheet("QScrollBar:vertical {background-color: #FDE7BD; border: none; border-radius: 15px; width: 8px; margin: 0px 0px 0px 0px;}\
+                QScrollBar::handle:vertical {background-color: #EE9C20;border-radius: 15px; min-height: 20px;}\
+                QScrollBar::add-line:vertical {border: none; background: none;}\
+                QScrollBar::sub-line:vertical {border: none; background: none;}")
+        self.scrollArea_3.verticalScrollBar().setStyleSheet("QScrollBar:vertical {background-color: #FDE7BD; border: none; border-radius: 15px; width: 8px; margin: 0px 0px 0px 0px;}\
+                QScrollBar::handle:vertical {background-color: #EE9C20;border-radius: 15px; min-height: 20px;}\
+                QScrollBar::add-line:vertical {border: none; background: none;}\
+                QScrollBar::sub-line:vertical {border: none; background: none;}")
+        self.scrollArea_4.verticalScrollBar().setStyleSheet("QScrollBar:vertical {background-color: #FDE7BD; border: none; border-radius: 15px; width: 8px; margin: 0px 0px 0px 0px;}\
+                QScrollBar::handle:vertical {background-color: #EE9C20;border-radius: 15px; min-height: 20px;}\
+                QScrollBar::add-line:vertical {border: none; background: none;}\
+                QScrollBar::sub-line:vertical {border: none; background: none;}")
+        self.scrollArea_5.verticalScrollBar().setStyleSheet("QScrollBar:vertical {background-color: #FDE7BD; border: none; border-radius: 15px; width: 8px; margin: 0px 0px 0px 0px;}\
+                QScrollBar::handle:vertical {background-color: #EE9C20;border-radius: 15px; min-height: 20px;}\
+                QScrollBar::add-line:vertical {border: none; background: none;}\
+                QScrollBar::sub-line:vertical {border: none; background: none;}")
+
 
         self.setStyleSheet("background-color: #FDE7BD;")
         self.show()
@@ -132,6 +153,10 @@ class lihatResep(QMainWindow) :
 
     def displayKomentar(self):
         for i in range (self.total) :
+                self.komentar_isi.verticalScrollBar().setStyleSheet("QScrollBar:vertical {background-color: #FDE7BD; border: none; border-radius: 15px; width: 8px; margin: 0px 0px 0px 0px;}\
+                        QScrollBar::handle:vertical {background-color: #EE9C20;border-radius: 15px; min-height: 20px;}\
+                        QScrollBar::add-line:vertical {border: none; background: none;}\
+                        QScrollBar::sub-line:vertical {border: none; background: none;}")
                 self.komentarID = int(self.komentarResep[i][0])
                 self.komentarFoto = self.komentarResep[i][1]
                 self.komentarTeks = self.komentarResep[i][2]
@@ -145,9 +170,7 @@ class lihatResep(QMainWindow) :
                 self.komentarFrame_0.setObjectName("komentarFrame_" + str(self.komentarID))
                 self.tanggalKomentar_0 = QtWidgets.QLabel(self.komentarFrame_0)
                 self.tanggalKomentar_0.setGeometry(QtCore.QRect(30, 20, 131, 51))
-                current_datetime = QDateTime.currentDateTime()
                 self.tanggalKomentar_0.setText(self.komentarTanggal)
-                # self.tanggalKomentar_0.setText("23/02/2023 04:22PM")
                 self.tanggalKomentar_0.setStyleSheet("font: 8pt \"MS Shell Dlg 2\";\n"
         "color: rgb(211, 164, 145);")
                 self.tanggalKomentar_0.setScaledContents(False)
@@ -207,7 +230,10 @@ class lihatResep(QMainWindow) :
     def addKomentar(self, event):
         self.text = self.textEdit.toPlainText()
         if (self.path != "img/noPhoto.jpg" and self.text == "") or (self.path == "img/noPhoto.jpg" and self.text != "") or ((self.path != "img/noPhoto.jpg" and self.text != ""))  :
-                self.komentar_isi.setStyleSheet("")
+                self.komentar_isi.verticalScrollBar().setStyleSheet("QScrollBar:vertical {background-color: #FDE7BD; border: none; border-radius: 15px; width: 8px; margin: 0px 0px 0px 0px;}\
+                        QScrollBar::handle:vertical {background-color: #EE9C20;border-radius: 15px; min-height: 20px;}\
+                        QScrollBar::add-line:vertical {border: none; background: none;}\
+                        QScrollBar::sub-line:vertical {border: none; background: none;}")
                 self.komentar.setMinimumSize(QtCore.QSize(1000, 725))
                 self.komentarFrame_0 = QtWidgets.QFrame(self.scrollAreaWidgetContents_8)
                 self.komentarFrame_0.setMinimumSize(QtCore.QSize(0, 245))
@@ -235,7 +261,6 @@ class lihatResep(QMainWindow) :
                 self.isiKomentar_0.setReadOnly(True)
                 self.isiKomentar_0.setObjectName("isiKomentar_" + str(self.counter+1))
                 self.isiKomentar_0.setText(self.text)
-                self.isiKomentar_0.setLineWrapMode(QTextEdit.WidgetWidth)
                 self.fotoKomentar_0 = QtWidgets.QLabel(self.komentarFrame_0)
                 self.fotoKomentar_0.setGeometry(QtCore.QRect(670, 70, 361, 181))
                 sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Preferred)
