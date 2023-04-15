@@ -244,17 +244,31 @@ def getKomentar(connection, resep_id):
     data = connect.fetchall()
     return data
 
-# Function to get data where namaAlat = alat_name in Alat table
+# Function to get idAlat where namaAlat = alat_name in Alat table
 def getIdAlat(connection, alat_name):
     connect = connection.cursor()
-    connect.execute("SELECT * FROM Alat WHERE namaAlat = ?;", (alat_name, ))
+    connect.execute("SELECT idAlat FROM Alat WHERE namaAlat = ?;", (alat_name, ))
     data = connect.fetchone()
     return data
 
-# Function to get data where namaBahan = bahan_name in Bahan table
+# Function to get idBahan where namaBahan = bahan_name in Bahan table
 def getIdBahan(connection, bahan_name):
     connect = connection.cursor()
-    connect.execute("SELECT * FROM Bahan WHERE namaBahan = ?;", (bahan_name, ))
+    connect.execute("SELECT idBahan FROM Bahan WHERE namaBahan = ?;", (bahan_name, ))
+    data = connect.fetchone()
+    return data
+
+# Funciton to get idResep where namaMasakan = resep_name in Resep table
+def getIdResep(connection, resep_name):
+    connect = connection.cursor()
+    connect.execute("SELECT idResep FROM Resep WHERE namaMasakan = ?;", (resep_name, ))
+    data = connect.fetchone()
+    return data
+
+# Function to get the last ID Resep in database
+def getLastIdResep(connection):
+    connect = connection.cursor()
+    connect.execute("SELECT idResep FROM Resep ORDER BY idResep DESC LIMIT 1;")
     data = connect.fetchone()
     return data
 
