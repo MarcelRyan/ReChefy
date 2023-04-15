@@ -27,14 +27,18 @@ deskripsiMasakan = """Kue cubit dengan tambahan buah mangga merupakan perpaduan 
 # connect.execute("UPDATE Resep SET langkahMemasak = ? WHERE idResep = 1;", (langkahMemasak, ))
 # connection.commit()
 
-resep = database_func.getResep(connection, 1)
-alatresep = database_func.getAlatResep(connection, 1)
-bahanresep = database_func.getBahanResep(connection, 1)
-path = database_func.resepBlobToImage(connection, 1)
+# resep = database_func.getResep(connection, 1)
+# alatresep = database_func.getAlatResep(connection, 1)
+# bahanresep = database_func.getBahanResep(connection, 1)
+# path = database_func.resepBlobToImage(connection, 1)
 
-artikel = database_func.getDaftarArtikel(connection)
-pathartikel = database_func.artikelBlobToImage(connection, 3)
+# artikel = database_func.getDaftarArtikel(connection)
+# pathartikel = database_func.artikelBlobToImage(connection, 3)
 
+data = database_func.getBahanResep(connection, 18)
+
+for row in data:
+    print(row)
 # Bagian tambah resep
 # database_func.addResep(connection, namaMasakan, deskripsiMasakan, gambarMasakan, langkahMemasak)
 

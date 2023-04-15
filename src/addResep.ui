@@ -69,13 +69,13 @@
          <enum>QLayout::SetNoConstraint</enum>
         </property>
         <property name="leftMargin">
-         <number>50</number>
+         <number>35</number>
         </property>
         <property name="topMargin">
          <number>20</number>
         </property>
         <property name="rightMargin">
-         <number>50</number>
+         <number>35</number>
         </property>
         <property name="bottomMargin">
          <number>10</number>
@@ -318,20 +318,38 @@
         </item>
         <item>
          <layout class="QHBoxLayout" name="horizontalLayout_4">
+          <property name="rightMargin">
+           <number>0</number>
+          </property>
           <item>
            <widget class="QScrollArea" name="scrollAlat">
+            <property name="maximumSize">
+             <size>
+              <width>185</width>
+              <height>16777215</height>
+             </size>
+            </property>
             <property name="frameShape">
              <enum>QFrame::NoFrame</enum>
             </property>
+            <property name="horizontalScrollBarPolicy">
+             <enum>Qt::ScrollBarAlwaysOff</enum>
+            </property>
+            <property name="sizeAdjustPolicy">
+             <enum>QAbstractScrollArea::AdjustToContents</enum>
+            </property>
             <property name="widgetResizable">
              <bool>true</bool>
+            </property>
+            <property name="alignment">
+             <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
             </property>
             <widget class="QWidget" name="scrollWidgetAlat">
              <property name="geometry">
               <rect>
                <x>0</x>
                <y>0</y>
-               <width>239</width>
+               <width>185</width>
                <height>158</height>
               </rect>
              </property>
@@ -354,7 +372,7 @@
               <rect>
                <x>0</x>
                <y>0</y>
-               <width>238</width>
+               <width>306</width>
                <height>158</height>
               </rect>
              </property>
