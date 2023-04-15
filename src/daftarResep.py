@@ -72,14 +72,17 @@ class DaftarResep(QtWidgets.QMainWindow):
         self.addResepButton.raise_()
     
     def loadDaftarResep(self, connection, dataResep, countDaftarResep):
+        # load all resep in daftar resep
         for idx in range(countDaftarResep):
             gambar = database_func.resepBlobToImage(connection, dataResep[idx][0])
             self.createResep(idx, dataResep[idx][2], gambar, dataResep[idx][5], False)
         if (countDaftarResep<4):
+            # fill in empty widgets
             for counter in range (countDaftarResep,5):
                 self.createResep(counter, 0, 0, 0, True)
             
     def createResep(self, idx, namaResep, gambarResep, isDefault, isEmpty):
+        # create each recipe
         resepWidget = QtWidgets.QWidget()
         resepWidget.setFixedSize(230,280)
         verticalResep = QtWidgets.QVBoxLayout()
@@ -90,16 +93,11 @@ class DaftarResep(QtWidgets.QMainWindow):
             imageWidget = QtWidgets.QWidget()
             imageLayout = QtWidgets.QVBoxLayout()
             imageWidget.setFixedSize(210,210)
-            #imageWidget.setStyleSheet("border-radius: 15px;")
+            imageWidget.setStyleSheet("border-radius: 15px;")
             image_makanan = QtWidgets.QLabel(self)
             image_makanan.setPixmap(QPixmap(gambarResep))
             image_makanan.setScaledContents(True)
             image_makanan.setStyleSheet("background-color: #EE9C20;border-radius: 15px;")
-            #image_makanan = QtWidgets.QPushButton()
-            #image_makanan.setIcon(QIcon(QPixmap("images/icon/ayamgoreng.jpg")))
-            #image_makanan.setIconSize(QSize(178, 178))
-            #image_makanan.setFixedSize(QSize(178, 178))
-            #image_makanan.setStyleSheet("background-color: #EE9C20;border-radius: 15px;")
             imageLayout.addWidget(image_makanan)
             imageWidget.setLayout(imageLayout)
             verticalResep.addWidget(imageWidget)
@@ -110,21 +108,23 @@ class DaftarResep(QtWidgets.QMainWindow):
             label_judul.setStyleSheet("font: 75 12pt;")
             label_judul.setAlignment(Qt.AlignCenter)
             verticalResep.addWidget(label_judul)
-                    
+        # set layout
         resepWidget.setLayout(verticalResep)
         if (isDefault==1 and not isEmpty):
+            # add label resepku
             labelResepku = QtWidgets.QLabel(resepWidget)
             labelResepku.setFixedSize(120,120)
             labelResepku.setStyleSheet("border-image: url('images/icon/icon_resepku.png');background-color: none;")
             labelResepku.move(110,0)
             labelResepku.raise_()
-        #verticalResep.addWidget(labelResepku)
         self.gridLayoutResep.addWidget(resepWidget, idx//4, idx%4, alignment=Qt.AlignCenter)
         self.scrollResep.setLayout(self.gridLayoutResep)
         
     def searchResep(self, newDaftarResep, connection, countOriginalDaftarResep):
-        self.clearGrid()
+        # searching
+        self.clearGrid() # clear
         if (len(newDaftarResep) != 0):
+            # if found
             if (len(newDaftarResep) < countOriginalDaftarResep):
                 self.titleLabel.setText("Hasil Pencarian")
             else:
@@ -139,9 +139,9 @@ class DaftarResep(QtWidgets.QMainWindow):
             self.labelNotFound.setAlignment(Qt.AlignTop)
             self.labelNotFound.raise_()
             self.gridLayoutResep.addWidget(self.labelNotFound,0,0,1,4)
-            #print("...")
         
     def clearGrid(self):
+        # clear all objects inside the grid layout
         while self.gridLayoutResep.count():
             item = self.gridLayoutResep.takeAt(0)
             widget = item.widget()
