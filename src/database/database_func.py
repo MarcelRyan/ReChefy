@@ -94,7 +94,7 @@ def writeTofile(data, filename):
     with open(filename, 'wb') as file:
         file.write(data)
 
-# Function to change blob data back to image for Resep and store the file in images/resep folder
+# Function to change blob data back to image for Resep and store the file in images/resep folder and return the path for the image
 def resepBlobToImage(connection, id_resep):
     connect = connection.cursor()
     connect.execute("SELECT * FROM Resep WHERE idResep = ?", (id_resep,))
@@ -104,8 +104,9 @@ def resepBlobToImage(connection, id_resep):
         name = row[2].replace(" ", "")
         path += "\\" + name + ".png"
         writeTofile(row[1], path)
+    return path
 
-# Function to change blob data back to image for artikel and store the file in images/artikel folder
+# Function to change blob data back to image for artikel and store the file in images/artikel folder and return the path for the image
 def artikelBlobToImage(connection, id_artikel):
     connect = connection.cursor()
     connect.execute("SELECT * FROM Artikel WHERE idArtikel = ?", (id_artikel,))
@@ -114,8 +115,9 @@ def artikelBlobToImage(connection, id_artikel):
     for row in data:
         path += "\\artikel" + str(row[0]) + ".png"
         writeTofile(row[1], path)
+    return path
 
-# Function to change blob data back to image for komentar and store the file in images/komentar folder
+# Function to change blob data back to image for komentar and store the file in images/komentar folder and return the path for the image
 def komentarBlobToImage(connection, id_komentar):
     connect = connection.cursor()
     connect.execute("SELECT * FROM Komentar WHERE idKomentar = ?", (id_komentar,))
@@ -124,6 +126,7 @@ def komentarBlobToImage(connection, id_komentar):
     for row in data:
         path += "\\komentar" + str(row[0]) + ".png"
         writeTofile(row[1], path)
+    return path
 
 # Function to convert string to datetime format
 def stringToDatetime(date):
@@ -192,6 +195,20 @@ def getResep(connection, resep_id):
     data = connect.fetchall()
     return data
 
+# Function to get all data from Alat table
+def getAlat(connection):
+    connect = connection.cursor()
+    connect.execute("SELECT * FROM Alat;")
+    data = connect.fetchall()
+    return data
+
+# Function to get all data from Bahan table
+def getBahan(connection):
+    connect = connection.cursor()
+    connect.execute("SELECT * FROM Bahan;")
+    data = connect.fetchall()
+    return data
+
 # Function to get every tool needed in a recipe from Alat table
 def getAlatResep(connection, resep_id):
     connect = connection.cursor()
@@ -227,25 +244,41 @@ def getKomentar(connection, resep_id):
     data = connect.fetchall()
     return data
 
-# Function to get data where namaAlat = alat_name in Alat table
+# Function to get idAlat where namaAlat = alat_name in Alat table
 def getIdAlat(connection, alat_name):
     connect = connection.cursor()
-    connect.execute("SELECT * FROM Alat WHERE namaAlat = ?;", (alat_name, ))
+    connect.execute("SELECT idAlat FROM Alat WHERE namaAlat = ?;", (alat_name, ))
     data = connect.fetchone()
-    return data
+    return data[0]
 
-# Function to get data where namaBahan = bahan_name in Bahan table
+# Function to get idBahan where namaBahan = bahan_name in Bahan table
 def getIdBahan(connection, bahan_name):
     connect = connection.cursor()
-    connect.execute("SELECT * FROM Bahan WHERE namaBahan = ?;", (bahan_name, ))
+    connect.execute("SELECT idBahan FROM Bahan WHERE namaBahan = ?;", (bahan_name, ))
     data = connect.fetchone()
-    return data
+    return data[0]
+
+# Funciton to get idResep where namaMasakan = resep_name in Resep table
+def getIdResep(connection, resep_name):
+    connect = connection.cursor()
+    connect.execute("SELECT idResep FROM Resep WHERE namaMasakan = ?;", (resep_name, ))
+    data = connect.fetchone()
+    return data[0]
+
+# Function to get the last ID Resep in database
+def getLastIdResep(connection):
+    connect = connection.cursor()
+    connect.execute("SELECT seq FROM sqlite_sequence WHERE name ='Resep';")
+    data = connect.fetchone()
+    return data[0]
 
 # Function to create view for every data with namaResep contains keyword substring in Resep table
 def searchResepView(connection, keyword):
     connect = connection.cursor()
     connect.execute("DROP VIEW IF EXISTS SearchResepView;")
-    connect.execute("CREATE VIEW SearchResepView AS SELECT * FROM Resep WHERE namaMasakan LIKE '%?%';", (keyword, ))
+    query = "CREATE VIEW SearchResepView AS SELECT * FROM Resep WHERE namaMasakan LIKE " + "'%" + keyword + "%';"
+    connect.execute(query)
+    connect.execute("SELECT * FROM SearchResepView;")
     data = connect.fetchall()
     connection.commit()
     return data
@@ -320,13 +353,13 @@ def addBahanResepDatabase(connection):
 def deleteAlatResep(connection, resep_id):
     connect = connection.cursor()
     connect.execute("DELETE FROM AlatResep WHERE idResep = ?;", (resep_id, ))
-    connect.commit()
+    connection.commit()
 
 # Function to delete tuples from BahanResep table
 def deleteBahanResep(connection, resep_id):
     connect = connection.cursor()
     connect.execute("DELETE FROM BahanResep WHERE idResep = ?;", (resep_id, ))
-    connect.commit()
+    connection.commit()
 
 # Function to delete a tuple from Resep table
 def deleteResep(connection, resep_id):
@@ -334,19 +367,19 @@ def deleteResep(connection, resep_id):
     deleteAlatResep(connection, resep_id)
     deleteBahanResep(connection, resep_id)
     connect.execute("DELETE FROM Resep WHERE idResep = ?;", (resep_id, ))
-    connect.commit()
+    connection.commit()
 
 # Function to delete a tuple from Komentar table
 def deleteKomentar(connection, komentar_id):
     connect = connection.cursor()
     connect.execute("DELETE FROM Komentar WHERE idKomentar = ?;", (komentar_id, ))
-    connect.commit()
+    connection.commit()
 
 # Function to update a tuple in Resep table
 def editResep(connection, resep_id, gambar_masakan, nama_masakan, deskripsi_masakan, langkah_memasak):
     connect = connection.cursor()
     connect.execute("UPDATE Resep SET gambarMasakan = ?, namaMasakan = ?, deskripsiMasakan = ?, langkahMemasak = ? WHERE idResep = ?;", (gambar_masakan, nama_masakan, deskripsi_masakan, langkah_memasak, resep_id))
-    connect.commit()
+    connection.commit()
 
 
 

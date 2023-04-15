@@ -9,20 +9,23 @@ file = r".\src\database\rechefy.db"
 connection = database_func.connectToDatabase(file)
 database_func.initializeTable(connection)
 
-langkahMemasak = """1. Lelehkan mentega lalu sisihkan. Kemudian campur susu dan mangga lalu blender
-2. Masukkan telur dalam mangkuk, tambahkan gula dan kocok sampai mengembang
-3. Campurkan baking soda, baking powder, vanili bubuk ke dalam terigu
-4. Masukkan semua mangga yang sudah diblender, lalu aduk rata
-5. Tambahkan mentega cair setengahnya dulu dan aduk kembali
-6. Ayak terigu dan masukkan dalam adonan aduk rata, kemudian tambahkan sisa mentega cair
-7. Taruh adonan di dalam gelas takar
-8. Panaskan loyang kue cubit, olesi minyak goreng dan tuang adonan. Setelah keluar gelembung kecil taruh topping sesuai selera. Jika permukaan sudah berwarna cokelat bisa langsung diangkat."""
+langkahMemasak = """- Goreng kentang sisihkan.
+- Panaskan minyak tumis bahan halus sampai kering dan pecah minyak.
+- Masukkan ayam tumis sebentar kemudian masukkan santan dengan air aduk rata.
+- Masukkan kerisik, daun jeruk, daun salam, dan daun kunyit.
+- Kemudian masukkan kentang dan telur rebus tambahkan garam, gula malaka dan perasa.
+- Masak dengan api kecil sampai air kering, jika ingin berkuah jangan masak sampai kering."""
 
 namaMasakan = """Kue Cubit Mini Mangga"""
 
-gambarMasakan = database_func.imageToBlob(r".\src\database\cubit.jpg")
+# gambarMasakan = database_func.imageToBlob(r".\src\database\cubit.jpg")
 
 deskripsiMasakan = """Kue cubit dengan tambahan buah mangga merupakan perpaduan yang menyegarkan sekaligus memberikan rasa manis"""
+
+connect = connection.cursor()
+
+connect.execute("UPDATE Resep SET langkahMemasak = ? WHERE idResep = 1;", (langkahMemasak, ))
+connection.commit()
 
 # Bagian tambah resep
 # database_func.addResep(connection, namaMasakan, deskripsiMasakan, gambarMasakan, langkahMemasak)
