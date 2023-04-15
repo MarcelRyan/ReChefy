@@ -12,11 +12,11 @@ class FormAddResep(QtWidgets.QMainWindow):
         #self.parent = parent
         self.setFixedHeight(850)
         self.setFixedWidth(1200)
-        self.saveButton_resep.clicked.connect(self.validasiInput)
+        self.saveButton_resep.clicked.connect(self.inputValidation)
         self.inputGambar_resep.setIconSize(QSize(113, 98))
         self.inputGambar_resep.setStyleSheet("QPushButton{background-color: #EEC120; border-radius: 25px;}")
         self.inputGambar_resep.setIcon(QIcon(QPixmap("images/icon/pilihFoto.png")))
-        self.inputGambar_resep.clicked.connect(self.pilihGambar)
+        self.inputGambar_resep.clicked.connect(self.selectPicture)
 
         self.addAlat_button.clicked.connect(self.addAlat)
         self.addBahan_button.clicked.connect(self.addBahan)
@@ -41,6 +41,7 @@ class FormAddResep(QtWidgets.QMainWindow):
                                                 QScrollBar::sub-line:vertical {border: none; background: none;}")
         self.verticalAlat = QtWidgets.QVBoxLayout()
         self.verticalBahan = QtWidgets.QVBoxLayout()
+        self.filePath = ""
         self.verticalBahan.setContentsMargins(0, 0, 10, 0)
         self.listAlat = []
         self.listBahan = []
@@ -57,13 +58,6 @@ class FormAddResep(QtWidgets.QMainWindow):
         self.allAlat = database_func.getAlat(self.connection)
         self.allBahan = database_func.getBahan(self.connection)
         self.satuanBahan = database_func.getSatuanKuantitasBahan(self.connection)
-        x = database_func.getLastIdResep(self.connection)
-        print(x)
-        y = database_func.getResep(self.connection, x)
-        print(y[0][0], y[0][2], y[0][3], y[0][4])
-        # print(y[2])
-        # print(y[3])
-        # print(y[4])
 
     def addAlat(self):
         horizontal_layout = QtWidgets.QHBoxLayout()
@@ -143,7 +137,7 @@ class FormAddResep(QtWidgets.QMainWindow):
         self.amountBahan += 1
 
 
-    def pilihGambar(self):
+    def selectPicture(self):
         self.filePath, _ = QFileDialog.getOpenFileName(self, "Open Image", "", "Image Files (*.png *.jpg *.bmp)")
         if self.filePath:
             print(self.filePath)
@@ -191,13 +185,45 @@ class FormAddResep(QtWidgets.QMainWindow):
     
     # def validasiResep(self):
     #     if ()
-    def validasiInput(self):
-        if self.inputJudul_resep.toPlainText() == "" or self.inputDeskripsi_resep.toPlainText() == "" or self.filePath == "" or self.inputLangkahMemasak_resep.toPlainText() == "" or len(self.listAlat) == 0 or len(self.listBahan) == 0:
-            print("error")
+    def alatValidation(self):
+        alat = set()
+        for count in self.listAlat:
+            nama = self.findChild(QComboBox, f'DropdownAlat_{count}').currentText()
+            if nama in alat: return False
+            alat.add(nama)
+        return True
+    
+    def bahanValidation(self):
+        bahan = set()
+        for count in self.listBahan:
+            nama = self.findChild(QComboBox, f'DropdownBahan_{count}').currentText()
+            if nama in bahan: return False
+            bahan.add(nama)
+        return True
+
+    def inputValidation(self):
+        if self.inputJudul_resep.toPlainText() == "" or self.inputDeskripsi_resep.toPlainText() == "" or self.filePath == "" or self.inputLangkahMemasak_resep.toPlainText() == "" or len(self.listAlat) == 0 or len(self.listBahan) == 0 or not self.alatValidation() or not self.bahanValidation():
+            if self.inputJudul_resep.toPlainText() == "":
+                print("Judul masakan masih kosong")
+            if (self.inputDeskripsi_resep.toPlainText() == ""):
+                print("Deskripsi masakan masih kosong")
+            if self.filePath == "":
+                print("Gambar masakan belum ada")
+            if self.inputLangkahMemasak_resep.toPlainText() == "":
+                print("Langkah memasak masakan masih kosong")
+            if len(self.listAlat) == 0:
+                print("Alat masih kosong")
+            if len(self.listBahan) == 0:
+                print("Bahan masih kosong")
+            if not self.alatValidation():
+                print("Terdapat alat yang sama")
+            if not self.bahanValidation():
+                print("Terdapat bahan yang sama")
+
         else:
-            self.tambahResep()
+            self.addResep()
             # penambahan warning
-    def tambahResep(self):
+    def addResep(self):
         # Jika tervalidasi, lakukan add resep.
         # def addResep(connection, nama_masakan, deskripsi_masakan, gambar_masakan, langkah_memasak, isDefault):
         database_func.addResep(self.connection, self.inputJudul_resep.toPlainText(), self.inputDeskripsi_resep.toPlainText(), database_func.imageToBlob(self.filePath), self.inputLangkahMemasak_resep.toPlainText(), 1)
