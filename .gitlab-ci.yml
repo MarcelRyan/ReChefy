@@ -24,5 +24,3 @@ pytest:
     - python
   script:
   - cd tests/;pytest -v
-  only:
-    -merge_requests
