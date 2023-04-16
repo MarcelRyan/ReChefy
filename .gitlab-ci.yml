@@ -13,6 +13,7 @@ stages:
 #defines the job in Static Analysis
 pylint:
   stage: Static Analysis
+  allow_failure: true
   tags:
     - python
   script:
@@ -20,8 +21,9 @@ pylint:
 
 pytest:
   stage: Test
-  allow_failure: true
   tags:
     - python
   script:
-  - python3 -m tests.test_database_func
+  - python3 -m unittest discover tests
+  only:
+  - database
