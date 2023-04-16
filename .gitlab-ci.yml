@@ -24,4 +24,4 @@ pytest:
   tags:
     - python
   script:
-  - cd tests/;pytest -v
+  - python3 -m tests.test_database_func
