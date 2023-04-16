@@ -1,21 +1,22 @@
 import sys
-sys.path.insert(0, r'./src/database')
+sys.path.insert(0, r'./src/database/')
 from unittest.mock import Mock
-from databaseFunc import *
+import databaseFunc
+
 
 def test_initializeTable():
     db_connector = Mock()
-    initializeTable(db_connector)
+    databaseFunc.initializeTable(db_connector)
 
 def test_connectToDatabase():
-    assert connectToDatabase("test.db") == None
+    assert databaseFunc.connectToDatabase("test.db") == None
 
 def test_addAlat():
     db_connector = Mock()
-    initializeTable(db_connector)
-    addAlat(db_connector, "tes")
+    databaseFunc.initializeTable(db_connector)
+    databaseFunc.addAlat(db_connector, "tes")
 
 def test_addBahan():
     db_connector = Mock()
-    initializeTable(db_connector)
-    addBahan(db_connector, "tes")
+    databaseFunc.initializeTable(db_connector)
+    databaseFunc.addBahan(db_connector, "tes")

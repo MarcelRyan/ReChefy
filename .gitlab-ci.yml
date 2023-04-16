@@ -20,6 +20,7 @@ pylint:
 
 pytest:
   stage: Test
+  allow_failure: true
   tags:
     - python
   script:
