@@ -13,10 +13,14 @@ stages:
 #defines the job in Static Analysis
 pylint:
   stage: Static Analysis
+  tags:
+    - python
   script:
   - pylint src/
 
 pytest:
   stage: Test
+  tags:
+    - python
   script:
   - cd tests/;pytest -v
