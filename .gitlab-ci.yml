@@ -19,4 +19,4 @@ pylint:
 pytest:
   stage: Test
   script:
-  - cd test/;pytest -v
+  - cd tests/;pytest -v
