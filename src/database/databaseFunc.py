@@ -1,16 +1,16 @@
 import sqlite3
+import os
 from sqlite3 import Error
-import base64
-from datetime import datetime, date
+from datetime import datetime
 
 # Function to connect to the database file
 def connectToDatabase(databaseFile):
-    try:
-        connection = sqlite3.connect(databaseFile)
-        return connection
-    except Error as e:
-        print(e)
-    
+    if (os.path.exists(databaseFile)):
+        try:
+            connection = sqlite3.connect(databaseFile)
+            return connection
+        except Error as e:
+            print(e)
     return None
 
 # Function to initialize all tables for the databases
