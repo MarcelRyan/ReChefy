@@ -1,6 +1,6 @@
 import sys
-from unittest.mock import Mock
 sys.path.insert(1, r'./src/database')
+from unittest.mock import Mock
 import databaseFunc
 
 def test_initializeTable():
