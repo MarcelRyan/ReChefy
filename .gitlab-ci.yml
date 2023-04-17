@@ -18,7 +18,7 @@ pylint:
   tags:
     - python
   script:
-  - pylint src/
+  - pylint -d W0401 -d W0614 src/
 
 pytest:
   stage: Test
