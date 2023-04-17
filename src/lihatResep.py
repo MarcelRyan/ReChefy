@@ -1,5 +1,5 @@
 import os
-from database import database_func
+from database import databaseFunc
 from PyQt5.QtWidgets import *
 from PyQt5 import uic, QtWidgets, QtCore, QtGui
 from functools import partial
@@ -12,7 +12,7 @@ class Warning(QDialog):
         super().__init__()
         # Set up the UI
         self.layout = QVBoxLayout()
-        uic.loadUi("src/warning.ui", self)
+        uic.loadUi("warning.ui", self)
 
         self.setLayout(self.layout)
         self.deleteButton.clicked.connect(self.accept)
@@ -22,15 +22,15 @@ class Warning(QDialog):
 class lihatResep(QMainWindow) :
     def __init__(self) :
         super(lihatResep, self).__init__()
-        uic.loadUi("src/lihatResep.ui", self)
+        uic.loadUi("lihatResep.ui", self)
 
-        self.file = r".\src\database\rechefy.db"
-        self.connection = database_func.connectToDatabase(self.file)
-        self.resep = database_func.getResep(self.connection, 1)
-        self.alatResep = database_func.getAlatResep(self.connection, 1)
-        self.bahanResep = database_func.getBahanResep(self.connection, 1)
-        self.fotoResep = database_func.resepBlobToImage(self.connection, 1)
-        self.komentarResep = database_func.getKomentar(self.connection, 1)
+        self.file = r".\database\rechefy.db"
+        self.connection = databaseFunc.connectToDatabase(self.file)
+        self.resep = databaseFunc.getResep(self.connection, 1)
+        self.alatResep = databaseFunc.getAlatResep(self.connection, 1)
+        self.bahanResep = databaseFunc.getBahanResep(self.connection, 1)
+        self.fotoResep = databaseFunc.resepBlobToImage(self.connection, 1)
+        self.komentarResep = databaseFunc.getKomentar(self.connection, 1)
         self.alatResepCombined = self.combineAlat()
         self.bahanResepCombined = self.combineBahan()
 
@@ -66,10 +66,10 @@ class lihatResep(QMainWindow) :
         self.setStyleSheet("background-color: #FDE7BD;")
         self.show()
 
-        self.path = "img/noPhoto.jpg"
+        self.path = "../img/noPhoto.jpg"
         self.text = ""
 
-        self.attachButton.setStyleSheet("border-image: url(img/attach.png);background-color:none;border: none")
+        self.attachButton.setStyleSheet("border-image: url(../img/attach.png);background-color:none;border: none")
 
         self.sendButton.clicked.connect(self.addKomentar)
         self.deleteResepButton.clicked.connect(self.deleteResep)
@@ -145,7 +145,7 @@ class lihatResep(QMainWindow) :
             self.fileName = os.path.basename(self.path)
             self.pathText.setText(self.fileName)
         else :
-             self.path = "img/noPhoto.jpg"
+             self.path = "../img/noPhoto.jpg"
 
     def deleteKomentar(self,count) :
         result = self.warningClass.exec_()
@@ -155,8 +155,8 @@ class lihatResep(QMainWindow) :
                         frame.deleteLater()
                         self.total-=1
                         self.judulKomentar.setText(f"Komentar ({self.total})")
-                        database_func.deleteKomentar(self.connection, count)
-                        self.komentarResep = database_func.getKomentar(self.connection, 1)
+                        databaseFunc.deleteKomentar(self.connection, count)
+                        self.komentarResep = databaseFunc.getKomentar(self.connection, 1)
                         # print(self.komentarResep)
                 if self.total == 0 :
                         self.komentar.setMinimumSize(QtCore.QSize(1000, 300))
@@ -220,7 +220,7 @@ class lihatResep(QMainWindow) :
                 self.deleteButton_0.setStyleSheet("border-radius: 8px;\n"
         "border-style: outset;")
                 icon2 = QtGui.QIcon()
-                icon2.addPixmap(QtGui.QPixmap("img/delete.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+                icon2.addPixmap(QtGui.QPixmap("../img/delete.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
                 self.deleteButton_0.setIcon(icon2)
                 self.deleteButton_0.setIconSize(QtCore.QSize(100, 30))
                 self.deleteButton_0.setAutoDefault(False)
@@ -239,7 +239,7 @@ class lihatResep(QMainWindow) :
 
     def addKomentar(self, event):
         self.text = self.textEdit.toPlainText()
-        if (self.path != "img/noPhoto.jpg" and self.text == "") or (self.path == "img/noPhoto.jpg" and self.text != "") or ((self.path != "img/noPhoto.jpg" and self.text != ""))  :
+        if (self.path != "../img/noPhoto.jpg" and self.text == "") or (self.path == "../img/noPhoto.jpg" and self.text != "") or ((self.path != "../img/noPhoto.jpg" and self.text != ""))  :
                 self.komentar_isi.verticalScrollBar().setStyleSheet("QScrollBar:vertical {background-color: #FDE7BD; border: none; border-radius: 15px; width: 8px; margin: 0px 0px 0px 0px;}\
                         QScrollBar::handle:vertical {background-color: #EE9C20;border-radius: 15px; min-height: 20px;}\
                         QScrollBar::add-line:vertical {border: none; background: none;}\
@@ -290,7 +290,7 @@ class lihatResep(QMainWindow) :
                 self.deleteButton_0.setStyleSheet("border-radius: 8px;\n"
         "border-style: outset;")
                 icon2 = QtGui.QIcon()
-                icon2.addPixmap(QtGui.QPixmap("img/delete.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+                icon2.addPixmap(QtGui.QPixmap("../img/delete.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
                 self.deleteButton_0.setIcon(icon2)
                 self.deleteButton_0.setIconSize(QtCore.QSize(100, 30))
                 self.deleteButton_0.setAutoDefault(False)
@@ -306,8 +306,8 @@ class lihatResep(QMainWindow) :
                 self.line_0.setObjectName("line_" + str(self.counter+1))
                 self.verticalLayout_4.addWidget(self.komentarFrame_0)
 
-                database_func.addKomentar(self.connection, self.path, self.text,1)
-                self.komentarResep = database_func.getKomentar(self.connection, 1)
+                databaseFunc.addKomentar(self.connection, self.path, self.text,1)
+                self.komentarResep = databaseFunc.getKomentar(self.connection, 1)
                 # print(self.komentarResep)
 
                 self.counter +=1
@@ -316,7 +316,7 @@ class lihatResep(QMainWindow) :
                 self.textEdit.setText("")
                 self.pathText.setText("")
                 self.text = ""
-                self.path = "img/noPhoto.jpg"
+                self.path = "../img/noPhoto.jpg"
 
 
 def main() :
