@@ -1,9 +1,0 @@
-<RCC>
-  <qresource prefix="newPrefix">
-    <file>button_back.png</file>
-    <file>header.png</file>
-    <file>button_search.png</file>
-    <file>button_addResep.png</file>
-    <file>ayamgoreng.jpg</file>
-  </qresource>
-</RCC>
