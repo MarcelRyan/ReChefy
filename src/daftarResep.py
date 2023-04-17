@@ -1,7 +1,7 @@
-from PyQt5.QtWidgets import *
-from PyQt5.QtGui import QIcon, QPixmap
-from PyQt5.QtCore import QSize, Qt
 from PyQt5 import uic, QtWidgets, QtCore, QtGui
+from PyQt5.QtWidgets import *
+from PyQt5.QtGui import QPixmap
+from PyQt5.QtCore import QSize, Qt
 import sys
 from database import database_func
 
@@ -15,16 +15,8 @@ class DaftarResep(QtWidgets.QMainWindow):
         file = r".\src\database\rechefy.db"
         connection = database_func.connectToDatabase(file)
         database_func.initializeTable(connection)
-                
-        # nge read apa data x
-        # for i in x:
-            # self.createResep(nama, picture,)
-        #self.layoutkosong = QtWidgets.QHBoxLayout()
         
-        # load header label
-        #self.headerLabel = QtWidgets.QLabel(self)
-        #self.headerLabel.setGeometry(0,0,1200,125)
-        #self.headerLabel.setStyleSheet("background-image: url('images/icon/header.png');")
+        # header label
         self.verticalLayoutWidget = QtWidgets.QWidget(self.centralwidget)
         self.verticalLayoutWidget.setGeometry(QtCore.QRect(0, 0, 1201, 111))
         self.verticalLayoutWidget.setObjectName("verticalLayoutWidget")
@@ -57,14 +49,7 @@ class DaftarResep(QtWidgets.QMainWindow):
         self.verticalLayout_1.addWidget(self.Navbar)
         self.verticalLayoutWidget_2 = QtWidgets.QWidget(self.centralwidget)
         self.verticalLayoutWidget.raise_()
-        
-        # load back button
-        #self.backButton = QtWidgets.QPushButton(self)
-        #self.backButton.setStyleSheet("border-image: url(images/icon/button_back.png);background-color:none;border: none")
-        #self.backButton.setIconSize(QSize(31, 31))
-        #self.backButton.setFixedSize(QSize(31, 31))
-        #self.backButton.move(52,38)
-        
+                
         # load title "Daftar Resep" label
         self.titleLabel = QtWidgets.QLabel(self)
         self.titleLabel.setGeometry(70,108,320,70)
@@ -88,13 +73,12 @@ class DaftarResep(QtWidgets.QMainWindow):
         self.scrollResep = QtWidgets.QWidget()
         self.scrollResep.setGeometry(70,200,1041,601)
         self.gridLayoutResep = QtWidgets.QGridLayout()
-        #self.gridLayoutResep.setContentsMargins(10,30,10,30)
         self.gridLayoutResep.setVerticalSpacing(30)
         self.scrollArea.setWidget(self.scrollResep)
         self.scrollArea.verticalScrollBar().setStyleSheet("QScrollBar:vertical {background-color: #FDE7BD; border: none; border-radius: 15px; width: 8px; margin: 0px 0px 0px 0px;}\
-                                                QScrollBar::handle:vertical {background-color: #EE9C20;border-radius: 15px; min-height: 20px;}\
-                                                QScrollBar::add-line:vertical {border: none; background: none;}\
-                                                QScrollBar::sub-line:vertical {border: none; background: none;}")
+                                                        QScrollBar::handle:vertical {background-color: #EE9C20;border-radius: 15px; min-height: 20px;}\
+                                                        QScrollBar::add-line:vertical {border: none; background: none;}\
+                                                        QScrollBar::sub-line:vertical {border: none; background: none;}")
         
         # load daftar resep
         dataResep = database_func.getDaftarResep(connection)
