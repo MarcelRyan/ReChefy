@@ -17,13 +17,15 @@ pylint:
   tags:
     - python
   script:
-  - pylint src/
+  - pylint -d W0401 -d W0614 src/
 
 pytest:
   stage: Test
   tags:
     - python
   script:
-  - python3 -m unittest discover tests
+  - cd src
+  - python3 -m unittest discover tests/
   only:
   - merge_requests
+  - main
