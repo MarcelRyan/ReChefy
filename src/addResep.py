@@ -2,7 +2,7 @@ from PyQt5.QtWidgets import *
 from PyQt5.QtGui import QIcon, QPixmap
 from PyQt5.QtCore import QSize, Qt
 from PyQt5 import uic, QtWidgets, QtGui, QtCore
-import database.databaseFunc as database_func 
+import database as databaseFunc 
 import sys
 
 class FormAddResep(QtWidgets.QMainWindow):
@@ -55,11 +55,11 @@ class FormAddResep(QtWidgets.QMainWindow):
 
         # Read database
         self.file = r".\database\rechefy.db"
-        self.connection = database_func.connectToDatabase(self.file)
-        database_func.initializeTable(self.connection)
-        self.allAlat = database_func.getAlat(self.connection)
-        self.allBahan = database_func.getBahan(self.connection)
-        self.satuanBahan = database_func.getSatuanKuantitasBahan(self.connection)
+        self.connection = databaseFunc.connectToDatabase(self.file)
+        databaseFunc.initializeTable(self.connection)
+        self.allAlat = databaseFunc.getAlat(self.connection)
+        self.allBahan = databaseFunc.getBahan(self.connection)
+        self.satuanBahan = databaseFunc.getSatuanKuantitasBahan(self.connection)
 
         # Navbar
         self.verticalLayoutWidget = QtWidgets.QWidget(self.centralwidget)
@@ -311,13 +311,13 @@ class FormAddResep(QtWidgets.QMainWindow):
     def addResep(self):
         # Jika tervalidasi, lakukan add resep.
         # def addResep(connection, nama_masakan, deskripsi_masakan, gambar_masakan, langkah_memasak, isDefault):
-        database_func.addResep(self.connection, self.inputJudul_resep.toPlainText(), self.inputDeskripsi_resep.toPlainText(), database_func.imageToBlob(self.filePath), self.inputLangkahMemasak_resep.toPlainText(), 1)
-        self.resepID = database_func.getLastIdResep(self.connection)
+        databaseFunc.addResep(self.connection, self.inputJudul_resep.toPlainText(), self.inputDeskripsi_resep.toPlainText(), databaseFunc.imageToBlob(self.filePath), self.inputLangkahMemasak_resep.toPlainText(), 1)
+        self.resepID = databaseFunc.getLastIdResep(self.connection)
         
         for count in self.listAlat:
             alat = self.findChild(QComboBox, f'DropdownAlat_{count}')
-            idAlat = database_func.getIdAlat(self.connection, alat.currentText())
-            database_func.addAlatResep(self.connection, self.resepID, idAlat)
+            idAlat = databaseFunc.getIdAlat(self.connection, alat.currentText())
+            databaseFunc.addAlatResep(self.connection, self.resepID, idAlat)
             #addAlatResep(connection, id_resep, id_alat)
         
         for count in self.listBahan:
@@ -326,9 +326,9 @@ class FormAddResep(QtWidgets.QMainWindow):
             jumlahBahan = self.findChild(QDoubleSpinBox, f'Jumlah_{count}')
             # print(jumlahBahan.value())
             satuanBahan = self.findChild(QComboBox, f'Satuan_{count}')
-            idBahan = database_func.getIdBahan(self.connection, bahan.currentText())
+            idBahan = databaseFunc.getIdBahan(self.connection, bahan.currentText())
             #addBahanResep(connection, id_resep, id_bahan, kuantitas_bahan, satuan_kuantitas_bahan)
-            database_func.addBahanResep(self.connection, self.resepID, idBahan, jumlahBahan.value(), satuanBahan.currentText())
+            databaseFunc.addBahanResep(self.connection, self.resepID, idBahan, jumlahBahan.value(), satuanBahan.currentText())
         
         # Setelah penyimpanan, kembali ke daftar resep
         self.parent.DaftarResep.clearGrid()
