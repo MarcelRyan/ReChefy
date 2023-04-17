@@ -2,28 +2,28 @@ from PyQt5.QtWidgets import *
 from PyQt5.QtGui import QIcon, QPixmap
 from PyQt5.QtCore import QSize, Qt
 from PyQt5 import uic, QtWidgets
-from database import database_func
+import database.databaseFunc as database_func 
 import sys
 
 class FormAddResep(QtWidgets.QMainWindow):
-    def __init__(self):
+    def __init__(self, parent):
         super(FormAddResep, self).__init__()
-        uic.loadUi("src/addResep.ui", self)
-        #self.parent = parent
+        uic.loadUi("addResep.ui", self)
+        self.parent = parent
         self.setFixedHeight(850)
         self.setFixedWidth(1200)
         self.saveButton_resep.clicked.connect(self.inputValidation)
         self.inputGambar_resep.setIconSize(QSize(113, 98))
         self.inputGambar_resep.setStyleSheet("QPushButton{background-color: #EEC120; border-radius: 25px;}")
-        self.inputGambar_resep.setIcon(QIcon(QPixmap("images/icon/pilihFoto.png")))
+        self.inputGambar_resep.setIcon(QIcon(QPixmap("../images/icon/pilihFoto.png")))
         self.inputGambar_resep.clicked.connect(self.selectPicture)
 
         self.addAlat_button.clicked.connect(self.addAlat)
         self.addBahan_button.clicked.connect(self.addBahan)
         self.addAlat_button.setFixedSize(30, 30)
         self.addBahan_button.setFixedSize(30, 30)
-        self.addAlat_button.setIcon(QIcon(QPixmap("images/icon/addIcon.png")))
-        self.addBahan_button.setIcon(QIcon(QPixmap("images/icon/addIcon.png")))
+        self.addAlat_button.setIcon(QIcon(QPixmap("../images/icon/addIcon.png")))
+        self.addBahan_button.setIcon(QIcon(QPixmap("../images/icon/addIcon.png")))
         self.addAlat_button.setStyleSheet("background-color: #F75008; border-radius: 15px")
         self.addBahan_button.setStyleSheet("background-color: #F75008; border-radius: 15px")
         self.scrollWidgetAlat = QtWidgets.QWidget()
@@ -52,7 +52,7 @@ class FormAddResep(QtWidgets.QMainWindow):
 
 
         # Read database
-        self.file = r".\src\database\rechefy.db"
+        self.file = r".\database\rechefy.db"
         self.connection = database_func.connectToDatabase(self.file)
         database_func.initializeTable(self.connection)
         self.allAlat = database_func.getAlat(self.connection)
@@ -69,12 +69,12 @@ class FormAddResep(QtWidgets.QMainWindow):
         dropdown.view().setHorizontalScrollBarPolicy(Qt.ScrollBarAsNeeded)
         dropdown.setObjectName("DropdownAlat_"+str(self.counterAlat))
         dropdown.setFixedSize(132, 30)
-        dropdown.setStyleSheet("QComboBox{background-color: #F7EAD3; border: none; border-radius: 10px;} QComboBox::down-arrow {image: url(images/icon/down_arrow.png); height: 30px;} ")
+        dropdown.setStyleSheet("QComboBox{background-color: #F7EAD3; border: none; border-radius: 10px;} QComboBox::down-arrow {image: url(../images/icon/down_arrow.png); height: 30px;} ")
         horizontal_layout.addWidget(dropdown)
 
         delete = QtWidgets.QPushButton()
         delete.setFixedSize(30, 30)
-        delete.setIcon(QIcon(QPixmap("images/icon/deleteIcon.png")))
+        delete.setIcon(QIcon(QPixmap("../images/icon/deleteIcon.png")))
         delete.setStyleSheet("background-color: #F75008; border-radius: 15px;")
         delete.setObjectName("DeleteAlat_"+str(self.counterAlat))
         horizontal_layout.addWidget(delete)
@@ -97,7 +97,7 @@ class FormAddResep(QtWidgets.QMainWindow):
         amount.setObjectName("Jumlah_"+str(self.counterBahan))
         amount.setRange(0.1, 100000.0)
         amount.setFixedSize(45, 30)
-        amount.setStyleSheet("QSpinBox{background-color: #F7EAD3; border-radius: 10px;}QSpinBox::up-button{image: url(images/icon/up_arrow.png); width: 7px;} QSpinBox::down-button{image: url(images//icon/down_arrow.png); width: 7px;}")
+        amount.setStyleSheet("QSpinBox{background-color: #F7EAD3; border-radius: 10px;}QSpinBox::up-button{image: url(../images/icon/up_arrow.png); width: 7px;} QSpinBox::down-button{image: url(../images//icon/down_arrow.png); width: 7px;}")
         horizontal_layout.addWidget(amount)
 
         unit = QtWidgets.QComboBox()
@@ -106,7 +106,7 @@ class FormAddResep(QtWidgets.QMainWindow):
         unit.addItems(['kg', 'object'])
         unit.setObjectName("Satuan_"+str(self.counterBahan))
         unit.setFixedSize(72, 30)
-        unit.setStyleSheet("QComboBox{background-color: #F7EAD3; border: none; border-radius: 10px;} QComboBox::down-arrow {image: url(images/icon/down_arrow.png); height: 5px; width: 5px}")
+        unit.setStyleSheet("QComboBox{background-color: #F7EAD3; border: none; border-radius: 10px;} QComboBox::down-arrow {image: url(../images/icon/down_arrow.png); height: 5px; width: 5px}")
         horizontal_layout.addWidget(unit)
 
         dropdown = QtWidgets.QComboBox()
@@ -114,7 +114,7 @@ class FormAddResep(QtWidgets.QMainWindow):
             dropdown.addItem(i[1])
         dropdown.setObjectName("DropdownBahan_"+str(self.counterBahan))
         dropdown.setFixedSize(125, 30)
-        dropdown.setStyleSheet("QComboBox{background-color: #F7EAD3; border: none; border-radius: 10px;} QComboBox::down-arrow {image: url(images/icon/down_arrow.png); height: 30px;}")
+        dropdown.setStyleSheet("QComboBox{background-color: #F7EAD3; border: none; border-radius: 10px;} QComboBox::down-arrow {image: url(../images/icon/down_arrow.png); height: 30px;}")
         dropdown.view().setStyleSheet("QScrollBar:vertical {background-color: #FDE7BD; border: none; border-radius: 15px; width: 8px; margin: 0px 0px 0px 0px;}\
                                                 QScrollBar::handle:vertical {background-color: #EE9C20;border-radius: 15px; min-height: 20px;}\
                                                 QScrollBar::add-line:vertical {border: none; background: none;}\
@@ -123,7 +123,7 @@ class FormAddResep(QtWidgets.QMainWindow):
 
         delete = QtWidgets.QPushButton()
         delete.setFixedSize(30, 30)
-        delete.setIcon(QIcon(QPixmap("images/icon/deleteIcon.png")))
+        delete.setIcon(QIcon(QPixmap("../images/icon/deleteIcon.png")))
         delete.setStyleSheet("background-color: #F75008; border-radius: 15px;")
         delete.setObjectName("DeleteBahan_"+str(self.counterBahan))
         horizontal_layout.addWidget(delete)
@@ -146,7 +146,7 @@ class FormAddResep(QtWidgets.QMainWindow):
             self.inputGambar_resep.setStyleSheet("QPushButton{background-color: #FFF6E5; border: none;}")
         else:
             print(self.filePath)
-            self.inputGambar_resep.setIcon(QIcon(QPixmap("images/icon/pilihFoto.png")))
+            self.inputGambar_resep.setIcon(QIcon(QPixmap("../images/icon/pilihFoto.png")))
             self.inputGambar_resep.setIconSize(QSize(113, 98))
             self.inputGambar_resep.setStyleSheet("QPushButton{background-color: #EEC120; border-radius: 25px;}")
 
