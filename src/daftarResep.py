@@ -3,18 +3,18 @@ from PyQt5.QtWidgets import *
 from PyQt5.QtGui import QPixmap
 from PyQt5.QtCore import QSize, Qt
 import sys
-from database import database_func
+from database import databaseFunc
 
 class DaftarResep(QtWidgets.QMainWindow):
     def __init__(self):
         #self.parent = parent
         super(DaftarResep, self).__init__()
-        uic.loadUi(r".\src\daftarResep.ui", self)
+        uic.loadUi(r".\daftarResep.ui", self)
         
         # load database
-        file = r".\src\database\rechefy.db"
-        connection = database_func.connectToDatabase(file)
-        database_func.initializeTable(connection)
+        file = r".\database\rechefy.db"
+        connection = databaseFunc.connectToDatabase(file)
+        databaseFunc.initializeTable(connection)
         
         # header label
         self.verticalLayoutWidget = QtWidgets.QWidget(self.centralwidget)
@@ -33,7 +33,7 @@ class DaftarResep(QtWidgets.QMainWindow):
         self.backButton.setStyleSheet("border : None;")
         self.backButton.setText("")
         icon = QtGui.QIcon()
-        icon.addPixmap(QtGui.QPixmap("images/icon/button_back.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon.addPixmap(QtGui.QPixmap("../images/icon/button_back.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.backButton.setIcon(icon)
         self.backButton.setIconSize(QtCore.QSize(50, 70))
         self.backButton.setObjectName("backButton")
@@ -42,7 +42,7 @@ class DaftarResep(QtWidgets.QMainWindow):
         self.homeButton.setStyleSheet("border : None;")
         self.homeButton.setText("")
         icon1 = QtGui.QIcon()
-        icon1.addPixmap(QtGui.QPixmap("images/icon/logo.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon1.addPixmap(QtGui.QPixmap("../images/icon/logo.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.homeButton.setIcon(icon1)
         self.homeButton.setIconSize(QtCore.QSize(190, 80))
         self.homeButton.setObjectName("homeButton")
@@ -57,14 +57,14 @@ class DaftarResep(QtWidgets.QMainWindow):
         self.titleLabel.setStyleSheet("font: 75 26pt;background-color: none;")
         
         # load search button
-        self.searchButton.setStyleSheet("border-image: url(images/icon/button_search.png);background-color:none;border: none")
+        self.searchButton.setStyleSheet("border-image: url(../images/icon/button_search.png);background-color:none;border: none")
         self.searchButton.setIconSize(QSize(31, 31))
         self.searchButton.setFixedSize(QSize(31, 31))
         self.searchButton.move(1080,130)
-        self.searchButton.clicked.connect(lambda : self.searchResep(database_func.searchResepView(connection, self.searchBar.text()), connection, len(dataResep)))
+        self.searchButton.clicked.connect(lambda : self.searchResep(databaseFunc.searchResepView(connection, self.searchBar.text()), connection, len(dataResep)))
         
         # load add resep button
-        self.addResepButton.setStyleSheet("border-image: url(images/icon/button_addResep.png);background-color:none;border: none")
+        self.addResepButton.setStyleSheet("border-image: url(../images/icon/button_addResep.png);background-color:none;border: none")
         self.addResepButton.setIconSize(QSize(170, 170))
         self.addResepButton.setFixedSize(QSize(170, 170))
         self.addResepButton.move(1020,620)
@@ -81,7 +81,7 @@ class DaftarResep(QtWidgets.QMainWindow):
                                                         QScrollBar::sub-line:vertical {border: none; background: none;}")
         
         # load daftar resep
-        dataResep = database_func.getDaftarResep(connection)
+        dataResep = databaseFunc.getDaftarResep(connection)
         self.loadDaftarResep(connection, dataResep, len(dataResep))
             
         self.backButton.raise_()
@@ -90,7 +90,7 @@ class DaftarResep(QtWidgets.QMainWindow):
     def loadDaftarResep(self, connection, dataResep, countDaftarResep):
         # load all resep in daftar resep
         for idx in range(countDaftarResep):
-            gambar = database_func.resepBlobToImage(connection, dataResep[idx][0])
+            gambar = databaseFunc.resepBlobToImage(connection, dataResep[idx][0])
             self.createResep(idx, dataResep[idx][2], gambar, dataResep[idx][5], False)
         if (countDaftarResep<4):
             # fill in empty widgets
@@ -130,7 +130,7 @@ class DaftarResep(QtWidgets.QMainWindow):
             # add label resepku
             labelResepku = QtWidgets.QLabel(resepWidget)
             labelResepku.setFixedSize(120,120)
-            labelResepku.setStyleSheet("border-image: url('images/icon/icon_resepku.png');background-color: none;")
+            labelResepku.setStyleSheet("border-image: url('../images/icon/icon_resepku.png');background-color: none;")
             labelResepku.move(110,0)
             labelResepku.raise_()
         self.gridLayoutResep.addWidget(resepWidget, idx//4, idx%4, alignment=Qt.AlignCenter)
