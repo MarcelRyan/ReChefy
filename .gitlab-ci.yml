@@ -26,8 +26,7 @@ pytest:
     - python
   script:
   - cd src
-  - python3 -m unittest tests/test_database_func.py
-  - python3 -m pytest tests/ --ignore tests/test_database_func.py
+  - python3 -m unittest tests/
   only:
   - merge_requests
   - main
