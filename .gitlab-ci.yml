@@ -24,6 +24,7 @@ pytest:
   tags:
     - python
   script:
-  - python3 -m unittest discover tests
+  - python3 -m unittest .\tests\test_database_func.py
+  - python3 -m pytest tests/ --ignore tests/test_database_func.py
   only:
   - merge_requests
