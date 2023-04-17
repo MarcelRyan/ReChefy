@@ -2,7 +2,7 @@ from PyQt5.QtWidgets import *
 from PyQt5.QtGui import QIcon, QPixmap
 from PyQt5.QtCore import QSize, Qt
 from PyQt5 import uic, QtWidgets, QtGui, QtCore
-import database as databaseFunc 
+from database import databaseFunc
 import sys
 
 class FormAddResep(QtWidgets.QMainWindow):
