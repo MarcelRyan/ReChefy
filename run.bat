@@ -1,3 +1,5 @@
 @echo off
 cd src
-py 
+py main.py
+cd..
+cmd /k
