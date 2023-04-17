@@ -268,6 +268,13 @@ def getIdResep(connection, resep_name):
     data = connect.fetchone()
     return data[0]
 
+# Function to get idKomentar where idResep = resep_id in Komentar table
+def getIdKomentar(connection, resep_id):
+    connect = connection.cursor()
+    connect.execute("SELECT idKomentar FROM Komentar WHERE idResep = ?;", (resep_id, ))
+    data = connect.fetchall()
+    return data
+
 # Function to get the last ID Resep in database
 def getLastIdResep(connection):
     connect = connection.cursor()
@@ -275,12 +282,23 @@ def getLastIdResep(connection):
     data = connect.fetchone()
     return data[0]
 
+def getLastIdKomentar(connection):
+    connect = connection.cursor()
+    connect.execute("SELECT seq FROM sqlite_sequence WHERE name ='Komentar';")
+    data = connect.fetchone()
+    if data is not None and data[0] is not None:
+        return data[0]
+    else :
+        return 0
+
 # Function to get all satuanKuantitasBahan that is unique in BahanResep
 def getSatuanKuantitasBahan(connection):
     connect = connection.cursor()
     connect.execute("SELECT DISTINCT satuanKuantitasBahan FROM BahanResep;")
     data = connect.fetchall()
     return data
+
+# Function to get komentarFoto path
 
 # Function to create view for every data with namaResep contains keyword substring in Resep table
 def searchResepView(connection, keyword):
@@ -303,6 +321,12 @@ def deleteAlatResep(connection, resep_id):
 def deleteBahanResep(connection, resep_id):
     connect = connection.cursor()
     connect.execute("DELETE FROM BahanResep WHERE idResep = ?;", (resep_id, ))
+    connection.commit()
+
+# Function to delete all komentar with idResep = resep_idt
+def deleteKomentarResep(connection, resep_id):
+    connect = connection.cursor()
+    connect.execute("DELETE FROM Komentar WHERE idResep = ?;", (resep_id, ))
     connection.commit()
 
 # Function to delete a tuple from Resep table

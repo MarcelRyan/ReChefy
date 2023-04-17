@@ -1,22 +1,30 @@
 from PyQt5 import uic, QtWidgets, QtCore, QtGui
 from PyQt5.QtWidgets import *
 from PyQt5.QtGui import QPixmap
-from PyQt5.QtCore import QSize, Qt
+from PyQt5.QtCore import QSize, Qt, QTimer
 import sys
 from database import databaseFunc
 
 class DaftarResep(QtWidgets.QMainWindow):
-    def __init__(self):
-        #self.parent = parent
+    def __init__(self, parent):
+        self.parent = parent
         super(DaftarResep, self).__init__()
-        uic.loadUi(r".\daftarResep.ui", self)
+        uic.loadUi("daftarResep.ui", self)
         
         # load database
         file = r".\database\rechefy.db"
         connection = databaseFunc.connectToDatabase(file)
         databaseFunc.initializeTable(connection)
+                
+        # nge read apa data x
+        # for i in x:
+            # self.createResep(nama, picture,)
+        #self.layoutkosong = QtWidgets.QHBoxLayout()
         
-        # header label
+        # load header label
+        #self.headerLabel = QtWidgets.QLabel(self)
+        #self.headerLabel.setGeometry(0,0,1200,125)
+        #self.headerLabel.setStyleSheet("background-image: url('../images/icon/header.png');")
         self.verticalLayoutWidget = QtWidgets.QWidget(self.centralwidget)
         self.verticalLayoutWidget.setGeometry(QtCore.QRect(0, 0, 1201, 111))
         self.verticalLayoutWidget.setObjectName("verticalLayoutWidget")
@@ -32,6 +40,7 @@ class DaftarResep(QtWidgets.QMainWindow):
         self.backButton.setGeometry(QtCore.QRect(40, 30, 51, 51))
         self.backButton.setStyleSheet("border : None;")
         self.backButton.setText("")
+        self.backButton.clicked.connect(self.goBack)
         icon = QtGui.QIcon()
         icon.addPixmap(QtGui.QPixmap("../images/icon/button_back.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.backButton.setIcon(icon)
@@ -41,6 +50,7 @@ class DaftarResep(QtWidgets.QMainWindow):
         self.homeButton.setGeometry(QtCore.QRect(460, 0, 231, 101))
         self.homeButton.setStyleSheet("border : None;")
         self.homeButton.setText("")
+        self.homeButton.clicked.connect(self.goHome)
         icon1 = QtGui.QIcon()
         icon1.addPixmap(QtGui.QPixmap("../images/icon/logo.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.homeButton.setIcon(icon1)
@@ -49,7 +59,14 @@ class DaftarResep(QtWidgets.QMainWindow):
         self.verticalLayout_1.addWidget(self.Navbar)
         self.verticalLayoutWidget_2 = QtWidgets.QWidget(self.centralwidget)
         self.verticalLayoutWidget.raise_()
-                
+        
+        # load back button
+        #self.backButton = QtWidgets.QPushButton(self)
+        #self.backButton.setStyleSheet("border-image: url(../images/icon/button_back.png);background-color:none;border: none")
+        #self.backButton.setIconSize(QSize(31, 31))
+        #self.backButton.setFixedSize(QSize(31, 31))
+        #self.backButton.move(52,38)
+        
         # load title "Daftar Resep" label
         self.titleLabel = QtWidgets.QLabel(self)
         self.titleLabel.setGeometry(70,108,320,70)
@@ -68,18 +85,44 @@ class DaftarResep(QtWidgets.QMainWindow):
         self.addResepButton.setIconSize(QSize(170, 170))
         self.addResepButton.setFixedSize(QSize(170, 170))
         self.addResepButton.move(1020,620)
-        
+        self.addResepButton.clicked.connect(self.tambahResep)
         # load scroll area
         self.scrollResep = QtWidgets.QWidget()
         self.scrollResep.setGeometry(70,200,1041,601)
         self.gridLayoutResep = QtWidgets.QGridLayout()
+        #self.gridLayoutResep.setContentsMargins(10,30,10,30)
         self.gridLayoutResep.setVerticalSpacing(30)
         self.scrollArea.setWidget(self.scrollResep)
         self.scrollArea.verticalScrollBar().setStyleSheet("QScrollBar:vertical {background-color: #FDE7BD; border: none; border-radius: 15px; width: 8px; margin: 0px 0px 0px 0px;}\
-                                                        QScrollBar::handle:vertical {background-color: #EE9C20;border-radius: 15px; min-height: 20px;}\
-                                                        QScrollBar::add-line:vertical {border: none; background: none;}\
-                                                        QScrollBar::sub-line:vertical {border: none; background: none;}")
+                                                QScrollBar::handle:vertical {background-color: #EE9C20;border-radius: 15px; min-height: 20px;}\
+                                                QScrollBar::add-line:vertical {border: none; background: none;}\
+                                                QScrollBar::sub-line:vertical {border: none; background: none;}")
         
+        self.notifikasi= QtWidgets.QLabel(self.scrollArea)
+        self.notifikasi.setGeometry(QtCore.QRect(350, -5, 471, 31))
+        self.notifikasi.setStyleSheet("background-color: rgb(238, 156, 32);\n"
+"font: 12pt \"MS Shell Dlg 2\";\n"
+"color : rgb(255, 255, 255);\n"
+"border: 0px solid #555;\n"
+"border-radius: 8px;\n"
+"border-style: outset;\n"
+"padding : 5px")
+        self.notifikasi.setAlignment(QtCore.Qt.AlignCenter)
+        self.notifikasi.setObjectName("notifikasi")
+        self.notifikasi.hide()
+        
+        # load daftar resep
+        dataResep = databaseFunc.getDaftarResep(connection)
+        self.loadDaftarResep(connection, dataResep, len(dataResep))
+            
+        self.backButton.raise_()
+        self.addResepButton.raise_()
+    
+    def readDatabase(self):
+        # load database
+        file = r".\database\rechefy.db"
+        connection = databaseFunc.connectToDatabase(file)
+        databaseFunc.initializeTable(connection)
         # load daftar resep
         dataResep = databaseFunc.getDaftarResep(connection)
         self.loadDaftarResep(connection, dataResep, len(dataResep))
@@ -91,13 +134,13 @@ class DaftarResep(QtWidgets.QMainWindow):
         # load all resep in daftar resep
         for idx in range(countDaftarResep):
             gambar = databaseFunc.resepBlobToImage(connection, dataResep[idx][0])
-            self.createResep(idx, dataResep[idx][2], gambar, dataResep[idx][5], False)
+            self.createResep(idx, dataResep[idx][0], dataResep[idx][2], gambar, dataResep[idx][5], False)
         if (countDaftarResep<4):
             # fill in empty widgets
             for counter in range (countDaftarResep,5):
-                self.createResep(counter, 0, 0, 0, True)
+                self.createResep(counter, 0, 0, 0, 0, True)
             
-    def createResep(self, idx, namaResep, gambarResep, isDefault, isEmpty):
+    def createResep(self, idx, idresep, namaResep, gambarResep, isDefault, isEmpty):
         # create each recipe
         resepWidget = QtWidgets.QWidget()
         resepWidget.setFixedSize(230,280)
@@ -114,6 +157,7 @@ class DaftarResep(QtWidgets.QMainWindow):
             image_makanan.setPixmap(QPixmap(gambarResep))
             image_makanan.setScaledContents(True)
             image_makanan.setStyleSheet("background-color: #EE9C20;border-radius: 15px;")
+            image_makanan.mousePressEvent = lambda event, id=idresep: self.connectResep(id)
             imageLayout.addWidget(image_makanan)
             imageWidget.setLayout(imageLayout)
             verticalResep.addWidget(imageWidget)
@@ -131,11 +175,32 @@ class DaftarResep(QtWidgets.QMainWindow):
             labelResepku = QtWidgets.QLabel(resepWidget)
             labelResepku.setFixedSize(120,120)
             labelResepku.setStyleSheet("border-image: url('../images/icon/icon_resepku.png');background-color: none;")
+            labelResepku.mousePressEvent = lambda event, id=idresep: self.connectResep(id)
             labelResepku.move(110,0)
             labelResepku.raise_()
         self.gridLayoutResep.addWidget(resepWidget, idx//4, idx%4, alignment=Qt.AlignCenter)
         self.scrollResep.setLayout(self.gridLayoutResep)
-        
+    
+    def notifAddResep(self) :
+        self.notifikasi.setText("Resep telah ditambahkan")
+        timer = QTimer(self)
+        self.notifikasi.show()
+        timer.timeout.connect(self.notifikasi.hide)
+        timer.start(5000)
+    
+    def notifDeleteResep(self) :
+        self.notifikasi.setText("Resep telah dihapus")
+        timer = QTimer(self)
+        self.notifikasi.show()
+        timer.timeout.connect(self.notifikasi.hide)
+        timer.start(5000)
+    
+    def connectResep(self, id):
+        self.parent.LihatResep.idResep = id
+        self.parent.LihatResep.resetKomentar()
+        self.parent.LihatResep.readDatabase()
+        self.parent.pages.setCurrentWidget(self.parent.LihatResep)
+
     def searchResep(self, newDaftarResep, connection, countOriginalDaftarResep):
         # searching
         self.clearGrid() # clear
@@ -167,6 +232,16 @@ class DaftarResep(QtWidgets.QMainWindow):
                 self.gridLayoutResep.removeItem(item)
         if self.gridLayoutResep.count() == 0:
             self.scrollArea.setVerticalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
+    
+    def tambahResep(self):
+        self.parent.AddResep.clear()
+        self.parent.pages.setCurrentWidget(self.parent.AddResep)
+    
+    def goBack(self):
+        self.parent.pages.setCurrentWidget(self.parent.Menu)
+    
+    def goHome(self):
+        self.parent.pages.setCurrentWidget(self.parent.WelcomePage)
     
         
 if __name__ == '__main__':

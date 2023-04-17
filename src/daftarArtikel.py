@@ -3,24 +3,24 @@ from PyQt5.QtGui import QIcon, QPixmap
 from PyQt5.QtCore import QSize, Qt
 from PyQt5 import uic, QtWidgets, QtGui, QtCore
 import sys
-from database import database_func
+from database import databaseFunc
 
 class DaftarArtikel(QtWidgets.QMainWindow):
-    def __init__(self):
+    def __init__(self, parent):
         super(DaftarArtikel, self).__init__()
-        uic.loadUi(r".\src\daftarArtikel.ui", self)
-        
+        uic.loadUi(r".\daftarArtikel.ui", self)
+        self.parent = parent
         # load database
-        file = r".\src\database\rechefy.db"
-        connection = database_func.connectToDatabase(file)
-        database_func.initializeTable(connection)
+        file = r".\database\rechefy.db"
+        connection = databaseFunc.connectToDatabase(file)
+        databaseFunc.initializeTable(connection)
 
         #self.headerLabel = QtWidgets.QLabel(self)
         #self.headerLabel.setGeometry(0,0,1200,125)
-        #self.headerLabel.setStyleSheet("background-image: url('images/icon/header.png');")
+        #self.headerLabel.setStyleSheet("background-image: url('../images/icon/header.png');")
         
         #self.backButton = QtWidgets.QPushButton(self)
-        #self.backButton.setStyleSheet("border-image: url(images/icon/button_back.png);background-color:none;border: none")
+        #self.backButton.setStyleSheet("border-image: url(../images/icon/button_back.png);background-color:none;border: none")
         #self.backButton.setIconSize(QSize(31, 31))
         #self.backButton.setFixedSize(QSize(31, 31))
         #self.backButton.move(52,38)
@@ -41,8 +41,9 @@ class DaftarArtikel(QtWidgets.QMainWindow):
         self.backButton.setGeometry(QtCore.QRect(40, 30, 51, 51))
         self.backButton.setStyleSheet("border : None;")
         self.backButton.setText("")
+        self.backButton.clicked.connect(self.goBack)
         icon = QtGui.QIcon()
-        icon.addPixmap(QtGui.QPixmap("images/icon/button_back.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon.addPixmap(QtGui.QPixmap("../images/icon/button_back.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.backButton.setIcon(icon)
         self.backButton.setIconSize(QtCore.QSize(50, 70))
         self.backButton.setObjectName("backButton")
@@ -51,10 +52,11 @@ class DaftarArtikel(QtWidgets.QMainWindow):
         self.homeButton.setStyleSheet("border : None;")
         self.homeButton.setText("")
         icon1 = QtGui.QIcon()
-        icon1.addPixmap(QtGui.QPixmap("images/icon/logo.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon1.addPixmap(QtGui.QPixmap("../images/icon/logo.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.homeButton.setIcon(icon1)
         self.homeButton.setIconSize(QtCore.QSize(190, 80))
         self.homeButton.setObjectName("homeButton")
+        self.homeButton.clicked.connect(self.goHome)
         self.verticalLayout_1.addWidget(self.Navbar)
         self.verticalLayoutWidget_2 = QtWidgets.QWidget(self.centralwidget)
         self.verticalLayoutWidget.raise_()
@@ -73,7 +75,7 @@ class DaftarArtikel(QtWidgets.QMainWindow):
                                                 QScrollBar::sub-line:vertical {border: none; background: none;}")
         
         # load daftar artikel
-        dataArtikel = database_func.getDaftarArtikel(connection)
+        dataArtikel = databaseFunc.getDaftarArtikel(connection)
         self.counter = 0
         self.loadArtikel(connection, dataArtikel)
     
@@ -91,13 +93,14 @@ class DaftarArtikel(QtWidgets.QMainWindow):
         
         image_artikel = QtWidgets.QLabel()
         image_artikel.setFixedSize(470,230)
-        gambar = database_func.artikelBlobToImage(connection, artikel[0])
+        gambar = databaseFunc.artikelBlobToImage(connection, artikel[0])
         pixmap = QPixmap(gambar)
         pixmap = pixmap.scaled(image_artikel.width(), image_artikel.height()) # scale the pixmap to the size of the label
         image_artikel.setPixmap(pixmap)
         image_artikel.setPixmap(QPixmap(gambar))
         image_artikel.setScaledContents(True)
         image_artikel.setStyleSheet("background-color: #EE9C20;border-radius: 15px;")
+        image_artikel.mousePressEvent = lambda event, id=artikel[0]: self.tampilanArtikel(id)
         horizontalBox.addWidget(image_artikel)
         
         verticalWidget = QtWidgets.QWidget()
@@ -139,6 +142,17 @@ class DaftarArtikel(QtWidgets.QMainWindow):
         #if elided_text != text:
         #    elided_text += "..."
         label.setText(elided_text)
+    
+    def goBack(self):
+        self.parent.pages.setCurrentWidget(self.parent.Menu)
+    
+    def goHome(self):
+        self.parent.pages.setCurrentWidget(self.parent.WelcomePage)
+
+    def tampilanArtikel(self, id):
+        self.parent.LihatArtikel.idArtikel = id
+        self.parent.LihatArtikel.readDatabase()
+        self.parent.pages.setCurrentWidget(self.parent.LihatArtikel)
         
 if __name__ == '__main__':
     app = QtWidgets.QApplication(sys.argv)

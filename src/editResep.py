@@ -1,14 +1,16 @@
 from PyQt5.QtWidgets import *
 from PyQt5.QtGui import QIcon, QPixmap
 from PyQt5.QtCore import QSize, Qt
-from PyQt5 import uic, QtWidgets
-from database import database_func
+from PyQt5 import uic, QtWidgets, QtCore, QtGui
+from database import databaseFunc
 import sys
+import os
 
 class FormEditResep(QtWidgets.QMainWindow):
-    def __init__(self):
+    def __init__(self, parent):
         super(FormEditResep, self).__init__()
-        uic.loadUi("src/editResep.ui", self)
+        uic.loadUi("editResep.ui", self)
+        self.parent = parent
         self.idResep = 1
         self.setFixedHeight(850)
         self.setFixedWidth(1200)
@@ -19,8 +21,8 @@ class FormEditResep(QtWidgets.QMainWindow):
 
         self.addAlat_button.setFixedSize(30, 30)
         self.addBahan_button.setFixedSize(30, 30)
-        self.addAlat_button.setIcon(QIcon(QPixmap("images/icon/addIcon.png")))
-        self.addBahan_button.setIcon(QIcon(QPixmap("images/icon/addIcon.png")))
+        self.addAlat_button.setIcon(QIcon(QPixmap("../images/icon/addIcon.png")))
+        self.addBahan_button.setIcon(QIcon(QPixmap("../images/icon/addIcon.png")))
         self.addAlat_button.setStyleSheet("background-color: #F75008; border-radius: 15px")
         self.addBahan_button.setStyleSheet("background-color: #F75008; border-radius: 15px")
         self.scrollWidgetAlat = QtWidgets.QWidget()
@@ -38,45 +40,90 @@ class FormEditResep(QtWidgets.QMainWindow):
                                                 QScrollBar::sub-line:vertical {border: none; background: none;}")
         self.scrollAlat.setStyleSheet("QScrollBar:vertical { width: 15px; }")
         self.scrollBahan.setStyleSheet("QScrollBar:vertical { width: 15px; }")
+        # Initialize data for input through database
+        self.file = r".\database\rechefy.db"
+        self.connection = databaseFunc.connectToDatabase(self.file)
+        self.allAlat = databaseFunc.getAlat(self.connection)
+        self.allBahan = databaseFunc.getBahan(self.connection)
+        self.satuanBahan = databaseFunc.getSatuanKuantitasBahan(self.connection)
+        self.addAlat_button.clicked.connect(lambda: self.addAlat(self.allAlat[0][1]))
+        self.addBahan_button.clicked.connect(lambda: self.addBahan(self.allBahan[0][1], 0.1, self.satuanBahan[0][0]))
 
         self.verticalAlat = QtWidgets.QVBoxLayout()
         self.verticalBahan = QtWidgets.QVBoxLayout()
+        self.verticalBahan.setSpacing(3)
         self.listAlat = []
         self.listBahan = []
+        self.listLayoutAlat = []
+        self.listLayoutBahan = []
         self.counterAlat = 1
         self.counterBahan = 1
         self.amountAlat = 0
         self.amountBahan = 0
 
+
+        # Navbar
+        self.verticalLayoutWidget = QtWidgets.QWidget(self.centralwidget)
+        self.verticalLayoutWidget.setGeometry(QtCore.QRect(0, 0, 1201, 111))
+        self.verticalLayoutWidget.setObjectName("verticalLayoutWidget")
+        self.verticalLayout_1 = QtWidgets.QVBoxLayout(self.verticalLayoutWidget)
+        self.verticalLayout_1.setContentsMargins(0, 0, 0, 0)
+        self.verticalLayout_1.setObjectName("verticalLayout_1")
+        self.Navbar = QtWidgets.QFrame(self.verticalLayoutWidget)
+        self.Navbar.setStyleSheet("background-color:rgb(253, 231, 189)")
+        self.Navbar.setFrameShape(QtWidgets.QFrame.StyledPanel)
+        self.Navbar.setFrameShadow(QtWidgets.QFrame.Raised)
+        self.Navbar.setObjectName("Navbar")
+        self.backButton = QtWidgets.QPushButton(self.Navbar)
+        self.backButton.setGeometry(QtCore.QRect(40, 30, 51, 51))
+        self.backButton.setStyleSheet("border : None;")
+        self.backButton.setText("")
+        self.backButton.clicked.connect(self.goBack)
+        icon = QtGui.QIcon()
+        icon.addPixmap(QtGui.QPixmap("../images/icon/button_back.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.backButton.setIcon(icon)
+        self.backButton.setIconSize(QtCore.QSize(50, 70))
+        self.backButton.setObjectName("backButton")
+        self.homeButton = QtWidgets.QPushButton(self.Navbar)
+        self.homeButton.setGeometry(QtCore.QRect(460, 0, 231, 101))
+        self.homeButton.setStyleSheet("border : None;")
+        self.homeButton.setText("")
+        self.homeButton.clicked.connect(self.goHome)
+        icon1 = QtGui.QIcon()
+        icon1.addPixmap(QtGui.QPixmap("../images/icon/logo.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.homeButton.setIcon(icon1)
+        self.homeButton.setIconSize(QtCore.QSize(190, 80))
+        self.homeButton.setObjectName("homeButton")
+        self.verticalLayout_1.addWidget(self.Navbar)
+        self.verticalLayoutWidget_2 = QtWidgets.QWidget(self.centralwidget)
+        self.verticalLayoutWidget.raise_()
+
+    def readResep(self):
         ## EDIT RESEP DATABASE
-        self.file = r"src\database\rechefy.db"
-        self.connection = database_func.connectToDatabase(self.file)
-        self.dataResep = database_func.getResep(self.connection, self.idResep)
-        #foto = x[0][1]
+        self.file = r".\database\rechefy.db"
+        self.connection = databaseFunc.connectToDatabase(self.file)
+        self.dataResep = databaseFunc.getResep(self.connection, self.idResep)
         nama = self.dataResep[0][2]
         deskripsi = self.dataResep[0][3]
         langkah = self.dataResep[0][4]
         self.inputJudul_resep.setText(nama)
         self.inputDeskripsi_resep.setText(deskripsi)
         self.inputLangkahMemasak_resep.setText(langkah)
-        self.filePath = database_func.resepBlobToImage(self.connection, 1)
+        self.filePath = databaseFunc.resepBlobToImage(self.connection, self.idResep)
+        self.fotoPath = databaseFunc.resepBlobToImage(self.connection, self.idResep)
         self.inputGambar_resep.setIcon(QIcon(QPixmap(self.filePath)))
         self.inputGambar_resep.setIconSize(QSize(self.inputGambar_resep.width(), self.inputGambar_resep.height()))
         self.inputGambar_resep.setStyleSheet("QPushButton{background-color: #FFF6E5; border: none;}")
 
-        self.allAlat = database_func.getAlat(self.connection)
-        self.allBahan = database_func.getBahan(self.connection)
-        self.satuanBahan = database_func.getSatuanKuantitasBahan(self.connection)
-        y = database_func.getAlatResep(self.connection, 1)
-        z = database_func.getBahanResep(self.connection, 1)
+        y = databaseFunc.getAlatResep(self.connection, self.idResep)
+        z = databaseFunc.getBahanResep(self.connection, self.idResep)
         for i in y:
             self.addAlat(i[1])
         for i in z:
             self.addBahan(i[1], i[2], i[3])
-        self.addAlat_button.clicked.connect(lambda: self.addAlat(self.allAlat[0][1]))
-        self.addBahan_button.clicked.connect(lambda: self.addBahan(self.allBahan[0][1], 0, self.satuanBahan[0][0]))
 
-        
+
+
     def addAlat(self, opsi):
         horizontal_layout = QtWidgets.QHBoxLayout()
         horizontal_layout.setObjectName("Alat_"+str(self.counterAlat))
@@ -87,18 +134,19 @@ class FormEditResep(QtWidgets.QMainWindow):
         dropdown.setCurrentIndex(dropdown.findText(opsi))
         dropdown.view().setHorizontalScrollBarPolicy(Qt.ScrollBarAsNeeded)
         dropdown.setObjectName("DropdownAlat_"+str(self.counterAlat))
-        dropdown.setFixedSize(133, 30)
-        dropdown.setStyleSheet("QComboBox{background-color: #F7EAD3; border: none; border-radius: 10px;} QComboBox::down-arrow {image: url(images/icon/down_arrow.png); height: 30px;} ")
+        dropdown.setFixedSize(125, 30)
+        dropdown.setStyleSheet("QComboBox{background-color: #F7EAD3; border: none; border-radius: 10px;} QComboBox::down-arrow {image: url(../images/icon/down_arrow.png); height: 30px;} ")
         horizontal_layout.addWidget(dropdown)
 
         delete = QtWidgets.QPushButton()
         delete.setFixedSize(30, 30)
-        delete.setIcon(QIcon(QPixmap("images/icon/deleteIcon.png")))
+        delete.setIcon(QIcon(QPixmap("../images/icon/deleteIcon.png")))
         delete.setStyleSheet("background-color: #F75008; border-radius: 15px;")
         delete.setObjectName("DeleteAlat_"+str(self.counterAlat))
         horizontal_layout.addWidget(delete)
         horizontal_layout.id = self.counterAlat
 
+        self.listLayoutAlat.append(horizontal_layout)
         self.listAlat.append(self.counterAlat)
         delete.clicked.connect(lambda _, layout=horizontal_layout: self.deleteAlat(layout))
         self.verticalAlat.insertLayout(self.amountAlat, horizontal_layout)
@@ -115,7 +163,7 @@ class FormEditResep(QtWidgets.QMainWindow):
         amount.setRange(0.1, 100000.0)
         amount.setValue(jumlah)
         amount.setFixedSize(45, 30)
-        amount.setStyleSheet("QSpinBox{background-color: #F7EAD3; border-radius: 10px;}QSpinBox::up-button{image: url(images/icon/up_arrow.png); width: 7px;} QSpinBox::down-button{image: url(images//icon/down_arrow.png); width: 7px;}")
+        amount.setStyleSheet("QSpinBox{background-color: #F7EAD3; border-radius: 10px;}QSpinBox::up-button{image: url(../images/icon/up_arrow.png); width: 7px;} QSpinBox::down-button{image: url(../images//icon/down_arrow.png); width: 7px;}")
         horizontal_layout.addWidget(amount)
 
         unit = QtWidgets.QComboBox()
@@ -125,7 +173,7 @@ class FormEditResep(QtWidgets.QMainWindow):
         #if satuan != "none":
         unit.setCurrentIndex(unit.findText(satuan))
         unit.setFixedSize(72, 30)
-        unit.setStyleSheet("QComboBox{background-color: #F7EAD3; border: none; border-radius: 10px;} QComboBox::down-arrow {image: url(images/icon/down_arrow.png); height: 5px; width: 5px}")
+        unit.setStyleSheet("QComboBox{background-color: #F7EAD3; border: none; border-radius: 10px;} QComboBox::down-arrow {image: url(../images/icon/down_arrow.png); height: 5px; width: 5px}")
         horizontal_layout.addWidget(unit)
 
         dropdown = QtWidgets.QComboBox()
@@ -134,7 +182,7 @@ class FormEditResep(QtWidgets.QMainWindow):
         dropdown.setCurrentIndex(dropdown.findText(opsi))
         dropdown.setObjectName("DropdownBahan_"+str(self.counterBahan))
         dropdown.setFixedSize(125, 30)
-        dropdown.setStyleSheet("QComboBox{background-color: #F7EAD3; border: none; border-radius: 10px;} QComboBox::down-arrow {image: url(images/icon/down_arrow.png); height: 30px;}")
+        dropdown.setStyleSheet("QComboBox{background-color: #F7EAD3; border: none; border-radius: 10px;} QComboBox::down-arrow {image: url(../images/icon/down_arrow.png); height: 30px;}")
         dropdown.view().setStyleSheet("QScrollBar:vertical {background-color: #FDE7BD; border: none; border-radius: 15px; width: 8px; margin: 0px 0px 0px 0px;}\
                                                 QScrollBar::handle:vertical {background-color: #EE9C20;border-radius: 15px; min-height: 20px;}\
                                                 QScrollBar::add-line:vertical {border: none; background: none;}\
@@ -143,13 +191,13 @@ class FormEditResep(QtWidgets.QMainWindow):
 
         delete = QtWidgets.QPushButton()
         delete.setFixedSize(30, 30)
-        delete.setIcon(QIcon(QPixmap("images/icon/deleteIcon.png")))
+        delete.setIcon(QIcon(QPixmap("../images/icon/deleteIcon.png")))
         delete.setStyleSheet("background-color: #F75008; border-radius: 15px;")
         delete.setObjectName("DeleteBahan_"+str(self.counterBahan))
         horizontal_layout.addWidget(delete)
         horizontal_layout.id = self.counterBahan
         self.listBahan.append(self.counterBahan)
-        
+        self.listLayoutBahan.append(horizontal_layout)
         delete.clicked.connect(lambda _, layout=horizontal_layout: self.deleteBahan(layout))
         self.verticalBahan.insertLayout(self.amountBahan, horizontal_layout)
         self.scrollWidgetBahan.setLayout(self.verticalBahan)
@@ -164,14 +212,15 @@ class FormEditResep(QtWidgets.QMainWindow):
             self.inputGambar_resep.setIconSize(QSize(self.inputGambar_resep.width(), self.inputGambar_resep.height()))
             self.inputGambar_resep.setStyleSheet("QPushButton{background-color: #FFF6E5; border: none;}")
         else:
-            self.inputGambar_resep.setIcon(QIcon(QPixmap("images/icon/pilihFoto.png")))
+            self.inputGambar_resep.setIcon(QIcon(QPixmap("../images/icon/pilihFoto.png")))
             self.inputGambar_resep.setIconSize(QSize(113, 98))
             self.inputGambar_resep.setStyleSheet("QPushButton{background-color: #EEC120; border: none;}")
 
     def deleteAlat(self, layout):
         # Get the layout item that contains the given layout
         layout_item = self.verticalAlat.itemAt(self.verticalAlat.indexOf(layout))
-
+        self.listLayoutAlat.remove(layout)
+        self.listAlat.remove(layout.id)
         # Remove the layout item from the vertical layout
         self.verticalAlat.removeItem(layout_item)
 
@@ -184,13 +233,14 @@ class FormEditResep(QtWidgets.QMainWindow):
 
         # Update widget container after deletion
         self.scrollWidgetAlat.setLayout(self.verticalAlat)
-        self.listAlat.remove(layout.id)
+
+        del layout
         self.amountAlat -= 1
 
     def deleteBahan(self, layout):
-
         layout_item = self.verticalBahan.itemAt(self.verticalBahan.indexOf(layout))
         self.verticalBahan.removeItem(layout_item)
+        self.listBahan.remove(layout.id)
         while layout.count():
             child_item = layout.takeAt(0)
 
@@ -198,9 +248,25 @@ class FormEditResep(QtWidgets.QMainWindow):
                 child_item.widget().deleteLater()
 
         self.scrollWidgetBahan.setLayout(self.verticalBahan)
-        self.listBahan.remove(layout.id)
+        self.listLayoutBahan.remove(layout)
+        del layout
         self.amountBahan -= 1
     
+    def clearAlat(self):
+        for i in range(len(self.listLayoutAlat)):
+            self.deleteAlat(self.listLayoutAlat[0])
+    def clearBahan(self):
+        for i in range(len(self.listLayoutBahan)):
+            self.deleteBahan(self.listLayoutBahan[0])
+
+    def clear(self):
+        self.clearAlat()
+        self.clearBahan()
+        self.inputJudul_resep.clear()
+        self.inputDeskripsi_resep.clear()
+        self.inputLangkahMemasak_resep.clear()
+        self.inputGambar_resep.setIcon(QIcon(QPixmap("../images/icon/pilihFoto.png")))
+
     def alatValidation(self):
         alat = set()
         for count in self.listAlat:
@@ -219,45 +285,92 @@ class FormEditResep(QtWidgets.QMainWindow):
 
     def inputValidation(self):
         if self.inputJudul_resep.toPlainText() == "" or self.inputDeskripsi_resep.toPlainText() == "" or self.filePath == "" or self.inputLangkahMemasak_resep.toPlainText() == "" or len(self.listAlat) == 0 or len(self.listBahan) == 0 or not self.alatValidation() or not self.bahanValidation():
+            self.parent.WarningValidasi.warningClass.warningLabel.setText("")
+            print(str(self.parent.WarningValidasi.warningClass.warningLabel.text()))
+            self.isiText = []
             if self.inputJudul_resep.toPlainText() == "":
                 print("Judul masakan masih kosong")
+                self.isiText.append("Judul masakan masih kosong")
             if (self.inputDeskripsi_resep.toPlainText() == ""):
                 print("Deskripsi masakan masih kosong")
+                self.isiText.append("Deskripsi masakan masih kosong")
             if self.filePath == "":
                 print("Gambar masakan belum ada")
+                self.isiText.append("Gambar masakan belum ada")
             if self.inputLangkahMemasak_resep.toPlainText() == "":
                 print("Langkah memasak masakan masih kosong")
+                self.isiText.append("Langkah memasak masakan masih kosong")
             if len(self.listAlat) == 0:
                 print("Alat masih kosong")
+                self.isiText.append("Alat masih kosong")
             if len(self.listBahan) == 0:
                 print("Bahan masih kosong")
+                self.isiText.append("Bahan masih kosong")
             if not self.alatValidation():
                 print("Terdapat alat yang sama")
+                self.isiText.append("Terdapat alat yang sama")
             if not self.bahanValidation():
                 print("Terdapat bahan yang sama")
+                self.isiText.append("Terdapat bahan yang sama")
+            for i in range(len(self.isiText)):
+                self.parent.WarningValidasi.warningClass.warningLabel.setText(str(self.parent.WarningValidasi.warningClass.warningLabel.text()) + self.isiText[i])
+                if i != 0 or i != len(self.isiText)-1:
+                    self.parent.WarningValidasi.warningClass.warningLabel.setText(str(self.parent.WarningValidasi.warningClass.warningLabel.text()) + "\n")
+            self.parent.popup.setCurrentWidget(self.parent.WarningValidasi)
+            if self.parent.WarningValidasi.Exec() != QDialog.Accepted:
+                self.parent.WarningValidasi.warningClass.warningLabel.setText("")
         else:
-            print("Berhasil edit")
+            self.parent.WarningValidasi.warningClass.warningLabel.setText("Berhasil disunting")
+            self.parent.popup.setCurrentWidget(self.parent.WarningValidasi)
+            if self.parent.WarningValidasi.Exec() != QDialog.Accepted:
+                self.parent.WarningValidasi.warningClass.warningLabel.setText("")
             self.editResep()
         # penambahan warning
     def editResep(self):
         # Jika tervalidasi, lakukan add resep.
-        database_func.editResep(self.connection, self.idResep, database_func.imageToBlob(self.filePath), self.inputJudul_resep.toPlainText(), self.inputDeskripsi_resep.toPlainText(), self.inputLangkahMemasak_resep.toPlainText())
-        database_func.deleteAlatResep(self.connection, self.idResep)
-        database_func.deleteBahanResep(self.connection, self.idResep)
+        databaseFunc.editResep(self.connection, self.idResep, databaseFunc.imageToBlob(self.filePath), self.inputJudul_resep.toPlainText(), self.inputDeskripsi_resep.toPlainText(), self.inputLangkahMemasak_resep.toPlainText())
+        databaseFunc.deleteAlatResep(self.connection, self.idResep)
+        databaseFunc.deleteBahanResep(self.connection, self.idResep)
+        fotoMasakanPath = self.fotoPath
+        if os.path.exists(fotoMasakanPath) :
+            os.remove(fotoMasakanPath)
         for count in self.listAlat:
             alat = self.findChild(QComboBox, f'DropdownAlat_{count}')
-            idAlat = database_func.getIdAlat(self.connection, alat.currentText())
-            database_func.addAlatResep(self.connection, self.idResep, idAlat)
+            idAlat = databaseFunc.getIdAlat(self.connection, alat.currentText())
+            databaseFunc.addAlatResep(self.connection, self.idResep, idAlat)
         
         for count in self.listBahan:
             bahan = self.findChild(QComboBox, f'DropdownBahan_{count}')
             jumlahBahan = self.findChild(QDoubleSpinBox, f'Jumlah_{count}')
             satuanBahan = self.findChild(QComboBox, f'Satuan_{count}')
-            idBahan = database_func.getIdBahan(self.connection, bahan.currentText())
-            database_func.addBahanResep(self.connection, self.idResep, idBahan, jumlahBahan.value(), satuanBahan.currentText())
+            idBahan = databaseFunc.getIdBahan(self.connection, bahan.currentText())
+            databaseFunc.addBahanResep(self.connection, self.idResep, idBahan, jumlahBahan.value(), satuanBahan.currentText())
+
+        self.parent.LihatResep.resetKomentar()
+        self.parent.LihatResep.readDatabase()
+        self.clear()
+        self.parent.pages.setCurrentWidget(self.parent.LihatResep)
+        self.parent.LihatResep.notifEditResep()
+
+    def goBack(self):
+        self.parent.popup.setCurrentWidget(self.parent.WarningBack)
+        if self.parent.WarningBack.Exec() == QDialog.Accepted:
+              self.clear()
+              self.parent.LihatResep.idResep = self.idResep
+              self.parent.LihatResep.resetKomentar()
+              self.parent.LihatResep.readDatabase()
+              self.parent.pages.setCurrentWidget(self.parent.LihatResep)
+    
+    def goHome(self):
+        self.parent.popup.setCurrentWidget(self.parent.WarningBack)
+        if self.parent.WarningBack.Exec() == QDialog.Accepted:
+              self.clear()
+              self.parent.pages.setCurrentWidget(self.parent.WelcomePage)
+
 
 if __name__ == '__main__':
     app = QtWidgets.QApplication(sys.argv)
-    MainWindow = FormEditResep()
+    MainWindow = FormEditResep(FormEditResep)
+    MainWindow.readResep()
     MainWindow.show()
     sys.exit(app.exec_())

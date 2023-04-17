@@ -1,7 +1,7 @@
 from PyQt5.QtWidgets import *
 from PyQt5.QtGui import QIcon, QPixmap
 from PyQt5.QtCore import QSize, Qt
-from PyQt5 import uic, QtWidgets
+from PyQt5 import uic, QtWidgets, QtGui, QtCore
 import database.databaseFunc as database_func 
 import sys
 
@@ -45,6 +45,8 @@ class FormAddResep(QtWidgets.QMainWindow):
         self.verticalBahan.setContentsMargins(0, 0, 10, 0)
         self.listAlat = []
         self.listBahan = []
+        self.listLayoutAlat = []
+        self.listLayoutBahan = []
         self.counterAlat = 1
         self.counterBahan = 1
         self.amountAlat = 0
@@ -58,6 +60,42 @@ class FormAddResep(QtWidgets.QMainWindow):
         self.allAlat = database_func.getAlat(self.connection)
         self.allBahan = database_func.getBahan(self.connection)
         self.satuanBahan = database_func.getSatuanKuantitasBahan(self.connection)
+
+        # Navbar
+        self.verticalLayoutWidget = QtWidgets.QWidget(self.centralwidget)
+        self.verticalLayoutWidget.setGeometry(QtCore.QRect(0, 0, 1201, 111))
+        self.verticalLayoutWidget.setObjectName("verticalLayoutWidget")
+        self.verticalLayout_1 = QtWidgets.QVBoxLayout(self.verticalLayoutWidget)
+        self.verticalLayout_1.setContentsMargins(0, 0, 0, 0)
+        self.verticalLayout_1.setObjectName("verticalLayout_1")
+        self.Navbar = QtWidgets.QFrame(self.verticalLayoutWidget)
+        self.Navbar.setStyleSheet("background-color:rgb(253, 231, 189)")
+        self.Navbar.setFrameShape(QtWidgets.QFrame.StyledPanel)
+        self.Navbar.setFrameShadow(QtWidgets.QFrame.Raised)
+        self.Navbar.setObjectName("Navbar")
+        self.backButton = QtWidgets.QPushButton(self.Navbar)
+        self.backButton.setGeometry(QtCore.QRect(40, 30, 51, 51))
+        self.backButton.setStyleSheet("border : None;")
+        self.backButton.setText("")
+        self.backButton.clicked.connect(self.goBack)
+        icon = QtGui.QIcon()
+        icon.addPixmap(QtGui.QPixmap("../images/icon/button_back.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.backButton.setIcon(icon)
+        self.backButton.setIconSize(QtCore.QSize(50, 70))
+        self.backButton.setObjectName("backButton")
+        self.homeButton = QtWidgets.QPushButton(self.Navbar)
+        self.homeButton.setGeometry(QtCore.QRect(460, 0, 231, 101))
+        self.homeButton.setStyleSheet("border : None;")
+        self.homeButton.setText("")
+        self.homeButton.clicked.connect(self.goHome)
+        icon1 = QtGui.QIcon()
+        icon1.addPixmap(QtGui.QPixmap("../images/icon/logo.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.homeButton.setIcon(icon1)
+        self.homeButton.setIconSize(QtCore.QSize(190, 80))
+        self.homeButton.setObjectName("homeButton")
+        self.verticalLayout_1.addWidget(self.Navbar)
+        self.verticalLayoutWidget_2 = QtWidgets.QWidget(self.centralwidget)
+        self.verticalLayoutWidget.raise_()
 
     def addAlat(self):
         horizontal_layout = QtWidgets.QHBoxLayout()
@@ -81,6 +119,7 @@ class FormAddResep(QtWidgets.QMainWindow):
         horizontal_layout.id = self.counterAlat
 
         self.listAlat.append(self.counterAlat)
+        self.listLayoutAlat.append(horizontal_layout)
         delete.clicked.connect(lambda _, layout=horizontal_layout: self.deleteAlat(layout))
         self.verticalAlat.insertLayout(self.amountAlat, horizontal_layout)
         self.scrollWidgetAlat.setLayout(self.verticalAlat)
@@ -129,7 +168,7 @@ class FormAddResep(QtWidgets.QMainWindow):
         horizontal_layout.addWidget(delete)
         horizontal_layout.id = self.counterBahan
         self.listBahan.append(self.counterBahan)
-        
+        self.listLayoutBahan.append(horizontal_layout)
         delete.clicked.connect(lambda _, layout=horizontal_layout: self.deleteBahan(layout))
         self.verticalBahan.insertLayout(self.amountBahan, horizontal_layout)
         self.scrollWidgetBahan.setLayout(self.verticalBahan)
@@ -151,6 +190,7 @@ class FormAddResep(QtWidgets.QMainWindow):
             self.inputGambar_resep.setStyleSheet("QPushButton{background-color: #EEC120; border-radius: 25px;}")
 
     def deleteAlat(self, layout):
+        # self.listLayoutAlat.remove(layout)
         # Get the layout item that contains the given layout
         layout_item = self.verticalAlat.itemAt(self.verticalAlat.indexOf(layout))
 
@@ -166,11 +206,13 @@ class FormAddResep(QtWidgets.QMainWindow):
 
         # Update widget container after deletion
         self.scrollWidgetAlat.setLayout(self.verticalAlat)
-        self.listAlat.remove(layout.id)
+        self.listAlat.remove(int(layout.id))
+        self.listLayoutAlat.remove(layout)
+        del layout
         self.amountAlat -= 1
 
     def deleteBahan(self, layout):
-
+        # self.listLayoutBahan.remove(layout)
         layout_item = self.verticalBahan.itemAt(self.verticalBahan.indexOf(layout))
         self.verticalBahan.removeItem(layout_item)
         while layout.count():
@@ -180,11 +222,33 @@ class FormAddResep(QtWidgets.QMainWindow):
                 child_item.widget().deleteLater()
 
         self.scrollWidgetBahan.setLayout(self.verticalBahan)
-        self.listBahan.remove(layout.id)
+        self.listBahan.remove(int(layout.id))
+        self.listLayoutBahan.remove(layout)
+        del layout
         self.amountBahan -= 1
-    
-    # def validasiResep(self):
-    #     if ()
+    def clearAlat(self):
+        for i in range(len(self.listLayoutAlat)):
+            self.deleteAlat(self.listLayoutAlat[0])
+        #self.listLayoutAlat.clear()
+        # print(len(self.listLayoutAlat))
+        # print(len(self.listAlat))
+        # for i in self.listLayoutAlat:
+        #     self.deleteAlat(i)
+        # for i in self.listLayoutAlat:
+        #     self.deleteAlat(i)
+        #self.listLayoutAlat.clear()
+    def clearBahan(self):
+        for i in range(len(self.listLayoutBahan)):
+            self.deleteBahan(self.listLayoutBahan[0])
+
+    def clear(self):
+        self.clearAlat()
+        self.clearBahan()
+        self.inputJudul_resep.clear()
+        self.inputDeskripsi_resep.clear()
+        self.inputLangkahMemasak_resep.clear()
+        self.inputGambar_resep.setIcon(QIcon(QPixmap("../images/icon/pilihFoto.png")))
+
     def alatValidation(self):
         alat = set()
         for count in self.listAlat:
@@ -203,24 +267,45 @@ class FormAddResep(QtWidgets.QMainWindow):
 
     def inputValidation(self):
         if self.inputJudul_resep.toPlainText() == "" or self.inputDeskripsi_resep.toPlainText() == "" or self.filePath == "" or self.inputLangkahMemasak_resep.toPlainText() == "" or len(self.listAlat) == 0 or len(self.listBahan) == 0 or not self.alatValidation() or not self.bahanValidation():
+            self.parent.WarningValidasi.warningClass.warningLabel.setText("")
+            print(str(self.parent.WarningValidasi.warningClass.warningLabel.text()))
+            self.isiText = []
             if self.inputJudul_resep.toPlainText() == "":
                 print("Judul masakan masih kosong")
+                self.isiText.append("Judul masakan masih kosong")
             if (self.inputDeskripsi_resep.toPlainText() == ""):
                 print("Deskripsi masakan masih kosong")
+                self.isiText.append("Deskripsi masakan masih kosong")
             if self.filePath == "":
                 print("Gambar masakan belum ada")
+                self.isiText.append("Gambar masakan belum ada")
             if self.inputLangkahMemasak_resep.toPlainText() == "":
                 print("Langkah memasak masakan masih kosong")
+                self.isiText.append("Langkah memasak masakan masih kosong")
             if len(self.listAlat) == 0:
                 print("Alat masih kosong")
+                self.isiText.append("Alat masih kosong")
             if len(self.listBahan) == 0:
                 print("Bahan masih kosong")
+                self.isiText.append("Bahan masih kosong")
             if not self.alatValidation():
                 print("Terdapat alat yang sama")
+                self.isiText.append("Terdapat alat yang sama")
             if not self.bahanValidation():
                 print("Terdapat bahan yang sama")
-
+                self.isiText.append("Terdapat bahan yang sama")
+            for i in range(len(self.isiText)):
+                self.parent.WarningValidasi.warningClass.warningLabel.setText(str(self.parent.WarningValidasi.warningClass.warningLabel.text()) + self.isiText[i])
+                if i != 0 or i != len(self.isiText)-1:
+                    self.parent.WarningValidasi.warningClass.warningLabel.setText(str(self.parent.WarningValidasi.warningClass.warningLabel.text()) + "\n")
+            self.parent.popup.setCurrentWidget(self.parent.WarningValidasi)
+            if self.parent.WarningValidasi.Exec() != QDialog.Accepted:
+                self.parent.WarningValidasi.warningClass.warningLabel.setText("")
         else:
+            self.parent.WarningValidasi.warningClass.warningLabel.setText("Berhasil disunting")
+            self.parent.popup.setCurrentWidget(self.parent.WarningValidasi)
+            if self.parent.WarningValidasi.Exec() != QDialog.Accepted:
+                self.parent.WarningValidasi.warningClass.warningLabel.setText("")
             self.addResep()
             # penambahan warning
     def addResep(self):
@@ -236,17 +321,37 @@ class FormAddResep(QtWidgets.QMainWindow):
             #addAlatResep(connection, id_resep, id_alat)
         
         for count in self.listBahan:
-            print(count)
+            # print(count)
             bahan = self.findChild(QComboBox, f'DropdownBahan_{count}')
             jumlahBahan = self.findChild(QDoubleSpinBox, f'Jumlah_{count}')
-            print(jumlahBahan.value())
+            # print(jumlahBahan.value())
             satuanBahan = self.findChild(QComboBox, f'Satuan_{count}')
             idBahan = database_func.getIdBahan(self.connection, bahan.currentText())
             #addBahanResep(connection, id_resep, id_bahan, kuantitas_bahan, satuan_kuantitas_bahan)
             database_func.addBahanResep(self.connection, self.resepID, idBahan, jumlahBahan.value(), satuanBahan.currentText())
+        
+        # Setelah penyimpanan, kembali ke daftar resep
+        self.parent.DaftarResep.clearGrid()
+        self.parent.DaftarResep.readDatabase()
+        self.parent.pages.setCurrentWidget(self.parent.DaftarResep)
+        self.parent.DaftarResep.notifAddResep()
+
+    def goBack(self):
+        self.parent.popup.setCurrentWidget(self.parent.WarningBack)
+        if self.parent.WarningBack.Exec() == QDialog.Accepted:
+              self.clear()
+              self.parent.DaftarResep.clearGrid()
+              self.parent.DaftarResep.readDatabase()
+              self.parent.pages.setCurrentWidget(self.parent.DaftarResep)
+
+    def goHome(self):
+        self.parent.popup.setCurrentWidget(self.parent.WarningBack)
+        if self.parent.WarningBack.Exec() == QDialog.Accepted:
+              self.clear()
+              self.parent.pages.setCurrentWidget(self.parent.WelcomePage)
 
 if __name__ == '__main__':
     app = QtWidgets.QApplication(sys.argv)
-    MainWindow = FormAddResep()
+    MainWindow = FormAddResep(FormAddResep)
     MainWindow.show()
     sys.exit(app.exec_())

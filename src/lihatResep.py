@@ -3,43 +3,18 @@ from database import databaseFunc
 from PyQt5.QtWidgets import *
 from PyQt5 import uic, QtWidgets, QtCore, QtGui
 from functools import partial
-from PyQt5.QtCore import QDateTime
+from PyQt5.QtCore import QDateTime, Qt, QTimer
 from PyQt5.QtCore import Qt
 
 
-class Warning(QDialog):
-    def __init__(self):
-        super().__init__()
-        # Set up the UI
-        self.layout = QVBoxLayout()
-        uic.loadUi("warning.ui", self)
-
-        self.setLayout(self.layout)
-        self.deleteButton.clicked.connect(self.accept)
-        self.cancelButton.clicked.connect(self.reject) 
-
-
-class lihatResep(QMainWindow) :
-    def __init__(self) :
-        super(lihatResep, self).__init__()
+class LihatResep(QMainWindow) :
+    def __init__(self, parent) :
+        super(LihatResep, self).__init__()
         uic.loadUi("lihatResep.ui", self)
-
-        self.file = r".\database\rechefy.db"
-        self.connection = databaseFunc.connectToDatabase(self.file)
-        self.resep = databaseFunc.getResep(self.connection, 1)
-        self.alatResep = databaseFunc.getAlatResep(self.connection, 1)
-        self.bahanResep = databaseFunc.getBahanResep(self.connection, 1)
-        self.fotoResep = databaseFunc.resepBlobToImage(self.connection, 1)
-        self.komentarResep = databaseFunc.getKomentar(self.connection, 1)
-        self.alatResepCombined = self.combineAlat()
-        self.bahanResepCombined = self.combineBahan()
-
-        self.fotoMasakan.setPixmap(QtGui.QPixmap(self.fotoResep))
-        self.namaMasakan.setText(self.resep[0][2])
-        self.deskripsi.setText(self.resep[0][3])
-        self.langkahMemasak_isi.setText(self.resep[0][4])
-        self.bahan_isi.setText(self.bahanResepCombined)
-        self.alat_isi.setText(self.alatResepCombined)
+        self.idResep = 1
+        self.parent = parent
+        self.listKomentar = []
+        self.listKomentarDeleteAll = []
 
         self.scrollArea.verticalScrollBar().setStyleSheet("QScrollBar:vertical {background-color: #FDE7BD; border: none; border-radius: 15px; width: 8px; margin: 0px 0px 0px 0px;}\
                 QScrollBar::handle:vertical {background-color: #EE9C20;border-radius: 15px; min-height: 20px;}\
@@ -62,31 +37,111 @@ class lihatResep(QMainWindow) :
                 QScrollBar::add-line:vertical {border: none; background: none;}\
                 QScrollBar::sub-line:vertical {border: none; background: none;}")
 
-
         self.setStyleSheet("background-color: #FDE7BD;")
-        self.show()
+        self.notifikasi= QtWidgets.QLabel(self.scrollArea)
+        self.notifikasi.setGeometry(QtCore.QRect(350, -5, 471, 31))
+        self.notifikasi.setStyleSheet("background-color: rgb(238, 156, 32);\n"
+"font: 12pt \"MS Shell Dlg 2\";\n"
+"color : rgb(255, 255, 255);\n"
+"border: 0px solid #555;\n"
+"border-radius: 8px;\n"
+"border-style: outset;\n"
+"padding : 5px")
+        self.notifikasi.setAlignment(QtCore.Qt.AlignCenter)
+        self.notifikasi.setObjectName("notifikasi")
+        self.notifikasi.hide()
 
-        self.path = "../img/noPhoto.jpg"
+
+        self.path = "../images/icon/noPhoto.jpg"
         self.text = ""
 
-        self.attachButton.setStyleSheet("border-image: url(../img/attach.png);background-color:none;border: none")
-
+        self.attachButton.setStyleSheet("border-image: url(../images/icon/attach.png);background-color:none;border: none")
         self.sendButton.clicked.connect(self.addKomentar)
-        self.deleteResepButton.clicked.connect(self.deleteResep)
         self.attachButton.clicked.connect(self.addFotoKomentar)
+        self.backButton.clicked.connect(self.goBack)
+        self.homeButton.clicked.connect(self.goHome)
+        
+    def readDatabase(self):
+        self.file = r".\database\rechefy.db"
+        self.connection = databaseFunc.connectToDatabase(self.file)
+        self.resep = databaseFunc.getResep(self.connection, self.idResep)
+        self.alatResep = databaseFunc.getAlatResep(self.connection, self.idResep)
+        self.bahanResep = databaseFunc.getBahanResep(self.connection, self.idResep)
+        self.fotoResep = databaseFunc.resepBlobToImage(self.connection, self.idResep)
+        self.komentarResep = databaseFunc.getKomentar(self.connection, self.idResep)
+        self.lastKomentarID = databaseFunc.getLastIdKomentar(self.connection)
+        self.alatResepCombined = self.combineAlat()
+        self.bahanResepCombined = self.combineBahan()
+        self.defaultResep = self.resep[0][5]
+        self.isResepBuatanSendiri()
+
+        self.fotoMasakan.setPixmap(QtGui.QPixmap(self.fotoResep))
+        self.namaMasakan.setText(self.resep[0][2])
+        self.deskripsi.setText(self.resep[0][3])
+        self.langkahMemasak_isi.setText(self.resep[0][4])
+        self.bahan_isi.setText(self.bahanResepCombined)
+        self.alat_isi.setText(self.alatResepCombined)
         self.total = len(self.komentarResep)
-        self.counter = 0
         if self.total > 0 :
-                self.counter = self.komentarResep[self.total-1][0]
                 self.displayKomentar()
         self.judulKomentar.setText(f"Komentar ({self.total})")
         self.setFixedWidth(1200)
         self.setFixedHeight(850)
-        self.warningClass = Warning()
-        self.warningClass.setWindowTitle("Warning")
-        # print(self.komentarResep)
+
+        nNamaMasakan = len(self.resep[0][2])
+        if nNamaMasakan > 45 :
+              self.namaMasakan.setStyleSheet("font: Bold 8pt \"MS Shell Dlg 2\";")
+        elif nNamaMasakan > 30 :
+              self.namaMasakan.setStyleSheet("font: Bold 10pt \"MS Shell Dlg 2\";")
+        elif nNamaMasakan > 20 :
+              self.namaMasakan.setStyleSheet("font: Bold 16pt \"MS Shell Dlg 2\";")
+
         if self.total == 0 :
                 self.komentar.setMinimumSize(QtCore.QSize(1000, 300))
+
+    def isResepBuatanSendiri(self) :
+        if int(self.defaultResep) == 1 :
+                self.deleteResepButton = QtWidgets.QPushButton(self.infoResep)
+                self.deleteResepButton.setGeometry(QtCore.QRect(1060, 40, 81, 21))
+                sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Fixed)
+                sizePolicy.setHorizontalStretch(0)
+                sizePolicy.setVerticalStretch(0)
+                sizePolicy.setHeightForWidth(self.deleteResepButton.sizePolicy().hasHeightForWidth())
+                self.deleteResepButton.setSizePolicy(sizePolicy)
+                self.deleteResepButton.setText("")
+                icon2 = QtGui.QIcon()
+                icon2.addPixmap(QtGui.QPixmap("../images/icon/hapus.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+                self.deleteResepButton.setIcon(icon2)
+                self.deleteResepButton.setIconSize(QtCore.QSize(100, 30))
+                self.deleteResepButton.setAutoDefault(False)
+                self.deleteResepButton.setObjectName("deleteResepButton")
+
+                self.editResepButton = QtWidgets.QPushButton(self.infoResep)
+                self.editResepButton.setGeometry(QtCore.QRect(960, 40, 81, 21))
+                sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Fixed)
+                sizePolicy.setHorizontalStretch(0)
+                sizePolicy.setVerticalStretch(0)
+                sizePolicy.setHeightForWidth(self.editResepButton.sizePolicy().hasHeightForWidth())
+                self.editResepButton.setSizePolicy(sizePolicy)
+                self.editResepButton.setText("")
+                icon3 = QtGui.QIcon()
+                icon3.addPixmap(QtGui.QPixmap("../images/icon/sunting.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+                self.editResepButton.setIcon(icon3)
+                self.editResepButton.setIconSize(QtCore.QSize(100, 30))
+                self.editResepButton.setAutoDefault(False)
+                self.editResepButton.setObjectName("editResepButton")
+
+                self.deleteResepButton.clicked.connect(self.deleteResep)
+                self.editResepButton.clicked.connect(self.editResep)
+
+        elif int(self.defaultResep) == 0:
+                self.editResepButton = QtWidgets.QPushButton(self.infoResep)
+                self.deleteResepButton = QtWidgets.QPushButton(self.infoResep)
+                self.deleteResepButton.setParent(None)
+                self.deleteResepButton.deleteLater()
+                self.editResepButton.setParent(None)
+                self.editResepButton.deleteLater()
+
 
     def combineBahan(self) :
         row = len(self.bahanResep)
@@ -134,8 +189,45 @@ class lihatResep(QMainWindow) :
          
 
     def deleteResep(self) :
-        self.warningClass.warningLabel.setText("Apakah Anda yakin ingin \n menghapus resep?")
-        self.warningClass.exec_()
+        self.parent.popup.setCurrentWidget(self.parent.WarningResep)
+        if self.parent.WarningResep.Exec() == QDialog.Accepted:
+              self.deleteAllKomentar()
+              if self.defaultResep == 1 :
+                self.deleteResepButton.setParent(None)
+                self.deleteResepButton.deleteLater()
+                self.editResepButton.setParent(None)
+                self.editResepButton.deleteLater()
+              fotoMasakanPath = self.fotoResep
+              if os.path.exists(fotoMasakanPath) :
+                    os.remove(fotoMasakanPath)
+              databaseFunc.deleteResep(self.connection,self.idResep)
+              self.listKomentar = []
+              self.listKomentarDeleteAll = []
+              self.parent.DaftarResep.clearGrid()
+              self.parent.DaftarResep.readDatabase()
+              self.parent.pages.setCurrentWidget(self.parent.DaftarResep)
+              self.parent.DaftarResep.notifDeleteResep()
+
+    def notifDeleteKomentar(self) :
+        self.notifikasi.setText("Komentar telah dihapus")
+        timer = QTimer(self)
+        self.notifikasi.show()
+        timer.timeout.connect(self.notifikasi.hide)
+        timer.start(5000)
+          
+    def notifAddKomentar(self) :
+        self.notifikasi.setText("Komentar telah ditambahkan")
+        timer = QTimer(self)
+        self.notifikasi.show()
+        timer.timeout.connect(self.notifikasi.hide)
+        timer.start(5000)
+
+    def notifEditResep(self) :
+        self.notifikasi.setText("Resep telah diedit")
+        timer = QTimer(self)
+        self.notifikasi.show()
+        timer.timeout.connect(self.notifikasi.hide)
+        timer.start(5000)
 
     def addFotoKomentar(self) :
         filter = "Image Files (*.jpg; *.jpeg; *.png)"
@@ -145,32 +237,57 @@ class lihatResep(QMainWindow) :
             self.fileName = os.path.basename(self.path)
             self.pathText.setText(self.fileName)
         else :
-             self.path = "../img/noPhoto.jpg"
+             self.path = "../images/icon/noPhoto.jpg"
 
-    def deleteKomentar(self,count) :
-        result = self.warningClass.exec_()
-        if result == QDialog.Accepted :
+    def resetKomentar(self) :
+        nListKomentar = len(self.listKomentar)
+        for i in range (nListKomentar) :
+                frame = self.findChild(QFrame, f'komentarFrame_{self.listKomentar[i]}')
+                if frame is not None :
+                    frame.deleteLater()
+        
+    def deleteAllKomentar(self) :
+        nListKomentarDeleteAll = len(self.listKomentarDeleteAll) 
+        self.resetKomentar()
+        if nListKomentarDeleteAll > 0 :
+                for i in range  (nListKomentarDeleteAll) :
+                        self.fotoKomentar = databaseFunc.komentarBlobToImage(self.connection, self.listKomentarDeleteAll[i])
+                        fotoKomentarPath = self.fotoKomentar
+                        if os.path.exists(fotoKomentarPath) :
+                                os.remove(fotoKomentarPath)
+                        databaseFunc.deleteKomentar(self.connection, self.listKomentarDeleteAll[i])
+                        self.komentarResep = databaseFunc.getKomentar(self.connection, self.idResep)
+
+    def deleteKomentar(self,count):
+        self.parent.popup.setCurrentWidget(self.parent.WarningKomentar)
+        if self.parent.WarningKomentar.Exec() == QDialog.Accepted:
+                fotoKomentarPath = databaseFunc.komentarBlobToImage(self.connection, count)
+                if os.path.exists(fotoKomentarPath) :
+                        os.remove(fotoKomentarPath)
                 frame = self.findChild(QFrame, f'komentarFrame_{count}')
                 if frame is not None :
                         frame.deleteLater()
                         self.total-=1
                         self.judulKomentar.setText(f"Komentar ({self.total})")
+                        self.listKomentarDeleteAll.remove(count)
                         databaseFunc.deleteKomentar(self.connection, count)
-                        self.komentarResep = databaseFunc.getKomentar(self.connection, 1)
-                        # print(self.komentarResep)
+                        self.komentarResep = databaseFunc.getKomentar(self.connection, self.idResep)
                 if self.total == 0 :
                         self.komentar.setMinimumSize(QtCore.QSize(1000, 300))
+                self.notifDeleteKomentar()
 
     def displayKomentar(self):
+        self.listKomentar = []
+        self.listKomentarDeleteAll = []
         for i in range (self.total) :
                 self.komentar_isi.verticalScrollBar().setStyleSheet("QScrollBar:vertical {background-color: #FDE7BD; border: none; border-radius: 15px; width: 8px; margin: 0px 0px 0px 0px;}\
                         QScrollBar::handle:vertical {background-color: #EE9C20;border-radius: 15px; min-height: 20px;}\
                         QScrollBar::add-line:vertical {border: none; background: none;}\
                         QScrollBar::sub-line:vertical {border: none; background: none;}")
                 self.komentarID = int(self.komentarResep[i][0])
-                self.komentarFoto = self.komentarResep[i][1]
                 self.komentarTeks = self.komentarResep[i][2]
                 self.komentarTanggal = self.komentarResep[i][3]
+                self.fotoKomentar = databaseFunc.komentarBlobToImage(self.connection, self.komentarID)
 
                 self.komentar.setMinimumSize(QtCore.QSize(1000, 725))
                 self.komentarFrame_0 = QtWidgets.QFrame(self.scrollAreaWidgetContents_8)
@@ -185,7 +302,7 @@ class lihatResep(QMainWindow) :
         "color: rgb(211, 164, 145);")
                 self.tanggalKomentar_0.setScaledContents(False)
                 self.tanggalKomentar_0.setWordWrap(False)
-                self.tanggalKomentar_0.setObjectName("namaKomentar_" + str(self.counter+1))
+                self.tanggalKomentar_0.setObjectName("namaKomentar_" + str(self.komentarID))
                 self.isiKomentar_0 = QtWidgets.QTextEdit(self.komentarFrame_0)
                 self.isiKomentar_0.setGeometry(QtCore.QRect(0, 70, 661, 181))
                 self.isiKomentar_0.setStyleSheet("border: 0px solid #555;\n"
@@ -198,7 +315,7 @@ class lihatResep(QMainWindow) :
                 self.isiKomentar_0.setReadOnly(True)
                 self.isiKomentar_0.setVerticalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
                 self.isiKomentar_0.setHorizontalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
-                self.isiKomentar_0.setObjectName("isiKomentar_" + str(self.counter+1))
+                self.isiKomentar_0.setObjectName("isiKomentar_" + str(self.komentarID))
                 self.isiKomentar_0.setText(self.komentarTeks)
                 self.isiKomentar_0.setLineWrapMode(QTextEdit.WidgetWidth)
                 self.fotoKomentar_0 = QtWidgets.QLabel(self.komentarFrame_0)
@@ -211,21 +328,21 @@ class lihatResep(QMainWindow) :
                 self.fotoKomentar_0.setStyleSheet("border-radius: 8px;\n"
         "border-style: outset;")
                 self.fotoKomentar_0.setText("")
-                self.fotoKomentar_0.setPixmap(QtGui.QPixmap(self.komentarFoto))
+                self.fotoKomentar_0.setPixmap(QtGui.QPixmap(self.fotoKomentar))
                 self.fotoKomentar_0.setScaledContents(True)
-                self.fotoKomentar_0.setObjectName("fotoKomentar_" + str(self.counter+1))
+                self.fotoKomentar_0.setObjectName("fotoKomentar_" + str(self.komentarID))
 
                 self.deleteButton_0 = QtWidgets.QPushButton(self.komentarFrame_0)
                 self.deleteButton_0.setGeometry(QtCore.QRect(940, 40, 81, 21))
                 self.deleteButton_0.setStyleSheet("border-radius: 8px;\n"
         "border-style: outset;")
                 icon2 = QtGui.QIcon()
-                icon2.addPixmap(QtGui.QPixmap("../img/delete.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+                icon2.addPixmap(QtGui.QPixmap("../images/icon/delete.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
                 self.deleteButton_0.setIcon(icon2)
                 self.deleteButton_0.setIconSize(QtCore.QSize(100, 30))
                 self.deleteButton_0.setAutoDefault(False)
                 self.deleteButton_0.setText("")
-                self.deleteButton_0.setObjectName("deleteButton_" + str(self.counter+1) )
+                self.deleteButton_0.setObjectName("deleteButton_" + str(self.komentarID) )
                 self.deleteButton_0.clicked.connect(partial(self.deleteKomentar, self.komentarID))
                 
                 self.line_0 = QtWidgets.QFrame(self.komentarFrame_0)
@@ -233,23 +350,28 @@ class lihatResep(QMainWindow) :
                 self.line_0.setStyleSheet("border-color: rgb(212, 183, 127);")
                 self.line_0.setFrameShape(QtWidgets.QFrame.HLine)
                 self.line_0.setFrameShadow(QtWidgets.QFrame.Sunken)
-                self.line_0.setObjectName("line_" + str(self.counter+1))
+                self.line_0.setObjectName("line_" + str(self.komentarID))
                 self.verticalLayout_4.addWidget(self.komentarFrame_0)
+
+                self.listKomentar.append(int(self.komentarResep[i][0]))
+                self.listKomentarDeleteAll.append(int(self.komentarResep[i][0]))
               
 
     def addKomentar(self, event):
         self.text = self.textEdit.toPlainText()
-        if (self.path != "../img/noPhoto.jpg" and self.text == "") or (self.path == "../img/noPhoto.jpg" and self.text != "") or ((self.path != "../img/noPhoto.jpg" and self.text != ""))  :
+        self.lastKomentarID +=1
+        if (self.path != "../images/icon/noPhoto.jpg" and self.text == "") or (self.path == "../images/icon/noPhoto.jpg" and self.text != "") or ((self.path != "../images/icon/noPhoto.jpg" and self.text != ""))  :
                 self.komentar_isi.verticalScrollBar().setStyleSheet("QScrollBar:vertical {background-color: #FDE7BD; border: none; border-radius: 15px; width: 8px; margin: 0px 0px 0px 0px;}\
                         QScrollBar::handle:vertical {background-color: #EE9C20;border-radius: 15px; min-height: 20px;}\
                         QScrollBar::add-line:vertical {border: none; background: none;}\
                         QScrollBar::sub-line:vertical {border: none; background: none;}")
+                self.fotoKomentarBlob = databaseFunc.imageToBlob(self.path)
                 self.komentar.setMinimumSize(QtCore.QSize(1000, 725))
                 self.komentarFrame_0 = QtWidgets.QFrame(self.scrollAreaWidgetContents_8)
                 self.komentarFrame_0.setMinimumSize(QtCore.QSize(0, 245))
                 self.komentarFrame_0.setFrameShape(QtWidgets.QFrame.StyledPanel)
                 self.komentarFrame_0.setFrameShadow(QtWidgets.QFrame.Raised)
-                self.komentarFrame_0.setObjectName("komentarFrame_" + str(self.counter+1))
+                self.komentarFrame_0.setObjectName("komentarFrame_" + str(self.lastKomentarID))
                 self.tanggalKomentar_0 = QtWidgets.QLabel(self.komentarFrame_0)
                 self.tanggalKomentar_0.setGeometry(QtCore.QRect(30, 20, 131, 51))
                 current_datetime = QDateTime.currentDateTime()
@@ -258,7 +380,7 @@ class lihatResep(QMainWindow) :
         "color: rgb(211, 164, 145);")
                 self.tanggalKomentar_0.setScaledContents(False)
                 self.tanggalKomentar_0.setWordWrap(False)
-                self.tanggalKomentar_0.setObjectName("namaKomentar_" + str(self.counter+1))
+                self.tanggalKomentar_0.setObjectName("namaKomentar_" + str(self.lastKomentarID))
                 self.isiKomentar_0 = QtWidgets.QTextEdit(self.komentarFrame_0)
                 self.isiKomentar_0.setGeometry(QtCore.QRect(0, 70, 661, 181))
                 self.isiKomentar_0.setStyleSheet("border: 0px solid #555;\n"
@@ -269,7 +391,7 @@ class lihatResep(QMainWindow) :
                 self.isiKomentar_0.setAlignment(QtCore.Qt.AlignJustify|QtCore.Qt.AlignTop)
                 self.isiKomentar_0.setWordWrapMode(True)
                 self.isiKomentar_0.setReadOnly(True)
-                self.isiKomentar_0.setObjectName("isiKomentar_" + str(self.counter+1))
+                self.isiKomentar_0.setObjectName("isiKomentar_" + str(self.lastKomentarID))
                 self.isiKomentar_0.setText(self.text)
                 self.fotoKomentar_0 = QtWidgets.QLabel(self.komentarFrame_0)
                 self.fotoKomentar_0.setGeometry(QtCore.QRect(670, 70, 361, 181))
@@ -281,47 +403,101 @@ class lihatResep(QMainWindow) :
                 self.fotoKomentar_0.setStyleSheet("border-radius: 8px;\n"
         "border-style: outset;")
                 self.fotoKomentar_0.setText("")
-                self.fotoKomentar_0.setPixmap(QtGui.QPixmap(self.path))
                 self.fotoKomentar_0.setScaledContents(True)
-                self.fotoKomentar_0.setObjectName("fotoKomentar_" + str(self.counter+1))
-
                 self.deleteButton_0 = QtWidgets.QPushButton(self.komentarFrame_0)
                 self.deleteButton_0.setGeometry(QtCore.QRect(940, 40, 81, 21))
                 self.deleteButton_0.setStyleSheet("border-radius: 8px;\n"
         "border-style: outset;")
                 icon2 = QtGui.QIcon()
-                icon2.addPixmap(QtGui.QPixmap("../img/delete.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+                icon2.addPixmap(QtGui.QPixmap("../images/icon/delete.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
                 self.deleteButton_0.setIcon(icon2)
                 self.deleteButton_0.setIconSize(QtCore.QSize(100, 30))
                 self.deleteButton_0.setAutoDefault(False)
                 self.deleteButton_0.setText("")
-                self.deleteButton_0.setObjectName("deleteButton_" + str(self.counter+1) )
-                self.deleteButton_0.clicked.connect(partial(self.deleteKomentar, self.counter+1))
+                self.deleteButton_0.setObjectName("deleteButton_" + str(self.lastKomentarID) )
+                self.deleteButton_0.clicked.connect(partial(self.deleteKomentar, self.lastKomentarID))
                 
                 self.line_0 = QtWidgets.QFrame(self.komentarFrame_0)
                 self.line_0.setGeometry(QtCore.QRect(0, 10, 1057, 16))
                 self.line_0.setStyleSheet("border-color: rgb(212, 183, 127);")
                 self.line_0.setFrameShape(QtWidgets.QFrame.HLine)
                 self.line_0.setFrameShadow(QtWidgets.QFrame.Sunken)
-                self.line_0.setObjectName("line_" + str(self.counter+1))
+                self.line_0.setObjectName("line_" + str(self.lastKomentarID))
                 self.verticalLayout_4.addWidget(self.komentarFrame_0)
 
-                databaseFunc.addKomentar(self.connection, self.path, self.text,1)
-                self.komentarResep = databaseFunc.getKomentar(self.connection, 1)
-                # print(self.komentarResep)
+                databaseFunc.addKomentar(self.connection, self.fotoKomentarBlob, self.text,self.idResep)
+                self.komentarResep = databaseFunc.getKomentar(self.connection, self.idResep)
+                nKomentarResep = len(self.komentarResep)
+                self.lastKomentarID = databaseFunc.getLastIdKomentar(self.connection)
+                self.fotoKomentar = databaseFunc.komentarBlobToImage(self.connection, self.lastKomentarID)
+                self.fotoKomentar_0.setPixmap(QtGui.QPixmap(self.fotoKomentar))
+                self.fotoKomentar_0.setObjectName("fotoKomentar_" + str(self.lastKomentarID))
 
-                self.counter +=1
+                self.komentarResep = databaseFunc.getKomentar(self.connection, self.idResep)
+                self.listKomentar.append(self.lastKomentarID)
+                self.listKomentarDeleteAll.append(self.lastKomentarID)
                 self.total +=1
                 self.judulKomentar.setText(f"Komentar ({self.total})")
                 self.textEdit.setText("")
                 self.pathText.setText("")
                 self.text = ""
-                self.path = "../img/noPhoto.jpg"
+                self.path = "../images/icon/noPhoto.jpg"
 
+                self.notifAddKomentar()
+
+    def editResep(self):
+        self.listKomentar = []
+        self.listKomentarDeleteAll = []
+        if self.defaultResep == 1 :
+                self.deleteResepButton.setParent(None)
+                self.deleteResepButton.deleteLater()
+                self.editResepButton.setParent(None)
+                self.editResepButton.deleteLater()
+        self.textEdit.setText("")
+        self.pathText.setText("")
+        self.text = ""
+        self.path = "../images/icon/noPhoto.jpg"
+        self.parent.LihatResep.resetKomentar()
+        self.parent.EditResep.idResep = self.idResep
+        self.parent.EditResep.clear()
+        self.parent.EditResep.readResep()
+        self.parent.pages.setCurrentWidget(self.parent.EditResep)
+
+    def goBack(self):
+        self.parent.LihatResep.resetKomentar()
+        self.listKomentar = []
+        self.listKomentarDeleteAll = []
+        if self.defaultResep == 1 :
+                self.deleteResepButton.setParent(None)
+                self.deleteResepButton.deleteLater()
+                self.editResepButton.setParent(None)
+                self.editResepButton.deleteLater()
+        self.textEdit.setText("")
+        self.pathText.setText("")
+        self.text = ""
+        self.path = "../images/icon/noPhoto.jpg"
+        self.parent.DaftarResep.readDatabase()
+        self.parent.pages.setCurrentWidget(self.parent.DaftarResep)
+
+    def goHome(self):
+        self.listKomentar = []
+        self.listKomentarDeleteAll = []
+        self.parent.LihatResep.resetKomentar()
+        if self.defaultResep == 1 :
+                self.deleteResepButton.setParent(None)
+                self.deleteResepButton.deleteLater()
+                self.editResepButton.setParent(None)
+                self.editResepButton.deleteLater()
+        self.textEdit.setText("")
+        self.pathText.setText("")
+        self.text = ""
+        self.path = "../images/icon/noPhoto.jpg"
+        self.parent.DaftarResep.readDatabase()
+        self.parent.pages.setCurrentWidget(self.parent.WelcomePage)
 
 def main() :
     app = QApplication([])
-    window = lihatResep()
+    window = LihatResep()
     app.exec_()
 
 

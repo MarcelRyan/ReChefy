@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>1200</width>
-    <height>800</height>
+    <height>850</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -23,7 +23,7 @@
       <x>0</x>
       <y>180</y>
       <width>1200</width>
-      <height>621</height>
+      <height>671</height>
      </rect>
     </property>
     <property name="widgetResizable">
@@ -35,7 +35,7 @@
        <x>0</x>
        <y>0</y>
        <width>1198</width>
-       <height>619</height>
+       <height>669</height>
       </rect>
      </property>
      <widget class="QWidget" name="gridLayoutWidget">
@@ -44,7 +44,7 @@
         <x>70</x>
         <y>20</y>
         <width>1041</width>
-        <height>601</height>
+        <height>651</height>
        </rect>
       </property>
       <layout class="QGridLayout" name="gridLayoutResep"/>
@@ -110,8 +110,6 @@ border: none</string>
    </widget>
   </widget>
  </widget>
- <resources>
-  <include location="../img/daftarResep.qrc"/>
- </resources>
+ <resources/>
  <connections/>
 </ui>

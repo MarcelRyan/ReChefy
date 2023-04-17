@@ -10,7 +10,7 @@ class testLihatResep(unittest.TestCase) :
     def setUp(self):
         self.app = QApplication(sys.argv)
         parent = Mock()
-        self.window = lihatResep(parent)
+        self.window = LihatResep(parent)
     
     def tearDown(self):
         self.window.close()
@@ -20,10 +20,10 @@ class testLihatResep(unittest.TestCase) :
     def testSendButton(self):
         self.window.readDatabase()
         self.expectedText = "Hello World"
-        if self.window.total == 0 :
-            self.window.textEdit.setPlainText(self.expectedText)
-            QTest.mouseClick(self.window.sendButton, QtCore.Qt.LeftButton)
-        isiKomentarName = "isiKomentar_" + str(self.window.counter)
+        komentarID = self.window.lastKomentarID+1
+        self.window.textEdit.setPlainText(self.expectedText)
+        QTest.mouseClick(self.window.sendButton, QtCore.Qt.LeftButton)
+        isiKomentarName = "isiKomentar_" + str(komentarID)
         isiKomentar = self.window.findChild(QTextEdit, isiKomentarName)
         self.assertIsNotNone(isiKomentar, "QTextEdit not found")
         self.actualText = isiKomentar.toPlainText()
