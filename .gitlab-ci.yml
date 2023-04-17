@@ -10,6 +10,7 @@ before_script:
 stages:
   - Static Analysis
   - Test
+  - Build
 #defines the job in Static Analysis
 pylint:
   stage: Static Analysis
@@ -28,3 +29,4 @@ pytest:
   - python3 -m pytest tests/ --ignore tests/test_database_func.py
   only:
   - merge_requests
+  - main
