@@ -1,6 +1,6 @@
 import sys
 import unittest
-from src.database.databaseFunc import *
+from database.databaseFunc import *
 
 class ModuleTesting(unittest.TestCase):
 
