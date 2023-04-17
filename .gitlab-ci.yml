@@ -27,3 +27,4 @@ pytest:
   - python3 -m unittest discover tests
   only:
   - database
+  - merge_requests
