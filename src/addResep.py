@@ -295,7 +295,7 @@ class FormAddResep(QtWidgets.QMainWindow):
                 self.isiText.append("gambar")
             if self.inputLangkahMemasak_resep.toPlainText() == "":
                 print("Langkah memasak masakan masih kosong")
-                self.isiText.append("Langkah memasak")
+                self.isiText.append("langkah memasak")
             if len(self.listAlat) == 0:
                 print("Alat masih kosong")
                 self.isiText.append("alat")

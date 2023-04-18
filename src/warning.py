@@ -56,9 +56,6 @@ class Warning(QDialog):
     def Validasi(self):
         self.warningClass = Warning(self.parent)
         self.warningClass.setWindowTitle("Warning")
-        font = self.warningClass.warningLabel.font()
-        font.setPointSize(7)
-        self.warningClass.warningLabel.setFont(font)
         self.warningClass.warningLabel.setFont(fontLoader.load_custom_font('../font/Nunito-Medium.ttf'))
         self.warningClass.warningLabel.setStyleSheet("font: 14pt; background-color: #F7EAD3;")
         self.warningClass.warningLabel.setWordWrap(True)
