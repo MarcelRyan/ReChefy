@@ -17,7 +17,7 @@ class Warning(QDialog):
     def komentarDelete(self) :
         self.warningClass = Warning(self.parent)
         self.warningClass.setWindowTitle("Warning")
-        self.warningClass.deleteButton.setText("Kembali")
+        self.warningClass.deleteButton.setText("Hapus")
         self.warningClass.deleteButton.setFont(fontLoader.load_custom_font('../font/Nunito-Medium.ttf'))
         self.warningClass.deleteButton.setStyleSheet("font: 16pt; background-color: #F75008; border-radius: 0px; color: #FFF6E5;")
         self.warningClass.cancelButton.setText("Batalkan")
@@ -30,7 +30,7 @@ class Warning(QDialog):
     def resepDelete(self) :
         self.warningClass = Warning(self.parent)
         self.warningClass.setWindowTitle("Warning")
-        self.warningClass.deleteButton.setText("Kembali")
+        self.warningClass.deleteButton.setText("Hapus")
         self.warningClass.deleteButton.setFont(fontLoader.load_custom_font('../font/Nunito-Medium.ttf'))
         self.warningClass.deleteButton.setStyleSheet("font: 16pt; background-color: #F75008; border-radius: 0px; color: #FFF6E5;")
         self.warningClass.cancelButton.setText("Batalkan")
@@ -60,7 +60,7 @@ class Warning(QDialog):
         font.setPointSize(7)
         self.warningClass.warningLabel.setFont(font)
         self.warningClass.warningLabel.setFont(fontLoader.load_custom_font('../font/Nunito-Medium.ttf'))
-        self.warningClass.warningLabel.setStyleSheet("font: 18pt; background-color: #F7EAD3;")
+        self.warningClass.warningLabel.setStyleSheet("font: 14pt; background-color: #F7EAD3;")
         self.warningClass.warningLabel.setWordWrap(True)
         self.warningClass.deleteButton.deleteLater()
         self.warningClass.cancelButton.setText("Ok")
