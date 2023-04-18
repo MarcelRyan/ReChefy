@@ -96,35 +96,35 @@ def writeTofile(data, filename):
     with open(filename, 'wb') as file:
         file.write(data)
 
-# Function to change blob data back to image for Resep and store the file in images/resep folder and return the path for the image
+# Function to change blob data back to image for Resep and store the file in img/resep folder and return the path for the image
 def resepBlobToImage(connection, id_resep):
     connect = connection.cursor()
     connect.execute("SELECT * FROM Resep WHERE idResep = ?", (id_resep,))
     data = connect.fetchall()
-    path = r"..\images\resep"
+    path = r"..\img\resep"
     for row in data:
         name = row[2].replace(" ", "")
         path += "\\" + name + ".png"
         writeTofile(row[1], path)
     return path
 
-# Function to change blob data back to image for artikel and store the file in images/artikel folder and return the path for the image
+# Function to change blob data back to image for artikel and store the file in img/artikel folder and return the path for the image
 def artikelBlobToImage(connection, id_artikel):
     connect = connection.cursor()
     connect.execute("SELECT * FROM Artikel WHERE idArtikel = ?", (id_artikel,))
     data = connect.fetchall()
-    path = r"..\images\artikel"
+    path = r"..\img\artikel"
     for row in data:
         path += "\\artikel" + str(row[0]) + ".png"
         writeTofile(row[1], path)
     return path
 
-# Function to change blob data back to image for komentar and store the file in images/komentar folder and return the path for the image
+# Function to change blob data back to image for komentar and store the file in img/komentar folder and return the path for the image
 def komentarBlobToImage(connection, id_komentar):
     connect = connection.cursor()
     connect.execute("SELECT * FROM Komentar WHERE idKomentar = ?", (id_komentar,))
     data = connect.fetchall()
-    path = r"..\images\komentar"
+    path = r"..\img\komentar"
     for row in data:
         path += "\\komentar" + str(row[0]) + ".png"
         writeTofile(row[1], path)

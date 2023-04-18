@@ -39,7 +39,7 @@
      <enum>Qt::AutoText</enum>
     </property>
     <property name="pixmap">
-     <pixmap>../images/icon/ReChefy_logo.png</pixmap>
+     <pixmap>../img/icon/ReChefy_logo.png</pixmap>
     </property>
    </widget>
   </widget>

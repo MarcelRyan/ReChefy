@@ -52,7 +52,7 @@ class LihatResep(QMainWindow) :
         self.notifikasi.hide()
 
 
-        self.path = "../images/icon/noPhoto.jpg"
+        self.path = "../img/icon/noPhoto.jpg"
         self.text = ""
         
         self.alat.setFont(fontLoader.load_custom_font('../font/Nunito-ExtraBold.ttf'))
@@ -60,7 +60,7 @@ class LihatResep(QMainWindow) :
         self.langkahMemasak.setFont(fontLoader.load_custom_font('../font/Nunito-ExtraBold.ttf'))
         self.textEdit.setFont(fontLoader.load_custom_font('../font/Nunito-Regular.ttf'))
 
-        self.attachButton.setStyleSheet("border-image: url(../images/icon/attach.png);background-color:none;border: none")
+        self.attachButton.setStyleSheet("border-image: url(../img/icon/attach.png);background-color:none;border: none")
         self.sendButton.clicked.connect(self.addKomentar)
         self.attachButton.clicked.connect(self.addFotoKomentar)
         self.backButton.clicked.connect(self.goBack)
@@ -122,7 +122,7 @@ class LihatResep(QMainWindow) :
                 self.deleteResepButton.setSizePolicy(sizePolicy)
                 self.deleteResepButton.setText("")
                 icon2 = QtGui.QIcon()
-                icon2.addPixmap(QtGui.QPixmap("../images/icon/hapus.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+                icon2.addPixmap(QtGui.QPixmap("../img/icon/hapus.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
                 self.deleteResepButton.setIcon(icon2)
                 self.deleteResepButton.setIconSize(QtCore.QSize(100, 30))
                 self.deleteResepButton.setAutoDefault(False)
@@ -137,7 +137,7 @@ class LihatResep(QMainWindow) :
                 self.editResepButton.setSizePolicy(sizePolicy)
                 self.editResepButton.setText("")
                 icon3 = QtGui.QIcon()
-                icon3.addPixmap(QtGui.QPixmap("../images/icon/sunting.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+                icon3.addPixmap(QtGui.QPixmap("../img/icon/sunting.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
                 self.editResepButton.setIcon(icon3)
                 self.editResepButton.setIconSize(QtCore.QSize(100, 30))
                 self.editResepButton.setAutoDefault(False)
@@ -249,7 +249,7 @@ class LihatResep(QMainWindow) :
             self.fileName = os.path.basename(self.path)
             self.pathText.setText(self.fileName)
         else :
-             self.path = "../images/icon/noPhoto.jpg"
+             self.path = "../img/icon/noPhoto.jpg"
 
     def resetKomentar(self) :
         nListKomentar = len(self.listKomentar)
@@ -351,7 +351,7 @@ class LihatResep(QMainWindow) :
                 self.deleteButton_0.setStyleSheet("border-radius: 8px;\n"
         "border-style: outset;")
                 icon2 = QtGui.QIcon()
-                icon2.addPixmap(QtGui.QPixmap("../images/icon/delete.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+                icon2.addPixmap(QtGui.QPixmap("../img/icon/delete.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
                 self.deleteButton_0.setIcon(icon2)
                 self.deleteButton_0.setIconSize(QtCore.QSize(100, 30))
                 self.deleteButton_0.setAutoDefault(False)
@@ -374,7 +374,7 @@ class LihatResep(QMainWindow) :
     def addKomentar(self, event):
         self.text = self.textEdit.toPlainText()
         self.lastKomentarID +=1
-        if (self.path != "../images/icon/noPhoto.jpg" and self.text == "") or (self.path == "../images/icon/noPhoto.jpg" and self.text != "") or ((self.path != "../images/icon/noPhoto.jpg" and self.text != ""))  :
+        if (self.path != "../img/icon/noPhoto.jpg" and self.text == "") or (self.path == "../img/icon/noPhoto.jpg" and self.text != "") or ((self.path != "../img/icon/noPhoto.jpg" and self.text != ""))  :
                 self.komentar_isi.verticalScrollBar().setStyleSheet("QScrollBar:vertical {background-color: #FDE7BD; border: none; border-radius: 15px; width: 8px; margin: 0px 0px 0px 0px;}\
                         QScrollBar::handle:vertical {background-color: #EE9C20;border-radius: 15px; min-height: 20px;}\
                         QScrollBar::add-line:vertical {border: none; background: none;}\
@@ -423,7 +423,7 @@ class LihatResep(QMainWindow) :
                 self.deleteButton_0.setStyleSheet("border-radius: 8px;\n"
         "border-style: outset;")
                 icon2 = QtGui.QIcon()
-                icon2.addPixmap(QtGui.QPixmap("../images/icon/delete.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+                icon2.addPixmap(QtGui.QPixmap("../img/icon/delete.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
                 self.deleteButton_0.setIcon(icon2)
                 self.deleteButton_0.setIconSize(QtCore.QSize(100, 30))
                 self.deleteButton_0.setAutoDefault(False)
@@ -455,7 +455,7 @@ class LihatResep(QMainWindow) :
                 self.textEdit.setText("")
                 self.pathText.setText("")
                 self.text = ""
-                self.path = "../images/icon/noPhoto.jpg"
+                self.path = "../img/icon/noPhoto.jpg"
 
                 self.notifAddKomentar()
 
@@ -468,7 +468,7 @@ class LihatResep(QMainWindow) :
         self.textEdit.setText("")
         self.pathText.setText("")
         self.text = ""
-        self.path = "../images/icon/noPhoto.jpg"
+        self.path = "../img/icon/noPhoto.jpg"
         self.parent.LihatResep.resetKomentar()
         self.listKomentar = []
         self.listKomentarDeleteAll = []
@@ -487,7 +487,7 @@ class LihatResep(QMainWindow) :
         self.textEdit.setText("")
         self.pathText.setText("")
         self.text = ""
-        self.path = "../images/icon/noPhoto.jpg"
+        self.path = "../img/icon/noPhoto.jpg"
         self.listKomentar = []
         self.listKomentarDeleteAll = []
         self.parent.DaftarResep.readDatabase()
@@ -503,7 +503,7 @@ class LihatResep(QMainWindow) :
         self.textEdit.setText("")
         self.pathText.setText("")
         self.text = ""
-        self.path = "../images/icon/noPhoto.jpg"
+        self.path = "../img/icon/noPhoto.jpg"
         self.listKomentar = []
         self.listKomentarDeleteAll = []
         self.parent.DaftarResep.readDatabase()

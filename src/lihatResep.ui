@@ -55,7 +55,7 @@
         </property>
         <property name="icon">
          <iconset>
-          <normaloff>../images/icon/button_back.png</normaloff>../images/icon/button_back.png</iconset>
+          <normaloff>../img/icon/button_back.png</normaloff>../img/icon/button_back.png</iconset>
         </property>
         <property name="iconSize">
          <size>
@@ -81,7 +81,7 @@
         </property>
         <property name="icon">
          <iconset>
-          <normaloff>../images/icon/logo.png</normaloff>../images/icon/logo.png</iconset>
+          <normaloff>../img/icon/logo.png</normaloff>../img/icon/logo.png</iconset>
         </property>
         <property name="iconSize">
          <size>
@@ -706,7 +706,7 @@ padding: 5px;</string>
              </property>
              <property name="icon">
               <iconset>
-               <normaloff>../images/icon/send.png</normaloff>../images/icon/send.png</iconset>
+               <normaloff>../img/icon/send.png</normaloff>../img/icon/send.png</iconset>
              </property>
              <property name="iconSize">
               <size>

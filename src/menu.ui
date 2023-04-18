@@ -79,7 +79,7 @@
     </property>
     <property name="icon">
      <iconset>
-      <normaloff>../images/icon/Artikel_logo.png</normaloff>../images/icon/Artikel_logo.png</iconset>
+      <normaloff>../img/icon/Artikel_logo.png</normaloff>../img/icon/Artikel_logo.png</iconset>
     </property>
     <property name="iconSize">
      <size>
@@ -108,7 +108,7 @@
     </property>
     <property name="icon">
      <iconset>
-      <normaloff>../images/icon/Resep_logo.png</normaloff>../images/icon/Resep_logo.png</iconset>
+      <normaloff>../img/icon/Resep_logo.png</normaloff>../img/icon/Resep_logo.png</iconset>
     </property>
     <property name="iconSize">
      <size>

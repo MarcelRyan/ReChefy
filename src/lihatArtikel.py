@@ -14,6 +14,11 @@ class LihatArtikel(QMainWindow) :
         self.backButton.clicked.connect(self.goBack)
         self.homeButton.clicked.connect(self.goHome)
 
+        self.scrollArea.verticalScrollBar().setStyleSheet("QScrollBar:vertical {background-color: #FDE7BD; border: none; border-radius: 15px; width: 8px; margin: 0px 0px 0px 0px;}\
+                QScrollBar::handle:vertical {background-color: #EE9C20;border-radius: 15px; min-height: 20px;}\
+                QScrollBar::add-line:vertical {border: none; background: none;}\
+                QScrollBar::sub-line:vertical {border: none; background: none;}")
+
         self.setFixedWidth(1200)
         self.setFixedHeight(850)
 

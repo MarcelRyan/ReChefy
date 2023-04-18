@@ -16,7 +16,7 @@ class FormAddResep(QtWidgets.QMainWindow):
         self.saveButton_resep.clicked.connect(self.inputValidation)
         self.inputGambar_resep.setIconSize(QSize(113, 98))
         self.inputGambar_resep.setStyleSheet("QPushButton{background-color: #EEC120; border-radius: 25px;}")
-        self.inputGambar_resep.setIcon(QIcon(QPixmap("../images/icon/pilihFoto.png")))
+        self.inputGambar_resep.setIcon(QIcon(QPixmap("../img/icon/pilihFoto.png")))
         self.inputGambar_resep.clicked.connect(self.selectPicture)
         
         self.inputJudul_resep.setFont(fontLoader.load_custom_font('../font/Nunito-ExtraBold.ttf'))
@@ -36,8 +36,8 @@ class FormAddResep(QtWidgets.QMainWindow):
         self.addBahan_button.clicked.connect(self.addBahan)
         self.addAlat_button.setFixedSize(30, 30)
         self.addBahan_button.setFixedSize(30, 30)
-        self.addAlat_button.setIcon(QIcon(QPixmap("../images/icon/addIcon.png")))
-        self.addBahan_button.setIcon(QIcon(QPixmap("../images/icon/addIcon.png")))
+        self.addAlat_button.setIcon(QIcon(QPixmap("../img/icon/addIcon.png")))
+        self.addBahan_button.setIcon(QIcon(QPixmap("../img/icon/addIcon.png")))
         self.addAlat_button.setStyleSheet("background-color: #F75008; border-radius: 15px")
         self.addBahan_button.setStyleSheet("background-color: #F75008; border-radius: 15px")
         self.scrollWidgetAlat = QtWidgets.QWidget()
@@ -93,7 +93,7 @@ class FormAddResep(QtWidgets.QMainWindow):
         self.backButton.setText("")
         self.backButton.clicked.connect(self.goBack)
         icon = QtGui.QIcon()
-        icon.addPixmap(QtGui.QPixmap("../images/icon/button_back.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon.addPixmap(QtGui.QPixmap("../img/icon/button_back.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.backButton.setIcon(icon)
         self.backButton.setIconSize(QtCore.QSize(50, 70))
         self.backButton.setObjectName("backButton")
@@ -103,7 +103,7 @@ class FormAddResep(QtWidgets.QMainWindow):
         self.homeButton.setText("")
         self.homeButton.clicked.connect(self.goHome)
         icon1 = QtGui.QIcon()
-        icon1.addPixmap(QtGui.QPixmap("../images/icon/logo.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon1.addPixmap(QtGui.QPixmap("../img/icon/logo.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.homeButton.setIcon(icon1)
         self.homeButton.setIconSize(QtCore.QSize(190, 80))
         self.homeButton.setObjectName("homeButton")
@@ -122,12 +122,12 @@ class FormAddResep(QtWidgets.QMainWindow):
         dropdown.setObjectName("DropdownAlat_"+str(self.counterAlat))
         dropdown.setFixedSize(125, 30)
         dropdown.setFont(fontLoader.load_custom_font('../font/Nunito-Medium.ttf'))
-        dropdown.setStyleSheet("QComboBox{background-color: #F7EAD3; border: none; border-radius: 10px;} QComboBox::down-arrow {image: url(../images/icon/down_arrow.png); height: 30px;} ")
+        dropdown.setStyleSheet("QComboBox{background-color: #F7EAD3; border: none; border-radius: 10px;} QComboBox::down-arrow {image: url(../img/icon/down_arrow.png); height: 30px;} ")
         horizontal_layout.addWidget(dropdown)
 
         delete = QtWidgets.QPushButton()
         delete.setFixedSize(30, 30)
-        delete.setIcon(QIcon(QPixmap("../images/icon/deleteIcon.png")))
+        delete.setIcon(QIcon(QPixmap("../img/icon/deleteIcon.png")))
         delete.setStyleSheet("background-color: #F75008; border-radius: 15px;")
         delete.setObjectName("DeleteAlat_"+str(self.counterAlat))
         horizontal_layout.addWidget(delete)
@@ -152,7 +152,7 @@ class FormAddResep(QtWidgets.QMainWindow):
         amount.setRange(0.1, 100000.0)
         amount.setFixedSize(45, 30)
         amount.setFont(fontLoader.load_custom_font('../font/Nunito-Medium.ttf'))
-        amount.setStyleSheet("QSpinBox{background-color: #F7EAD3; border-radius: 10px;}QSpinBox::up-button{image: url(../images/icon/up_arrow.png); width: 7px;} QSpinBox::down-button{image: url(../images//icon/down_arrow.png); width: 7px;}")
+        amount.setStyleSheet("QSpinBox{background-color: #F7EAD3; border-radius: 10px;}QSpinBox::up-button{image: url(../img/icon/up_arrow.png); width: 7px;} QSpinBox::down-button{image: url(../img//icon/down_arrow.png); width: 7px;}")
         horizontal_layout.addWidget(amount)
 
         unit = QtWidgets.QComboBox()
@@ -162,7 +162,7 @@ class FormAddResep(QtWidgets.QMainWindow):
         unit.setObjectName("Satuan_"+str(self.counterBahan))
         unit.setFixedSize(72, 30)
         unit.setFont(fontLoader.load_custom_font('../font/Nunito-Medium.ttf'))
-        unit.setStyleSheet("QComboBox{background-color: #F7EAD3; border: none; border-radius: 10px;} QComboBox::down-arrow {image: url(../images/icon/down_arrow.png); height: 5px; width: 5px}")
+        unit.setStyleSheet("QComboBox{background-color: #F7EAD3; border: none; border-radius: 10px;} QComboBox::down-arrow {image: url(../img/icon/down_arrow.png); height: 5px; width: 5px}")
         horizontal_layout.addWidget(unit)
 
         dropdown = QtWidgets.QComboBox()
@@ -171,7 +171,7 @@ class FormAddResep(QtWidgets.QMainWindow):
         dropdown.setObjectName("DropdownBahan_"+str(self.counterBahan))
         dropdown.setFixedSize(125, 30)
         dropdown.setFont(fontLoader.load_custom_font('../font/Nunito-Medium.ttf'))
-        dropdown.setStyleSheet("QComboBox{background-color: #F7EAD3; border: none; border-radius: 10px;} QComboBox::down-arrow {image: url(../images/icon/down_arrow.png); height: 30px;}")
+        dropdown.setStyleSheet("QComboBox{background-color: #F7EAD3; border: none; border-radius: 10px;} QComboBox::down-arrow {image: url(../img/icon/down_arrow.png); height: 30px;}")
         dropdown.view().setStyleSheet("QScrollBar:vertical {background-color: #FDE7BD; border: none; border-radius: 15px; width: 8px; margin: 0px 0px 0px 0px;}\
                                                 QScrollBar::handle:vertical {background-color: #EE9C20;border-radius: 15px; min-height: 20px;}\
                                                 QScrollBar::add-line:vertical {border: none; background: none;}\
@@ -180,7 +180,7 @@ class FormAddResep(QtWidgets.QMainWindow):
 
         delete = QtWidgets.QPushButton()
         delete.setFixedSize(30, 30)
-        delete.setIcon(QIcon(QPixmap("../images/icon/deleteIcon.png")))
+        delete.setIcon(QIcon(QPixmap("../img/icon/deleteIcon.png")))
         delete.setStyleSheet("background-color: #F75008; border-radius: 15px;")
         delete.setObjectName("DeleteBahan_"+str(self.counterBahan))
         horizontal_layout.addWidget(delete)
@@ -201,7 +201,7 @@ class FormAddResep(QtWidgets.QMainWindow):
             self.inputGambar_resep.setIconSize(QSize(self.inputGambar_resep.width(), self.inputGambar_resep.height()))
             self.inputGambar_resep.setStyleSheet("QPushButton{background-color: #FFF6E5; border: none;}")
         else:
-            self.inputGambar_resep.setIcon(QIcon(QPixmap("../images/icon/pilihFoto.png")))
+            self.inputGambar_resep.setIcon(QIcon(QPixmap("../img/icon/pilihFoto.png")))
             self.inputGambar_resep.setIconSize(QSize(113, 98))
             self.inputGambar_resep.setStyleSheet("QPushButton{background-color: #EEC120; border-radius: 25px;}")
 
@@ -259,7 +259,7 @@ class FormAddResep(QtWidgets.QMainWindow):
         self.inputJudul_resep.clear()
         self.inputDeskripsi_resep.clear()
         self.inputLangkahMemasak_resep.clear()
-        self.inputGambar_resep.setIcon(QIcon(QPixmap("../images/icon/pilihFoto.png")))
+        self.inputGambar_resep.setIcon(QIcon(QPixmap("../img/icon/pilihFoto.png")))
         self.inputGambar_resep.setIconSize(QSize(113, 98))
         self.inputGambar_resep.setStyleSheet("QPushButton{background-color: #EEC120; border-radius: 25px;}")
 

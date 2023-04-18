@@ -25,7 +25,7 @@ class DaftarResep(QtWidgets.QMainWindow):
         # load header label
         #self.headerLabel = QtWidgets.QLabel(self)
         #self.headerLabel.setGeometry(0,0,1200,125)
-        #self.headerLabel.setStyleSheet("background-image: url('../images/icon/header.png');")
+        #self.headerLabel.setStyleSheet("background-image: url('../img/icon/header.png');")
         self.verticalLayoutWidget = QtWidgets.QWidget(self.centralwidget)
         self.verticalLayoutWidget.setGeometry(QtCore.QRect(0, 0, 1201, 111))
         self.verticalLayoutWidget.setObjectName("verticalLayoutWidget")
@@ -43,7 +43,7 @@ class DaftarResep(QtWidgets.QMainWindow):
         self.backButton.setText("")
         self.backButton.clicked.connect(self.goBack)
         icon = QtGui.QIcon()
-        icon.addPixmap(QtGui.QPixmap("../images/icon/button_back.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon.addPixmap(QtGui.QPixmap("../img/icon/button_back.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.backButton.setIcon(icon)
         self.backButton.setIconSize(QtCore.QSize(50, 70))
         self.backButton.setObjectName("backButton")
@@ -53,7 +53,7 @@ class DaftarResep(QtWidgets.QMainWindow):
         self.homeButton.setText("")
         self.homeButton.clicked.connect(self.goHome)
         icon1 = QtGui.QIcon()
-        icon1.addPixmap(QtGui.QPixmap("../images/icon/logo.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon1.addPixmap(QtGui.QPixmap("../img/icon/logo.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.homeButton.setIcon(icon1)
         self.homeButton.setIconSize(QtCore.QSize(190, 80))
         self.homeButton.setObjectName("homeButton")
@@ -63,7 +63,7 @@ class DaftarResep(QtWidgets.QMainWindow):
         
         # load back button
         #self.backButton = QtWidgets.QPushButton(self)
-        #self.backButton.setStyleSheet("border-image: url(../images/icon/button_back.png);background-color:none;border: none")
+        #self.backButton.setStyleSheet("border-image: url(../img/icon/button_back.png);background-color:none;border: none")
         #self.backButton.setIconSize(QSize(31, 31))
         #self.backButton.setFixedSize(QSize(31, 31))
         #self.backButton.move(52,38)
@@ -76,7 +76,7 @@ class DaftarResep(QtWidgets.QMainWindow):
         self.titleLabel.setStyleSheet("font: 26pt;background-color: none;")
         
         # load search button
-        self.searchButton.setStyleSheet("border-image: url(../images/icon/button_search.png);background-color:none;border: none")
+        self.searchButton.setStyleSheet("border-image: url(../img/icon/button_search.png);background-color:none;border: none")
         self.searchButton.setIconSize(QSize(31, 31))
         self.searchButton.setFixedSize(QSize(31, 31))
         self.searchButton.move(1080,130)
@@ -87,7 +87,7 @@ class DaftarResep(QtWidgets.QMainWindow):
         self.searchBar.setStyleSheet("color: #F75008; font: 10pt; background-color: #FDE7BD; border: none; border-radius: 15px; padding: 5px;")
         
         # load add resep button
-        self.addResepButton.setStyleSheet("border-image: url(../images/icon/button_addResep.png);background-color:none;border: none")
+        self.addResepButton.setStyleSheet("border-image: url(../img/icon/button_addResep.png);background-color:none;border: none")
         self.addResepButton.setIconSize(QSize(170, 170))
         self.addResepButton.setFixedSize(QSize(170, 170))
         self.addResepButton.move(1020,670)
@@ -181,7 +181,7 @@ class DaftarResep(QtWidgets.QMainWindow):
             # add label resepku
             labelResepku = QtWidgets.QLabel(resepWidget)
             labelResepku.setFixedSize(120,120)
-            labelResepku.setStyleSheet("border-image: url('../images/icon/icon_resepku.png');background-color: none;")
+            labelResepku.setStyleSheet("border-image: url('../img/icon/icon_resepku.png');background-color: none;")
             labelResepku.mousePressEvent = lambda event, id=idresep: self.connectResep(id)
             labelResepku.move(110,0)
             labelResepku.raise_()
