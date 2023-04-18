@@ -11,11 +11,14 @@ class LihatResep(QMainWindow) :
     def __init__(self, parent) :
         super(LihatResep, self).__init__()
         uic.loadUi("lihatResep.ui", self)
+
+        #initialize variables
         self.idResep = 1
         self.parent = parent
         self.listKomentar = []
         self.listKomentarDeleteAll = []
 
+        #custom scrollbar
         self.scrollArea.verticalScrollBar().setStyleSheet("QScrollBar:vertical {background-color: #FDE7BD; border: none; border-radius: 15px; width: 8px; margin: 0px 0px 0px 0px;}\
                 QScrollBar::handle:vertical {background-color: #EE9C20;border-radius: 15px; min-height: 20px;}\
                 QScrollBar::add-line:vertical {border: none; background: none;}\
@@ -37,6 +40,7 @@ class LihatResep(QMainWindow) :
                 QScrollBar::add-line:vertical {border: none; background: none;}\
                 QScrollBar::sub-line:vertical {border: none; background: none;}")
 
+        #add notifikasi
         self.setStyleSheet("background-color: #FDE7BD;")
         self.notifikasi= QtWidgets.QLabel(self.scrollArea)
         self.notifikasi.setGeometry(QtCore.QRect(350, -5, 471, 31))
@@ -51,15 +55,17 @@ class LihatResep(QMainWindow) :
         self.notifikasi.setObjectName("notifikasi")
         self.notifikasi.hide()
 
-
+        #initialize variables
         self.path = "../img/icon/noPhoto.jpg"
         self.text = ""
         
+        #set font
         self.alat.setFont(fontLoader.load_custom_font('../font/Nunito-ExtraBold.ttf'))
         self.bahan.setFont(fontLoader.load_custom_font('../font/Nunito-ExtraBold.ttf'))
         self.langkahMemasak.setFont(fontLoader.load_custom_font('../font/Nunito-ExtraBold.ttf'))
         self.textEdit.setFont(fontLoader.load_custom_font('../font/Nunito-Regular.ttf'))
 
+        #set button
         self.attachButton.setStyleSheet("border-image: url(../img/icon/attach.png);background-color:none;border: none")
         self.sendButton.clicked.connect(self.addKomentar)
         self.attachButton.clicked.connect(self.addFotoKomentar)
@@ -99,6 +105,7 @@ class LihatResep(QMainWindow) :
         self.setFixedWidth(1200)
         self.setFixedHeight(850)
 
+        #responsive namaMasakan font size
         nNamaMasakan = len(self.resep[0][2])
         self.namaMasakan.setFont(fontLoader.load_custom_font('../font/Nunito-Black.ttf'))
         if nNamaMasakan > 45 :
@@ -113,6 +120,8 @@ class LihatResep(QMainWindow) :
 
     def isResepBuatanSendiri(self) :
         if int(self.defaultResep) == 1 :
+
+                #add deleteResepButton
                 self.deleteResepButton = QtWidgets.QPushButton(self.infoResep)
                 self.deleteResepButton.setGeometry(QtCore.QRect(1060, 40, 81, 21))
                 sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Fixed)
@@ -128,6 +137,7 @@ class LihatResep(QMainWindow) :
                 self.deleteResepButton.setAutoDefault(False)
                 self.deleteResepButton.setObjectName("deleteResepButton")
 
+                #add editResepButton
                 self.editResepButton = QtWidgets.QPushButton(self.infoResep)
                 self.editResepButton.setGeometry(QtCore.QRect(960, 40, 81, 21))
                 sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Fixed)
@@ -143,6 +153,7 @@ class LihatResep(QMainWindow) :
                 self.editResepButton.setAutoDefault(False)
                 self.editResepButton.setObjectName("editResepButton")
 
+                #add functional button
                 self.deleteResepButton.clicked.connect(self.deleteResep)
                 self.editResepButton.clicked.connect(self.editResep)
 
@@ -160,6 +171,8 @@ class LihatResep(QMainWindow) :
         column = len(self.bahanResep[0])
         result = ""
         number = 1
+
+        #combine bahan in Resep into string
         for i in range(row) :
                 if i != 0 :
                         result += "\n"
@@ -187,6 +200,8 @@ class LihatResep(QMainWindow) :
         column = len(self.alatResep[0])
         result = ""
         number = 1
+
+        #combine alat in Resep into string
         for i in range(row) :
                 if i != 0 :
                         result += "\n"
@@ -201,18 +216,30 @@ class LihatResep(QMainWindow) :
          
 
     def deleteResep(self) :
+
+        #warning popup
         self.parent.popup.setCurrentWidget(self.parent.WarningResep)
         if self.parent.WarningResep.Exec() == QDialog.Accepted:
+              
+              #delete all komentar in resep
               self.deleteAllKomentar()
+
+              #delete deleteResepButton and editResepButton
               if self.defaultResep == 1 :
                 self.deleteResepButton.setParent(None)
                 self.deleteResepButton.deleteLater()
                 self.editResepButton.setParent(None)
                 self.editResepButton.deleteLater()
+        
+              #delete photo of Resep in directory img/resep
               fotoMasakanPath = self.fotoResep
               if os.path.exists(fotoMasakanPath) :
                     os.remove(fotoMasakanPath)
+                
+              #delete resep in database  
               databaseFunc.deleteResep(self.connection,self.idResep)
+
+              #reset variables and go to daftarResep page
               self.listKomentar = []
               self.listKomentarDeleteAll = []
               self.parent.DaftarResep.clearGrid()
@@ -271,11 +298,16 @@ class LihatResep(QMainWindow) :
                         self.komentarResep = databaseFunc.getKomentar(self.connection, self.idResep)
 
     def deleteKomentar(self,count):
+        
+        #warning popup
         self.parent.popup.setCurrentWidget(self.parent.WarningKomentar)
         if self.parent.WarningKomentar.Exec() == QDialog.Accepted:
                 fotoKomentarPath = databaseFunc.komentarBlobToImage(self.connection, count)
+
+                #delete photo of komentar in directory img/komentar
                 if os.path.exists(fotoKomentarPath) :
                         os.remove(fotoKomentarPath)
+
                 frame = self.findChild(QFrame, f'komentarFrame_{count}')
                 if frame is not None :
                         frame.deleteLater()
@@ -291,6 +323,8 @@ class LihatResep(QMainWindow) :
     def displayKomentar(self):
         self.listKomentar = []
         self.listKomentarDeleteAll = []
+
+        #construct a komentar based on the database
         for i in range (self.total) :
                 self.komentar_isi.verticalScrollBar().setStyleSheet("QScrollBar:vertical {background-color: #FDE7BD; border: none; border-radius: 15px; width: 8px; margin: 0px 0px 0px 0px;}\
                         QScrollBar::handle:vertical {background-color: #EE9C20;border-radius: 15px; min-height: 20px;}\
@@ -374,6 +408,8 @@ class LihatResep(QMainWindow) :
     def addKomentar(self, event):
         self.text = self.textEdit.toPlainText()
         self.lastKomentarID +=1
+
+        #construct a new komentar based on user input
         if (self.path != "../img/icon/noPhoto.jpg" and self.text == "") or (self.path == "../img/icon/noPhoto.jpg" and self.text != "") or ((self.path != "../img/icon/noPhoto.jpg" and self.text != ""))  :
                 self.komentar_isi.verticalScrollBar().setStyleSheet("QScrollBar:vertical {background-color: #FDE7BD; border: none; border-radius: 15px; width: 8px; margin: 0px 0px 0px 0px;}\
                         QScrollBar::handle:vertical {background-color: #EE9C20;border-radius: 15px; min-height: 20px;}\
@@ -460,6 +496,8 @@ class LihatResep(QMainWindow) :
                 self.notifAddKomentar()
 
     def editResep(self):
+
+        #reset variables
         if self.defaultResep == 1 :
                 self.deleteResepButton.setParent(None)
                 self.deleteResepButton.deleteLater()
@@ -472,12 +510,16 @@ class LihatResep(QMainWindow) :
         self.parent.LihatResep.resetKomentar()
         self.listKomentar = []
         self.listKomentarDeleteAll = []
+
+        #go to EditResep page
         self.parent.EditResep.idResep = self.idResep
         self.parent.EditResep.clear()
         self.parent.EditResep.readResep()
         self.parent.pages.setCurrentWidget(self.parent.EditResep)
 
     def goBack(self):
+
+        #reset variables
         self.parent.LihatResep.resetKomentar()
         if self.defaultResep == 1 :
                 self.deleteResepButton.setParent(None)
@@ -490,10 +532,14 @@ class LihatResep(QMainWindow) :
         self.path = "../img/icon/noPhoto.jpg"
         self.listKomentar = []
         self.listKomentarDeleteAll = []
+
+        #go to DaftarResep page
         self.parent.DaftarResep.readDatabase()
         self.parent.pages.setCurrentWidget(self.parent.DaftarResep)
 
     def goHome(self):
+
+        #reset variables
         self.parent.LihatResep.resetKomentar()
         if self.defaultResep == 1 :
                 self.deleteResepButton.setParent(None)
@@ -506,6 +552,8 @@ class LihatResep(QMainWindow) :
         self.path = "../img/icon/noPhoto.jpg"
         self.listKomentar = []
         self.listKomentarDeleteAll = []
+
+        #go to WelcomePage
         self.parent.DaftarResep.readDatabase()
         self.parent.pages.setCurrentWidget(self.parent.WelcomePage)
 
