@@ -29,4 +29,3 @@ pytest:
   only:
   - merge_requests
   - main
-  - develop
