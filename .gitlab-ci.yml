@@ -25,7 +25,6 @@ pytest:
     - python
   script:
   - cd src
-  - apt-get update && apt-get install libgl1
   - python3 -m unittest discover tests/
   only:
   - merge_requests
