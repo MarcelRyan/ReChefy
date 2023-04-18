@@ -25,7 +25,16 @@ class LihatArtikel(QMainWindow) :
         self.fotoArtikel.setPixmap(QtGui.QPixmap(self.artikelFoto))
         self.namaArtikel.setText(str(self.artikel[2]))
         self.namaArtikel.setFont(fontLoader.load_custom_font('../font/Nunito-ExtraBold.ttf'))
+        self.X = self.namaArtikel.width()
+        self.Y = self.namaArtikel.height()
+        self.namaArtikel.setFixedWidth(901)
         self.namaArtikel.adjustSize()
+        self.widget_2.setFixedWidth(1154)
+        self.X1 = self.namaArtikel.width()
+        self.Y1 = self.namaArtikel.height()
+        self.deltaX = abs(self.X1 - self.X)
+        self.deltaY = abs(self.Y1 - self.Y)
+        self.widget_2.setMinimumSize(QtCore.QSize(1154, 600+self.deltaY))
         self.textEdit.setText(str(self.artikel[3]))
         self.textEdit.setFont(fontLoader.load_custom_font('../font/Nunito-Medium.ttf'))
         self.tanggal.setText(str(self.artikel[4]))
@@ -44,12 +53,16 @@ class LihatArtikel(QMainWindow) :
         
     def goBack(self):
         self.textEdit.resize(self.x, self.y)
+        self.namaArtikel.resize(self.X, self.Y)
         self.widget.setMinimumSize(QtCore.QSize(1154, 500))
+        self.widget_2.setMinimumSize(QtCore.QSize(1154, 600))
         self.parent.pages.setCurrentWidget(self.parent.DaftarArtikel)
 
     def goHome(self):
         self.textEdit.resize(self.x, self.y)
+        self.namaArtikel.resize(self.X, self.Y)
         self.widget.setMinimumSize(QtCore.QSize(1154, 500))
+        self.widget_2.setMinimumSize(QtCore.QSize(1154, 600))
         self.parent.pages.setCurrentWidget(self.parent.WelcomePage)
 
 def main() :
