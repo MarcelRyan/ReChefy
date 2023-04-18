@@ -1,6 +1,7 @@
 from PyQt5.QtWidgets import *
 from PyQt5 import uic, QtWidgets, QtGui, QtCore
 import sys
+import fontLoader
 
 class Menu(QtWidgets.QMainWindow):
     
@@ -12,6 +13,11 @@ class Menu(QtWidgets.QMainWindow):
         self.setFixedHeight(850)
         self.resepButton.clicked.connect(self.gotoResep)
         self.artikelButton.clicked.connect(self.gotoArtikel)
+        
+        self.artikelLabel.setFont(fontLoader.load_custom_font('../font/Nunito-ExtraBold.ttf'))
+        self.artikelLabel.setStyleSheet("font: 28px;")
+        self.resepLabel.setFont(fontLoader.load_custom_font('../font/Nunito-ExtraBold.ttf'))
+        self.resepLabel.setStyleSheet("font: 28px;")
 
         # Navbar
         self.verticalLayoutWidget = QtWidgets.QWidget(self.centralwidget)

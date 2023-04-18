@@ -4,6 +4,7 @@ from PyQt5.QtCore import QSize, Qt
 from PyQt5 import uic, QtWidgets, QtGui, QtCore
 import sys
 from database import databaseFunc
+import fontLoader
 
 class DaftarArtikel(QtWidgets.QMainWindow):
     def __init__(self, parent):
@@ -64,7 +65,8 @@ class DaftarArtikel(QtWidgets.QMainWindow):
         self.titleLabel = QtWidgets.QLabel(self)
         self.titleLabel.setGeometry(70,108,320,70)
         self.titleLabel.setText("Daftar Artikel")
-        self.titleLabel.setStyleSheet("font: 75 28pt;background-color:none;")
+        self.titleLabel.setFont(fontLoader.load_custom_font('../font/Nunito-Black.ttf'))
+        self.titleLabel.setStyleSheet("font: 28pt;background-color:none;")
         
         self.scrollArtikel = QtWidgets.QWidget()    
         self.layoutScroll = QtWidgets.QVBoxLayout()    
@@ -111,12 +113,14 @@ class DaftarArtikel(QtWidgets.QMainWindow):
         label_judul.setAlignment(Qt.AlignTop)
         self.writeLabelLimited(label_judul)
         label_judul.setWordWrap(True)
-        label_judul.setStyleSheet("font: 75 18pt;")
+        label_judul.setFont(fontLoader.load_custom_font('../font/Nunito-ExtraBold.ttf'))
+        label_judul.setStyleSheet("font: 16pt; line-height: 90%")
         verticalBox.addWidget(label_judul)
         
         label_tanggal = QtWidgets.QLabel()
         label_tanggal.setText(artikel[4])
-        label_tanggal.setStyleSheet("font: 75 10pt;")
+        label_tanggal.setFont(fontLoader.load_custom_font('../font/Nunito-Light.ttf'))
+        label_tanggal.setStyleSheet("font: 10pt;")
         verticalBox.addWidget(label_tanggal)
         
         label_preview = QtWidgets.QLabel(artikel[3])
@@ -124,7 +128,8 @@ class DaftarArtikel(QtWidgets.QMainWindow):
         #label_preview.setElideMode(Qt.ElidedRight)
         label_preview.setMaximumWidth(400)
         label_preview.setWordWrap(True)
-        label_preview.setStyleSheet("font: 75 11pt;")
+        label_preview.setFont(fontLoader.load_custom_font('../font/Nunito-Regular.ttf'))
+        label_preview.setStyleSheet("font: 11pt;")
         verticalBox.addWidget(label_preview)
         verticalWidget.setLayout(verticalBox)
         

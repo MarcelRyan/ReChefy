@@ -2,6 +2,7 @@ from database import databaseFunc
 from PyQt5.QtWidgets import *
 from PyQt5 import uic, QtWidgets, QtCore, QtGui
 from PyQt5.QtCore import Qt
+import fontLoader
 
 class LihatArtikel(QMainWindow) :
     def __init__(self, parent) :
@@ -23,8 +24,11 @@ class LihatArtikel(QMainWindow) :
         self.artikelFoto = databaseFunc.artikelBlobToImage(self.connection, self.idArtikel)
         self.fotoArtikel.setPixmap(QtGui.QPixmap(self.artikelFoto))
         self.namaArtikel.setText(str(self.artikel[2]))
+        self.namaArtikel.setFont(fontLoader.load_custom_font('../font/Nunito-ExtraBold.ttf'))
         self.textEdit.setText(str(self.artikel[3]))
+        self.textEdit.setFont(fontLoader.load_custom_font('../font/Nunito-Medium.ttf'))
         self.tanggal.setText(str(self.artikel[4]))
+        self.tanggal.setFont(fontLoader.load_custom_font('../font/Nunito-Regular.ttf'))
         self.x = self.textEdit.width()
         self.y = self.textEdit.height()
         self.textEdit.setFixedWidth(1031)

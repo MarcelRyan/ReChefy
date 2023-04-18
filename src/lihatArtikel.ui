@@ -122,7 +122,7 @@
         <property name="geometry">
          <rect>
           <x>0</x>
-          <y>-392</y>
+          <y>0</y>
           <width>1176</width>
           <height>1129</height>
          </rect>
@@ -175,7 +175,7 @@ border-style: outset;</string>
              </rect>
             </property>
             <property name="styleSheet">
-             <string notr="true">font: Bold 26pt &quot;MS Shell Dlg 2&quot;;</string>
+             <string notr="true">font: 26pt;</string>
             </property>
             <property name="text">
              <string>Ayam Goreng adalah Makanan yang Enak Sekali</string>

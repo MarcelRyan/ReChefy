@@ -167,7 +167,7 @@
              </rect>
             </property>
             <property name="styleSheet">
-             <string notr="true">font: Bold 22pt &quot;MS Shell Dlg 2&quot;;</string>
+             <string notr="true">font: 22pt;</string>
             </property>
             <property name="text">
              <string>Nama Masakan </string>
@@ -189,7 +189,7 @@
              </rect>
             </property>
             <property name="styleSheet">
-             <string notr="true">font: bold 14pt &quot;MS Shell Dlg 2&quot;;</string>
+             <string notr="true">font: 14pt;</string>
             </property>
             <property name="text">
              <string>Langkah Memasak</string>
@@ -476,7 +476,7 @@ padding: 10px;</string>
              </rect>
             </property>
             <property name="styleSheet">
-             <string notr="true">font: bold 14pt &quot;MS Shell Dlg 2&quot;;</string>
+             <string notr="true">font: 14pt;</string>
             </property>
             <property name="text">
              <string>Alat</string>
@@ -498,7 +498,7 @@ padding: 10px;</string>
              </rect>
             </property>
             <property name="styleSheet">
-             <string notr="true">font: bold 14pt &quot;MS Shell Dlg 2&quot;;</string>
+             <string notr="true">font: 14pt ;</string>
             </property>
             <property name="text">
              <string>Bahan</string>
@@ -605,7 +605,7 @@ border-style: outset;</string>
              </rect>
             </property>
             <property name="styleSheet">
-             <string notr="true">font: bold 14pt &quot;MS Shell Dlg 2&quot;;</string>
+             <string notr="true">font: 14pt;</string>
             </property>
             <property name="text">
              <string>Komentar(0)</string>

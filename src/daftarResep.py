@@ -4,6 +4,7 @@ from PyQt5.QtGui import QPixmap
 from PyQt5.QtCore import QSize, Qt, QTimer
 import sys
 from database import databaseFunc
+import fontLoader
 
 class DaftarResep(QtWidgets.QMainWindow):
     def __init__(self, parent):
@@ -71,7 +72,8 @@ class DaftarResep(QtWidgets.QMainWindow):
         self.titleLabel = QtWidgets.QLabel(self)
         self.titleLabel.setGeometry(70,108,320,70)
         self.titleLabel.setText("Daftar Resep")
-        self.titleLabel.setStyleSheet("font: 75 26pt;background-color: none;")
+        self.titleLabel.setFont(fontLoader.load_custom_font('../font/Nunito-Black.ttf'))
+        self.titleLabel.setStyleSheet("font: 26pt;background-color: none;")
         
         # load search button
         self.searchButton.setStyleSheet("border-image: url(../images/icon/button_search.png);background-color:none;border: none")
@@ -80,11 +82,15 @@ class DaftarResep(QtWidgets.QMainWindow):
         self.searchButton.move(1080,130)
         self.searchButton.clicked.connect(lambda : self.searchResep(databaseFunc.searchResepView(connection, self.searchBar.text()), connection, len(dataResep)))
         
+        # search bar
+        self.searchBar.setFont(fontLoader.load_custom_font('../font/Nunito-Light.ttf'))
+        self.searchBar.setStyleSheet("color: #F75008; font: 10pt; background-color: #FDE7BD; border: none; border-radius: 15px; padding: 5px;")
+        
         # load add resep button
         self.addResepButton.setStyleSheet("border-image: url(../images/icon/button_addResep.png);background-color:none;border: none")
         self.addResepButton.setIconSize(QSize(170, 170))
         self.addResepButton.setFixedSize(QSize(170, 170))
-        self.addResepButton.move(1020,620)
+        self.addResepButton.move(1020,670)
         self.addResepButton.clicked.connect(self.tambahResep)
         # load scroll area
         self.scrollResep = QtWidgets.QWidget()
@@ -165,7 +171,8 @@ class DaftarResep(QtWidgets.QMainWindow):
             label_judul = QtWidgets.QLabel()
             label_judul.setText(namaResep)                
             label_judul.setWordWrap(True)
-            label_judul.setStyleSheet("font: 75 12pt;")
+            label_judul.setFont(fontLoader.load_custom_font('../font/Nunito-ExtraBold.ttf'))
+            label_judul.setStyleSheet("font: 12pt;")
             label_judul.setAlignment(Qt.AlignCenter)
             verticalResep.addWidget(label_judul)
         # set layout
@@ -216,7 +223,8 @@ class DaftarResep(QtWidgets.QMainWindow):
             self.labelNotFound = QtWidgets.QLabel(self)
             self.labelNotFound.setGeometry(70,200,571,51)
             self.labelNotFound.setText("\n      Kami tidak memiliki resep masakan tersebut :(")
-            self.labelNotFound.setStyleSheet("font: 75 20pt;color: black")
+            self.labelNotFound.setFont(fontLoader.load_custom_font('../font/Nunito-Medium.ttf'))
+            self.labelNotFound.setStyleSheet("font: 20pt;color: black")
             self.labelNotFound.setAlignment(Qt.AlignTop)
             self.labelNotFound.raise_()
             self.gridLayoutResep.addWidget(self.labelNotFound,0,0,1,4)

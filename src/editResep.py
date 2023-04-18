@@ -5,6 +5,7 @@ from PyQt5 import uic, QtWidgets, QtCore, QtGui
 from database import databaseFunc
 import sys
 import os
+import fontLoader
 
 class FormEditResep(QtWidgets.QMainWindow):
     def __init__(self, parent):
@@ -19,6 +20,19 @@ class FormEditResep(QtWidgets.QMainWindow):
         self.inputGambar_resep.clicked.connect(self.selectPicture)
         self.saveButton_resep.clicked.connect(self.inputValidation)
 
+        self.inputJudul_resep.setFont(fontLoader.load_custom_font('../font/Nunito-ExtraBold.ttf'))
+        self.inputJudul_resep.setStyleSheet("QTextEdit {font: 40px; background-color: #F7EAD3; border-radius: 29px; padding: 10px; text-align: center;}")
+        self.inputDeskripsi_resep.setFont(fontLoader.load_custom_font('../font/Nunito-Medium.ttf'))
+        self.inputDeskripsi_resep.setStyleSheet("QTextEdit {font: 16px; background-color: #F7EAD3; border-radius: 29px; padding: 10px; text-align: center;}")
+        self.bahan_label.setFont(fontLoader.load_custom_font('../font/Nunito-ExtraBold.ttf'))
+        self.bahan_label.setStyleSheet("font: 20px;")
+        self.alat_label.setFont(fontLoader.load_custom_font('../font/Nunito-ExtraBold.ttf'))
+        self.alat_label.setStyleSheet("font: 20px;")
+        self.langkahMemasakLabel.setFont(fontLoader.load_custom_font('../font/Nunito-ExtraBold.ttf'))
+        self.langkahMemasakLabel.setStyleSheet("font: 20px;")
+        self.inputLangkahMemasak_resep.setFont(fontLoader.load_custom_font('../font/Nunito-Medium.ttf'))
+        self.inputLangkahMemasak_resep.setStyleSheet("QTextEdit {font: 16px; background-color: #F7EAD3; border-radius: 29px; padding: 10px; text-align: center;}")
+        
         self.addAlat_button.setFixedSize(30, 30)
         self.addBahan_button.setFixedSize(30, 30)
         self.addAlat_button.setIcon(QIcon(QPixmap("../images/icon/addIcon.png")))
@@ -135,6 +149,7 @@ class FormEditResep(QtWidgets.QMainWindow):
         dropdown.view().setHorizontalScrollBarPolicy(Qt.ScrollBarAsNeeded)
         dropdown.setObjectName("DropdownAlat_"+str(self.counterAlat))
         dropdown.setFixedSize(125, 30)
+        dropdown.setFont(fontLoader.load_custom_font('../font/Nunito-Medium.ttf'))
         dropdown.setStyleSheet("QComboBox{background-color: #F7EAD3; border: none; border-radius: 10px;} QComboBox::down-arrow {image: url(../images/icon/down_arrow.png); height: 30px;} ")
         horizontal_layout.addWidget(dropdown)
 
@@ -163,6 +178,7 @@ class FormEditResep(QtWidgets.QMainWindow):
         amount.setRange(0.1, 100000.0)
         amount.setValue(jumlah)
         amount.setFixedSize(45, 30)
+        amount.setFont(fontLoader.load_custom_font('../font/Nunito-Medium.ttf'))
         amount.setStyleSheet("QSpinBox{background-color: #F7EAD3; border-radius: 10px;}QSpinBox::up-button{image: url(../images/icon/up_arrow.png); width: 7px;} QSpinBox::down-button{image: url(../images//icon/down_arrow.png); width: 7px;}")
         horizontal_layout.addWidget(amount)
 
@@ -173,6 +189,7 @@ class FormEditResep(QtWidgets.QMainWindow):
         #if satuan != "none":
         unit.setCurrentIndex(unit.findText(satuan))
         unit.setFixedSize(72, 30)
+        unit.setFont(fontLoader.load_custom_font('../font/Nunito-Medium.ttf'))
         unit.setStyleSheet("QComboBox{background-color: #F7EAD3; border: none; border-radius: 10px;} QComboBox::down-arrow {image: url(../images/icon/down_arrow.png); height: 5px; width: 5px}")
         horizontal_layout.addWidget(unit)
 
@@ -182,6 +199,7 @@ class FormEditResep(QtWidgets.QMainWindow):
         dropdown.setCurrentIndex(dropdown.findText(opsi))
         dropdown.setObjectName("DropdownBahan_"+str(self.counterBahan))
         dropdown.setFixedSize(125, 30)
+        dropdown.setFont(fontLoader.load_custom_font('../font/Nunito-Medium.ttf'))
         dropdown.setStyleSheet("QComboBox{background-color: #F7EAD3; border: none; border-radius: 10px;} QComboBox::down-arrow {image: url(../images/icon/down_arrow.png); height: 30px;}")
         dropdown.view().setStyleSheet("QScrollBar:vertical {background-color: #FDE7BD; border: none; border-radius: 15px; width: 8px; margin: 0px 0px 0px 0px;}\
                                                 QScrollBar::handle:vertical {background-color: #EE9C20;border-radius: 15px; min-height: 20px;}\

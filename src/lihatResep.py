@@ -5,7 +5,7 @@ from PyQt5 import uic, QtWidgets, QtCore, QtGui
 from functools import partial
 from PyQt5.QtCore import QDateTime, Qt, QTimer
 from PyQt5.QtCore import Qt
-
+import fontLoader
 
 class LihatResep(QMainWindow) :
     def __init__(self, parent) :
@@ -54,6 +54,11 @@ class LihatResep(QMainWindow) :
 
         self.path = "../images/icon/noPhoto.jpg"
         self.text = ""
+        
+        self.alat.setFont(fontLoader.load_custom_font('../font/Nunito-ExtraBold.ttf'))
+        self.bahan.setFont(fontLoader.load_custom_font('../font/Nunito-ExtraBold.ttf'))
+        self.langkahMemasak.setFont(fontLoader.load_custom_font('../font/Nunito-ExtraBold.ttf'))
+        self.textEdit.setFont(fontLoader.load_custom_font('../font/Nunito-Regular.ttf'))
 
         self.attachButton.setStyleSheet("border-image: url(../images/icon/attach.png);background-color:none;border: none")
         self.sendButton.clicked.connect(self.addKomentar)
@@ -77,24 +82,31 @@ class LihatResep(QMainWindow) :
 
         self.fotoMasakan.setPixmap(QtGui.QPixmap(self.fotoResep))
         self.namaMasakan.setText(self.resep[0][2])
+        self.namaMasakan.setFont(fontLoader.load_custom_font('../font/Nunito-ExtraBold.ttf'))
         self.deskripsi.setText(self.resep[0][3])
+        self.deskripsi.setFont(fontLoader.load_custom_font('../font/Nunito-Medium.ttf'))
         self.langkahMemasak_isi.setText(self.resep[0][4])
+        self.langkahMemasak_isi.setFont(fontLoader.load_custom_font('../font/Nunito-Medium.ttf'))
         self.bahan_isi.setText(self.bahanResepCombined)
+        self.bahan_isi.setFont(fontLoader.load_custom_font('../font/Nunito-Medium.ttf'))
         self.alat_isi.setText(self.alatResepCombined)
+        self.alat_isi.setFont(fontLoader.load_custom_font('../font/Nunito-Medium.ttf'))
         self.total = len(self.komentarResep)
         if self.total > 0 :
                 self.displayKomentar()
         self.judulKomentar.setText(f"Komentar ({self.total})")
+        self.judulKomentar.setFont(fontLoader.load_custom_font('../font/Nunito-ExtraBold.ttf'))
         self.setFixedWidth(1200)
         self.setFixedHeight(850)
 
         nNamaMasakan = len(self.resep[0][2])
+        self.namaMasakan.setFont(fontLoader.load_custom_font('../font/Nunito-Black.ttf'))
         if nNamaMasakan > 45 :
-              self.namaMasakan.setStyleSheet("font: Bold 8pt \"MS Shell Dlg 2\";")
+              self.namaMasakan.setStyleSheet("font: 8pt;")
         elif nNamaMasakan > 30 :
-              self.namaMasakan.setStyleSheet("font: Bold 10pt \"MS Shell Dlg 2\";")
+              self.namaMasakan.setStyleSheet("font: 10pt;")
         elif nNamaMasakan > 20 :
-              self.namaMasakan.setStyleSheet("font: Bold 16pt \"MS Shell Dlg 2\";")
+              self.namaMasakan.setStyleSheet("font: 16pt;")
 
         if self.total == 0 :
                 self.komentar.setMinimumSize(QtCore.QSize(1000, 300))
@@ -298,7 +310,8 @@ class LihatResep(QMainWindow) :
                 self.tanggalKomentar_0 = QtWidgets.QLabel(self.komentarFrame_0)
                 self.tanggalKomentar_0.setGeometry(QtCore.QRect(30, 20, 131, 51))
                 self.tanggalKomentar_0.setText(self.komentarTanggal)
-                self.tanggalKomentar_0.setStyleSheet("font: 8pt \"MS Shell Dlg 2\";\n"
+                self.tanggalKomentar_0.setFont(fontLoader.load_custom_font('../font/Nunito-Light.ttf'))
+                self.tanggalKomentar_0.setStyleSheet("font: 8pt;\n"
         "color: rgb(211, 164, 145);")
                 self.tanggalKomentar_0.setScaledContents(False)
                 self.tanggalKomentar_0.setWordWrap(False)
@@ -317,6 +330,7 @@ class LihatResep(QMainWindow) :
                 self.isiKomentar_0.setHorizontalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
                 self.isiKomentar_0.setObjectName("isiKomentar_" + str(self.komentarID))
                 self.isiKomentar_0.setText(self.komentarTeks)
+                self.isiKomentar_0.setFont(fontLoader.load_custom_font('../font/Nunito-Regular.ttf'))
                 self.isiKomentar_0.setLineWrapMode(QTextEdit.WidgetWidth)
                 self.fotoKomentar_0 = QtWidgets.QLabel(self.komentarFrame_0)
                 self.fotoKomentar_0.setGeometry(QtCore.QRect(670, 70, 361, 181))

@@ -61,12 +61,7 @@
      </rect>
     </property>
     <property name="styleSheet">
-     <string notr="true">color: #F75008;
-font: 75 10pt;
-background-color: #FDE7BD;
-border: none;
-border-radius: 15px;
-padding: 5px;</string>
+     <string notr="true"/>
     </property>
     <property name="placeholderText">
      <string>cari resep...</string>
