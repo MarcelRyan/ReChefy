@@ -6,6 +6,7 @@ image: "python:latest"
 before_script:
   - python --version
   - pip install -r requirements.txt
+  - pip install pyqt5 pyqt5-tools
 # different stages in the pipeline
 stages:
   - Static Analysis
@@ -29,3 +30,4 @@ pytest:
   only:
   - merge_requests
   - main
+  - develop
