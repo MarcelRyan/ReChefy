@@ -28,4 +28,3 @@ pytest:
   - python3 -m unittest discover tests/
   only:
   - merge_requests
-  - main
