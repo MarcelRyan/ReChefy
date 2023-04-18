@@ -460,8 +460,6 @@ class LihatResep(QMainWindow) :
                 self.notifAddKomentar()
 
     def editResep(self):
-        self.listKomentar = []
-        self.listKomentarDeleteAll = []
         if self.defaultResep == 1 :
                 self.deleteResepButton.setParent(None)
                 self.deleteResepButton.deleteLater()
@@ -472,6 +470,8 @@ class LihatResep(QMainWindow) :
         self.text = ""
         self.path = "../images/icon/noPhoto.jpg"
         self.parent.LihatResep.resetKomentar()
+        self.listKomentar = []
+        self.listKomentarDeleteAll = []
         self.parent.EditResep.idResep = self.idResep
         self.parent.EditResep.clear()
         self.parent.EditResep.readResep()
@@ -479,8 +479,6 @@ class LihatResep(QMainWindow) :
 
     def goBack(self):
         self.parent.LihatResep.resetKomentar()
-        self.listKomentar = []
-        self.listKomentarDeleteAll = []
         if self.defaultResep == 1 :
                 self.deleteResepButton.setParent(None)
                 self.deleteResepButton.deleteLater()
@@ -490,12 +488,12 @@ class LihatResep(QMainWindow) :
         self.pathText.setText("")
         self.text = ""
         self.path = "../images/icon/noPhoto.jpg"
+        self.listKomentar = []
+        self.listKomentarDeleteAll = []
         self.parent.DaftarResep.readDatabase()
         self.parent.pages.setCurrentWidget(self.parent.DaftarResep)
 
     def goHome(self):
-        self.listKomentar = []
-        self.listKomentarDeleteAll = []
         self.parent.LihatResep.resetKomentar()
         if self.defaultResep == 1 :
                 self.deleteResepButton.setParent(None)
@@ -506,6 +504,8 @@ class LihatResep(QMainWindow) :
         self.pathText.setText("")
         self.text = ""
         self.path = "../images/icon/noPhoto.jpg"
+        self.listKomentar = []
+        self.listKomentarDeleteAll = []
         self.parent.DaftarResep.readDatabase()
         self.parent.pages.setCurrentWidget(self.parent.WelcomePage)
 
