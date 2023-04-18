@@ -5,8 +5,8 @@ image: "python:latest"
 #commands to run in the Docker container before starting each job.
 before_script:
   - python --version
-  - apt-get update && apt-get install -y git ninja-build libglib2.0-0 libsm6 libxrender-dev libxext6 libgl1-mesa-glx
   - pip install -r requirements.txt
+  - pip install opencv-python-headless
 # different stages in the pipeline
 stages:
   - Static Analysis
