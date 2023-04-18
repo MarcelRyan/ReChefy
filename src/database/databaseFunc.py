@@ -282,6 +282,15 @@ def getLastIdResep(connection):
     data = connect.fetchone()
     return data[0]
 
+def getLastIdKomentar(connection):
+    connect = connection.cursor()
+    connect.execute("SELECT seq FROM sqlite_sequence WHERE name ='Komentar';")
+    data = connect.fetchone()
+    if data is not None and data[0] is not None:
+        return data[0]
+    else :
+        return 0
+
 # Function to get all satuanKuantitasBahan that is unique in BahanResep
 def getSatuanKuantitasBahan(connection):
     connect = connection.cursor()
