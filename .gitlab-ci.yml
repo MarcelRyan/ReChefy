@@ -25,6 +25,7 @@ pytest:
     - python
   script:
   - cd src
+  - apt-get update && apt-get install -y git ninja-build libglib2.0-0 libsm6 libxrender-dev libxext6 libgl1-mesa-glx \
   - python3 -m unittest discover tests/
   only:
   - merge_requests
