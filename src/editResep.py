@@ -273,9 +273,13 @@ class FormEditResep(QtWidgets.QMainWindow):
     def clearAlat(self):
         for i in range(len(self.listLayoutAlat)):
             self.deleteAlat(self.listLayoutAlat[0])
+        self.listLayoutAlat.clear()
+        self.listAlat.clear()
     def clearBahan(self):
         for i in range(len(self.listLayoutBahan)):
             self.deleteBahan(self.listLayoutBahan[0])
+        self.listLayoutBahan.clear()
+        self.listBahan.clear()
 
     def clear(self):
         self.clearAlat()
@@ -284,6 +288,8 @@ class FormEditResep(QtWidgets.QMainWindow):
         self.inputDeskripsi_resep.clear()
         self.inputLangkahMemasak_resep.clear()
         self.inputGambar_resep.setIcon(QIcon(QPixmap("../images/icon/pilihFoto.png")))
+        self.inputGambar_resep.setIconSize(QSize(113, 98))
+        self.inputGambar_resep.setStyleSheet("QPushButton{background-color: #EEC120; border-radius: 25px;}")
 
     def alatValidation(self):
         alat = set()
@@ -306,42 +312,55 @@ class FormEditResep(QtWidgets.QMainWindow):
             self.parent.WarningValidasi.warningClass.warningLabel.setText("")
             print(str(self.parent.WarningValidasi.warningClass.warningLabel.text()))
             self.isiText = []
+            self.isiTextSama = []
             if self.inputJudul_resep.toPlainText() == "":
                 print("Judul masakan masih kosong")
-                self.isiText.append("Judul masakan masih kosong")
+                self.isiText.append("judul")
             if (self.inputDeskripsi_resep.toPlainText() == ""):
                 print("Deskripsi masakan masih kosong")
-                self.isiText.append("Deskripsi masakan masih kosong")
+                self.isiText.append("deskripsi")
             if self.filePath == "":
                 print("Gambar masakan belum ada")
-                self.isiText.append("Gambar masakan belum ada")
+                self.isiText.append("gambar")
             if self.inputLangkahMemasak_resep.toPlainText() == "":
                 print("Langkah memasak masakan masih kosong")
-                self.isiText.append("Langkah memasak masakan masih kosong")
+                self.isiText.append("Langkah memasak")
             if len(self.listAlat) == 0:
                 print("Alat masih kosong")
-                self.isiText.append("Alat masih kosong")
+                self.isiText.append("alat")
             if len(self.listBahan) == 0:
                 print("Bahan masih kosong")
-                self.isiText.append("Bahan masih kosong")
+                self.isiText.append("bahan")
             if not self.alatValidation():
                 print("Terdapat alat yang sama")
-                self.isiText.append("Terdapat alat yang sama")
+                self.isiTextSama.append("alat")
             if not self.bahanValidation():
                 print("Terdapat bahan yang sama")
-                self.isiText.append("Terdapat bahan yang sama")
-            for i in range(len(self.isiText)):
-                self.parent.WarningValidasi.warningClass.warningLabel.setText(str(self.parent.WarningValidasi.warningClass.warningLabel.text()) + self.isiText[i])
-                if i != 0 or i != len(self.isiText)-1:
-                    self.parent.WarningValidasi.warningClass.warningLabel.setText(str(self.parent.WarningValidasi.warningClass.warningLabel.text()) + "\n")
+                self.isiTextSama.append("bahan")
+            if len(self.isiText):
+                for i in range(len(self.isiText)):
+                    if i > 0 and i < len(self.isiText):
+                        self.parent.WarningValidasi.warningClass.warningLabel.setText(str(self.parent.WarningValidasi.warningClass.warningLabel.text()) + ", ")
+                    self.parent.WarningValidasi.warningClass.warningLabel.setText(str(self.parent.WarningValidasi.warningClass.warningLabel.text()) + self.isiText[i])
+                self.parent.WarningValidasi.warningClass.warningLabel.setText(str(self.parent.WarningValidasi.warningClass.warningLabel.text()) + " masih kosong\n")
+            if len(self.isiTextSama):
+                self.parent.WarningValidasi.warningClass.warningLabel.setText(str(self.parent.WarningValidasi.warningClass.warningLabel.text()) + "Terdapat ")
+                for i in range(len(self.isiTextSama)):
+                    if i > 0 and i < len(self.isiText)-1:
+                        self.parent.WarningValidasi.warningClass.warningLabel.setText(str(self.parent.WarningValidasi.warningClass.warningLabel.text()) + ", ")
+                    self.parent.WarningValidasi.warningClass.warningLabel.setText(str(self.parent.WarningValidasi.warningClass.warningLabel.text()) + self.isiTextSama[i])
+                self.parent.WarningValidasi.warningClass.warningLabel.setText(str(self.parent.WarningValidasi.warningClass.warningLabel.text()) + " yang sama")
+
             self.parent.popup.setCurrentWidget(self.parent.WarningValidasi)
             if self.parent.WarningValidasi.Exec() != QDialog.Accepted:
                 self.parent.WarningValidasi.warningClass.warningLabel.setText("")
+            self.parent.WarningValidasi.warningClass.warningLabel.setText("")
         else:
             self.parent.WarningValidasi.warningClass.warningLabel.setText("Berhasil disunting")
             self.parent.popup.setCurrentWidget(self.parent.WarningValidasi)
             if self.parent.WarningValidasi.Exec() != QDialog.Accepted:
                 self.parent.WarningValidasi.warningClass.warningLabel.setText("")
+            self.parent.WarningValidasi.warningClass.warningLabel.setText("")
             self.editResep()
         # penambahan warning
     def editResep(self):
