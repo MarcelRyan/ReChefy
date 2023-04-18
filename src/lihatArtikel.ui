@@ -175,7 +175,7 @@ border-style: outset;</string>
              </rect>
             </property>
             <property name="styleSheet">
-             <string notr="true">font: 26pt;</string>
+             <string notr="true">font: 24pt;</string>
             </property>
             <property name="text">
              <string>Ayam Goreng adalah Makanan yang Enak Sekali</string>

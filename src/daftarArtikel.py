@@ -114,13 +114,13 @@ class DaftarArtikel(QtWidgets.QMainWindow):
         self.writeLabelLimited(label_judul)
         label_judul.setWordWrap(True)
         label_judul.setFont(fontLoader.load_custom_font('../font/Nunito-ExtraBold.ttf'))
-        label_judul.setStyleSheet("font: 16pt; line-height: 90%")
+        label_judul.setStyleSheet("font: 16pt;")
         verticalBox.addWidget(label_judul)
         
         label_tanggal = QtWidgets.QLabel()
         label_tanggal.setText(artikel[4])
         label_tanggal.setFont(fontLoader.load_custom_font('../font/Nunito-Light.ttf'))
-        label_tanggal.setStyleSheet("font: 10pt;")
+        label_tanggal.setStyleSheet("font: 8pt;")
         verticalBox.addWidget(label_tanggal)
         
         label_preview = QtWidgets.QLabel(artikel[3])

@@ -25,6 +25,7 @@ class LihatArtikel(QMainWindow) :
         self.fotoArtikel.setPixmap(QtGui.QPixmap(self.artikelFoto))
         self.namaArtikel.setText(str(self.artikel[2]))
         self.namaArtikel.setFont(fontLoader.load_custom_font('../font/Nunito-ExtraBold.ttf'))
+        self.namaArtikel.adjustSize()
         self.textEdit.setText(str(self.artikel[3]))
         self.textEdit.setFont(fontLoader.load_custom_font('../font/Nunito-Medium.ttf'))
         self.tanggal.setText(str(self.artikel[4]))
