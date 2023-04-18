@@ -6,7 +6,6 @@ image: "python:latest"
 before_script:
   - python --version
   - pip install -r requirements.txt
-  - apt-get -y install python3-pyqt5
 # different stages in the pipeline
 stages:
   - Static Analysis
@@ -26,6 +25,7 @@ pytest:
     - python
   script:
   - cd src
+  - apt-get update && apt-get install libgl1
   - python3 -m unittest discover tests/
   only:
   - merge_requests
