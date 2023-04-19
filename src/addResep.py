@@ -55,6 +55,8 @@ class FormAddResep(QtWidgets.QMainWindow):
                                                 QScrollBar::sub-line:vertical {border: none; background: none;}")
         self.verticalAlat = QtWidgets.QVBoxLayout()
         self.verticalBahan = QtWidgets.QVBoxLayout()
+        
+        # Inisialisasi penyimpanan masukan user
         self.filePath = ""
         self.verticalBahan.setContentsMargins(0, 0, 10, 0)
         self.listAlat = []
@@ -67,7 +69,7 @@ class FormAddResep(QtWidgets.QMainWindow):
         self.amountBahan = 0
 
 
-        # Read database
+        # Pembacaan database
         self.file = r".\database\rechefy.db"
         self.connection = databaseFunc.connectToDatabase(self.file)
         databaseFunc.initializeTable(self.connection)
@@ -112,6 +114,7 @@ class FormAddResep(QtWidgets.QMainWindow):
         self.verticalLayoutWidget.raise_()
 
     def addAlat(self):
+        # Penambahan alat pada templat resep
         horizontal_layout = QtWidgets.QHBoxLayout()
         horizontal_layout.setObjectName("Alat_"+str(self.counterAlat))
 
@@ -143,6 +146,7 @@ class FormAddResep(QtWidgets.QMainWindow):
         
     
     def addBahan(self):
+        # Penambahan bahan pada templat resep
         horizontal_layout = QtWidgets.QHBoxLayout()
         horizontal_layout.setObjectName("Bahan_"+str(self.counterAlat))
         horizontal_layout.setSpacing(3)
@@ -195,6 +199,7 @@ class FormAddResep(QtWidgets.QMainWindow):
 
 
     def selectPicture(self):
+        # Fungsi menerima input gambar masakan
         self.filePath, _ = QFileDialog.getOpenFileName(self, "Open Image", "", "Image Files (*.png *.jpg *.bmp)")
         if self.filePath:
             self.inputGambar_resep.setIcon(QIcon(QPixmap(self.filePath)))
@@ -206,21 +211,14 @@ class FormAddResep(QtWidgets.QMainWindow):
             self.inputGambar_resep.setStyleSheet("QPushButton{background-color: #EEC120; border-radius: 25px;}")
 
     def deleteAlat(self, layout):
-        # self.listLayoutAlat.remove(layout)
-        # Get the layout item that contains the given layout
+        # Menghapus satu pilihan alat pada GUI
         layout_item = self.verticalAlat.itemAt(self.verticalAlat.indexOf(layout))
-
-        # Remove the layout item from the vertical layout
         self.verticalAlat.removeItem(layout_item)
-
-        # Delete the layout and its contents
         while layout.count():
             child_item = layout.takeAt(0)
 
             if child_item.widget():
                 child_item.widget().deleteLater()
-
-        # Update widget container after deletion
         self.scrollWidgetAlat.setLayout(self.verticalAlat)
         self.listAlat.remove(int(layout.id))
         self.listLayoutAlat.remove(layout)
@@ -228,7 +226,7 @@ class FormAddResep(QtWidgets.QMainWindow):
         self.amountAlat -= 1
 
     def deleteBahan(self, layout):
-        # self.listLayoutBahan.remove(layout)
+        # Menghapus satu bahan pada GUI, termasuk kuantitas, satuan, dan pilihan bahannya.
         layout_item = self.verticalBahan.itemAt(self.verticalBahan.indexOf(layout))
         self.verticalBahan.removeItem(layout_item)
         while layout.count():
@@ -242,11 +240,13 @@ class FormAddResep(QtWidgets.QMainWindow):
         self.listLayoutBahan.remove(layout)
         del layout
         self.amountBahan -= 1
+
     def clearAlat(self):
         for i in range(len(self.listLayoutAlat)):
             self.deleteAlat(self.listLayoutAlat[0])
         self.listLayoutAlat.clear()
         self.listAlat.clear()
+
     def clearBahan(self):
         for i in range(len(self.listLayoutBahan)):
             self.deleteBahan(self.listLayoutBahan[0])
@@ -254,6 +254,7 @@ class FormAddResep(QtWidgets.QMainWindow):
         self.listBahan.clear()
 
     def clear(self):
+        # Mengosongkan templat sebelum mengakses halaman lain
         self.clearAlat()
         self.clearBahan()
         self.inputJudul_resep.clear()
@@ -280,6 +281,7 @@ class FormAddResep(QtWidgets.QMainWindow):
         return True
 
     def inputValidation(self):
+        # Validasi input, dilakukan pemunculan popup apabila tidak sesuai
         if self.inputJudul_resep.toPlainText() == "" or self.inputDeskripsi_resep.toPlainText() == "" or self.filePath == "" or self.inputLangkahMemasak_resep.toPlainText() == "" or len(self.listAlat) == 0 or len(self.listBahan) == 0 or not self.alatValidation() or not self.bahanValidation():
             self.parent.WarningValidasi.warningClass.warningLabel.setText("")
             self.isiText = []
@@ -336,24 +338,21 @@ class FormAddResep(QtWidgets.QMainWindow):
             # penambahan warning
     def addResep(self):
         # Jika tervalidasi, lakukan add resep.
-        # def addResep(connection, nama_masakan, deskripsi_masakan, gambar_masakan, langkah_memasak, isDefault):
         databaseFunc.addResep(self.connection, self.inputJudul_resep.toPlainText(), self.inputDeskripsi_resep.toPlainText(), databaseFunc.imageToBlob(self.filePath), self.inputLangkahMemasak_resep.toPlainText(), 1)
         self.resepID = databaseFunc.getLastIdResep(self.connection)
         
         for count in self.listAlat:
+
             alat = self.findChild(QComboBox, f'DropdownAlat_{count}')
             idAlat = databaseFunc.getIdAlat(self.connection, alat.currentText())
             databaseFunc.addAlatResep(self.connection, self.resepID, idAlat)
-            #addAlatResep(connection, id_resep, id_alat)
         
         for count in self.listBahan:
-            # print(count)
+
             bahan = self.findChild(QComboBox, f'DropdownBahan_{count}')
             jumlahBahan = self.findChild(QDoubleSpinBox, f'Jumlah_{count}')
-            # print(jumlahBahan.value())
             satuanBahan = self.findChild(QComboBox, f'Satuan_{count}')
             idBahan = databaseFunc.getIdBahan(self.connection, bahan.currentText())
-            #addBahanResep(connection, id_resep, id_bahan, kuantitas_bahan, satuan_kuantitas_bahan)
             databaseFunc.addBahanResep(self.connection, self.resepID, idBahan, jumlahBahan.value(), satuanBahan.currentText())
         
         # Setelah penyimpanan, kembali ke daftar resep
@@ -363,6 +362,7 @@ class FormAddResep(QtWidgets.QMainWindow):
         self.parent.DaftarResep.notifAddResep()
 
     def goBack(self):
+        # Kembali ke menu daftar resep
         self.parent.popup.setCurrentWidget(self.parent.WarningBack)
         if self.parent.WarningBack.Exec() == QDialog.Accepted:
               self.clear()
@@ -371,6 +371,7 @@ class FormAddResep(QtWidgets.QMainWindow):
               self.parent.pages.setCurrentWidget(self.parent.DaftarResep)
 
     def goHome(self):
+        # Kembali pada welcome page
         self.parent.popup.setCurrentWidget(self.parent.WarningBack)
         if self.parent.WarningBack.Exec() == QDialog.Accepted:
               self.clear()

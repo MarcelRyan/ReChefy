@@ -9,6 +9,7 @@ import fontLoader
 
 class FormEditResep(QtWidgets.QMainWindow):
     def __init__(self, parent):
+        # Konstruksi GUI
         super(FormEditResep, self).__init__()
         uic.loadUi("editResep.ui", self)
         self.parent = parent
@@ -54,7 +55,8 @@ class FormEditResep(QtWidgets.QMainWindow):
                                                 QScrollBar::sub-line:vertical {border: none; background: none;}")
         self.scrollAlat.setStyleSheet("QScrollBar:vertical { width: 15px; }")
         self.scrollBahan.setStyleSheet("QScrollBar:vertical { width: 15px; }")
-        # Initialize data for input through database
+        
+        # Inisialisasi data input dari database
         self.file = r".\database\rechefy.db"
         self.connection = databaseFunc.connectToDatabase(self.file)
         self.allAlat = databaseFunc.getAlat(self.connection)
@@ -63,6 +65,7 @@ class FormEditResep(QtWidgets.QMainWindow):
         self.addAlat_button.clicked.connect(lambda: self.addAlat(self.allAlat[0][1]))
         self.addBahan_button.clicked.connect(lambda: self.addBahan(self.allBahan[0][1], 0.1, self.satuanBahan[0][0]))
 
+        # Inisialisasi penyimpanan masukan user
         self.verticalAlat = QtWidgets.QVBoxLayout()
         self.verticalBahan = QtWidgets.QVBoxLayout()
         self.verticalBahan.setSpacing(3)
@@ -113,7 +116,7 @@ class FormEditResep(QtWidgets.QMainWindow):
         self.verticalLayoutWidget.raise_()
 
     def readResep(self):
-        ## EDIT RESEP DATABASE
+        ## Membaca data resep yang ingin disunting pada database
         self.file = r".\database\rechefy.db"
         self.connection = databaseFunc.connectToDatabase(self.file)
         self.dataResep = databaseFunc.getResep(self.connection, self.idResep)
@@ -139,6 +142,7 @@ class FormEditResep(QtWidgets.QMainWindow):
 
 
     def addAlat(self, opsi):
+        # Penambahan alat dari templat sunting resep baik dari database maupun tambahan dari user
         horizontal_layout = QtWidgets.QHBoxLayout()
         horizontal_layout.setObjectName("Alat_"+str(self.counterAlat))
 
@@ -171,6 +175,7 @@ class FormEditResep(QtWidgets.QMainWindow):
         
     
     def addBahan(self, opsi, jumlah, satuan):
+        # Penambahan bahan pada templat sunting resep baik dari database maupun tambahan user
         horizontal_layout = QtWidgets.QHBoxLayout()
 
         amount = QtWidgets.QDoubleSpinBox()
@@ -186,7 +191,6 @@ class FormEditResep(QtWidgets.QMainWindow):
         for i in self.satuanBahan:
             unit.addItem(i[0])
         unit.setObjectName("Satuan_"+str(self.counterBahan))
-        #if satuan != "none":
         unit.setCurrentIndex(unit.findText(satuan))
         unit.setFixedSize(72, 30)
         unit.setFont(fontLoader.load_custom_font('../font/Nunito-Medium.ttf'))
@@ -224,6 +228,7 @@ class FormEditResep(QtWidgets.QMainWindow):
 
 
     def selectPicture(self):
+        # Fungsi menerima input gambar masakan
         self.filePath, _ = QFileDialog.getOpenFileName(self, "Open Image", "", "Image Files (*.png *.jpg *.bmp)")
         if self.filePath:
             self.inputGambar_resep.setIcon(QIcon(QPixmap(self.filePath)))
@@ -235,27 +240,25 @@ class FormEditResep(QtWidgets.QMainWindow):
             self.inputGambar_resep.setStyleSheet("QPushButton{background-color: #EEC120; border: none;}")
 
     def deleteAlat(self, layout):
-        # Get the layout item that contains the given layout
+        # Menghapus satu pilihan alat pada GUI
         layout_item = self.verticalAlat.itemAt(self.verticalAlat.indexOf(layout))
         self.listLayoutAlat.remove(layout)
         self.listAlat.remove(layout.id)
-        # Remove the layout item from the vertical layout
         self.verticalAlat.removeItem(layout_item)
 
-        # Delete the layout and its contents
         while layout.count():
             child_item = layout.takeAt(0)
 
             if child_item.widget():
                 child_item.widget().deleteLater()
 
-        # Update widget container after deletion
         self.scrollWidgetAlat.setLayout(self.verticalAlat)
 
         del layout
         self.amountAlat -= 1
 
     def deleteBahan(self, layout):
+        # Menghapus satu bahan pada GUI, termasuk kuantitas, satuan, dan pilihan bahannya.
         layout_item = self.verticalBahan.itemAt(self.verticalBahan.indexOf(layout))
         self.verticalBahan.removeItem(layout_item)
         self.listBahan.remove(layout.id)
@@ -282,6 +285,7 @@ class FormEditResep(QtWidgets.QMainWindow):
         self.listBahan.clear()
 
     def clear(self):
+        # Mengosongkan templat sebelum mengakses halaman lain
         self.clearAlat()
         self.clearBahan()
         self.inputJudul_resep.clear()
@@ -308,6 +312,7 @@ class FormEditResep(QtWidgets.QMainWindow):
         return True
 
     def inputValidation(self):
+        # Validasi input, dilakukan pemunculan popup apabila tidak sesuai
         if self.inputJudul_resep.toPlainText() == "" or self.inputDeskripsi_resep.toPlainText() == "" or self.filePath == "" or self.inputLangkahMemasak_resep.toPlainText() == "" or len(self.listAlat) == 0 or len(self.listBahan) == 0 or not self.alatValidation() or not self.bahanValidation():
             self.parent.WarningValidasi.warningClass.warningLabel.setText("")
             print(str(self.parent.WarningValidasi.warningClass.warningLabel.text()))
@@ -390,6 +395,7 @@ class FormEditResep(QtWidgets.QMainWindow):
         self.parent.LihatResep.notifEditResep()
 
     def goBack(self):
+        # Kembali ke tampilan resep
         self.parent.popup.setCurrentWidget(self.parent.WarningBack)
         if self.parent.WarningBack.Exec() == QDialog.Accepted:
               self.clear()
@@ -399,6 +405,7 @@ class FormEditResep(QtWidgets.QMainWindow):
               self.parent.pages.setCurrentWidget(self.parent.LihatResep)
     
     def goHome(self):
+        # Kembali pada welcome page
         self.parent.popup.setCurrentWidget(self.parent.WarningBack)
         if self.parent.WarningBack.Exec() == QDialog.Accepted:
               self.clear()
