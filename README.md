@@ -93,6 +93,6 @@ Berikut adalah tampilan dari Sunting Resep
 |NIM|Nama|Tugas|
 |-|-|-|
 |13521059|Arleen Chrysantha Gunardi||
-|13521127|Marcel Ryan Antony||
+|13521127|Marcel Ryan Antony|database, ci cd, query|
 |13521143|Raynard Tanadi||
 |13521145|Kenneth Dave Bahana||
