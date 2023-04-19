@@ -2,11 +2,59 @@
 
 ReChefy merupakan aplikasi berbasis desktop yang hadir sebagai teman memasak Anda. Bersama ReChefy, Anda dapat memasak dengan lebih mudah dengan adanya fitur untuk melihat resep masakan. Anda juga dapat menambahkan resep pada aplikasi, serta menyunting dan menghapus resep buatan Anda. ReChefy juga dapat meningkatkan pengalaman memasak Anda dengan adanya fitur komentar pada setiap resep, sehingga Anda dapat memberikan catatan mengenai resep-resep pada aplikasi. Selain itu, ReChefy juga dilengkapi dengan kumpulan artikel memasak yang dapat Anda baca.
 
+## Daftar Isi
+* [Cara Menjalankan Aplikasi](#cara-menjalankan-aplikasi)
+* [Struktur Program](#struktur-program)
+* [Daftar Modul yang Diimplementasikan](#daftar-modul-yang-diimplementasikan)
+* [Daftar Tabel Basis Data yang Diimplementasikan](#daftar-tabel-basis-data-yang-diimplementasikan)
+* [Anggota Kelompok dan Pembagian Tugas](#anggota-kelompok-dan-pembagian-tugas)
+* [Notes](#notes)
+
 ## Cara Menjalankan Aplikasi
 1. Clone repository dengan menjalankan perintah ```git clone git@gitlab.informatika.org:Raylouis/if2250-2023-k01-11-rechify.git``` pada terminal.
 2. Install requirements.txt pada repository dengan menjalankan perintah ```pip install -r requirements.txt``` pada terminal.
 3. Pada directory repository, jalankan perintah ```./run.bat``` pada terminal.
 4. Aplikasi ReChefy sudah dapat Anda gunakan.
+
+## Struktur Program
+``` bash
+.
+│   .gitignore
+│   .gitlab-ci.yml
+│   .pylintrc
+│   README.md
+│   requirements.txt
+│   run.bat
+│
+└───src
+    │   application.py
+    │   addResep.py
+    │   controller.py
+    │   daftarArtikel.py
+    │   daftarResep.py
+    │   editResep.py
+    │   fontLoader.py
+    │   lihatArtikel.py
+    │   lihatResep.py
+    │   main.py
+    │   menu.py
+    │   warning.py
+    │   welcomePage.py
+    │   
+    ├───database
+    │       databaseFunc.py
+    │       rechefy.db
+    │       
+    └───tests
+            test.db
+            testAddResep.py
+            testDaftarArtikel.py
+            testDaftarResep.py
+            testEditResep.py
+            testLihatArtikel.py
+            testLihatResep.py
+            testDatabaseFunc.py
+```        
 
 ## Daftar Modul yang Diimplementasikan
 ### Welcome Page
@@ -96,3 +144,6 @@ Berikut adalah tampilan dari Sunting Resep
 |13521127|Marcel Ryan Antony|database, ci cd, query|
 |13521143|Raynard Tanadi||
 |13521145|Kenneth Dave Bahana||
+
+## Notes
+Pada bagian ci cd kami yaitu tepatnya pada stage Test unit testing kami selalu _failed_ dikarenakan error dari gitlabnya. Kami juga tidak mengetahui mengapa gitlab mengeluarkan error yang berupa **ImportError: libGL.so.1: cannot open shared object file: No such file or directory**. Dimana apabila kami jalankan unit testing di local kami unit testing tetap berjalan normal dan testing seluruh bagian berhasil, berikut buktinya :
