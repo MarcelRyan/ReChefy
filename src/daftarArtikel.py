@@ -15,18 +15,8 @@ class DaftarArtikel(QtWidgets.QMainWindow):
         file = r".\database\rechefy.db"
         connection = databaseFunc.connectToDatabase(file)
         databaseFunc.initializeTable(connection)
-
-        #self.headerLabel = QtWidgets.QLabel(self)
-        #self.headerLabel.setGeometry(0,0,1200,125)
-        #self.headerLabel.setStyleSheet("background-image: url('../img/icon/header.png');")
         
-        #self.backButton = QtWidgets.QPushButton(self)
-        #self.backButton.setStyleSheet("border-image: url(../img/icon/button_back.png);background-color:none;border: none")
-        #self.backButton.setIconSize(QSize(31, 31))
-        #self.backButton.setFixedSize(QSize(31, 31))
-        #self.backButton.move(52,38)
-        
-        
+        # load header and back button
         self.verticalLayoutWidget = QtWidgets.QWidget(self.centralwidget)
         self.verticalLayoutWidget.setGeometry(QtCore.QRect(0, 0, 1201, 111))
         self.verticalLayoutWidget.setObjectName("verticalLayoutWidget")
@@ -62,6 +52,7 @@ class DaftarArtikel(QtWidgets.QMainWindow):
         self.verticalLayoutWidget_2 = QtWidgets.QWidget(self.centralwidget)
         self.verticalLayoutWidget.raise_()
         
+        # load title "Daftar Artikel" label
         self.titleLabel = QtWidgets.QLabel(self)
         self.titleLabel.setGeometry(70,108,320,70)
         self.titleLabel.setText("Daftar Artikel")
@@ -72,9 +63,9 @@ class DaftarArtikel(QtWidgets.QMainWindow):
         self.layoutScroll = QtWidgets.QVBoxLayout()    
         self.scrollArea.setWidget(self.scrollArtikel)
         self.scrollArea.verticalScrollBar().setStyleSheet("QScrollBar:vertical {background-color: #FDE7BD; border: none; border-radius: 15px; width: 8px; margin: 0px 0px 0px 0px;}\
-                                                QScrollBar::handle:vertical {background-color: #EE9C20;border-radius: 15px; min-height: 20px;}\
-                                                QScrollBar::add-line:vertical {border: none; background: none;}\
-                                                QScrollBar::sub-line:vertical {border: none; background: none;}")
+                                                        QScrollBar::handle:vertical {background-color: #EE9C20;border-radius: 15px; min-height: 20px;}\
+                                                        QScrollBar::add-line:vertical {border: none; background: none;}\
+                                                        QScrollBar::sub-line:vertical {border: none; background: none;}")
         
         # load daftar artikel
         dataArtikel = databaseFunc.getDaftarArtikel(connection)
@@ -82,10 +73,12 @@ class DaftarArtikel(QtWidgets.QMainWindow):
         self.loadArtikel(connection, dataArtikel)
     
     def loadArtikel(self, connection, dataArtikel):
+        # load all artikel
         for idx in range (len(dataArtikel)):
             self.createArtikel(connection, dataArtikel[idx])
     
     def createArtikel(self, connection, artikel):
+        # create each artikel
         artikelLayout = QtWidgets.QHBoxLayout()
         artikelWidget = QtWidgets.QWidget()
         artikelWidget.setFixedSize(1000,260)
@@ -108,7 +101,6 @@ class DaftarArtikel(QtWidgets.QMainWindow):
         verticalWidget = QtWidgets.QWidget()
         verticalBox = QtWidgets.QVBoxLayout()
         label_judul = QtWidgets.QLabel(artikel[2])
-        #label_judul.setFixedSize(470,150)
         label_judul.setFixedWidth(470)
         label_judul.setAlignment(Qt.AlignTop)
         self.writeLabelLimited(label_judul)
@@ -125,7 +117,6 @@ class DaftarArtikel(QtWidgets.QMainWindow):
         
         label_preview = QtWidgets.QLabel(artikel[3])
         self.writeLabelLimited(label_preview)
-        #label_preview.setElideMode(Qt.ElidedRight)
         label_preview.setMaximumWidth(400)
         label_preview.setWordWrap(True)
         label_preview.setFont(fontLoader.load_custom_font('../font/Nunito-Regular.ttf'))
@@ -144,8 +135,6 @@ class DaftarArtikel(QtWidgets.QMainWindow):
     def writeLabelLimited(self, label):
         text = label.text()
         elided_text = label.fontMetrics().elidedText(text, Qt.ElideRight, label.width())
-        #if elided_text != text:
-        #    elided_text += "..."
         label.setText(elided_text)
     
     def goBack(self):
