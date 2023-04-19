@@ -151,10 +151,11 @@ Berikut adalah tampilan dari Sunting Resep
 ## Anggota Kelompok dan Pembagian Tugas
 |NIM|Nama|Tugas|
 |-|-|-|
-|13521059|Arleen Chrysantha Gunardi||
+|13521059|Arleen Chrysantha Gunardi|Daftar Artikel, Daftar Resep|
 |13521127|Marcel Ryan Antony|database, ci cd, query|
-|13521143|Raynard Tanadi||
-|13521145|Kenneth Dave Bahana||
+|13521143|Raynard Tanadi|Lihat Resep, Lihat Artikel|
+|13521145|Kenneth Dave Bahana|Welcome Page, Tambah Resep, Edit Resep|
 
 ## Notes
 Pada bagian ci cd kami yaitu tepatnya pada stage Test unit testing kami selalu _failed_ dikarenakan error dari gitlabnya. Kami juga tidak mengetahui mengapa gitlab mengeluarkan error yang berupa **ImportError: libGL.so.1: cannot open shared object file: No such file or directory**. Dimana apabila kami jalankan unit testing di local kami unit testing tetap berjalan normal dan testing seluruh bagian berhasil, berikut buktinya :
+![unittest](/uploads/310ac6e4314f60310420e093e0196428/unittest.jpg)
