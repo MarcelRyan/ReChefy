@@ -17,15 +17,7 @@ class DaftarResep(QtWidgets.QMainWindow):
         connection = databaseFunc.connectToDatabase(file)
         databaseFunc.initializeTable(connection)
                 
-        # nge read apa data x
-        # for i in x:
-            # self.createResep(nama, picture,)
-        #self.layoutkosong = QtWidgets.QHBoxLayout()
-        
-        # load header label
-        #self.headerLabel = QtWidgets.QLabel(self)
-        #self.headerLabel.setGeometry(0,0,1200,125)
-        #self.headerLabel.setStyleSheet("background-image: url('../img/icon/header.png');")
+        # load header label and back button
         self.verticalLayoutWidget = QtWidgets.QWidget(self.centralwidget)
         self.verticalLayoutWidget.setGeometry(QtCore.QRect(0, 0, 1201, 111))
         self.verticalLayoutWidget.setObjectName("verticalLayoutWidget")
@@ -60,14 +52,7 @@ class DaftarResep(QtWidgets.QMainWindow):
         self.verticalLayout_1.addWidget(self.Navbar)
         self.verticalLayoutWidget_2 = QtWidgets.QWidget(self.centralwidget)
         self.verticalLayoutWidget.raise_()
-        
-        # load back button
-        #self.backButton = QtWidgets.QPushButton(self)
-        #self.backButton.setStyleSheet("border-image: url(../img/icon/button_back.png);background-color:none;border: none")
-        #self.backButton.setIconSize(QSize(31, 31))
-        #self.backButton.setFixedSize(QSize(31, 31))
-        #self.backButton.move(52,38)
-        
+                
         # load title "Daftar Resep" label
         self.titleLabel = QtWidgets.QLabel(self)
         self.titleLabel.setGeometry(70,108,320,70)
@@ -101,19 +86,19 @@ class DaftarResep(QtWidgets.QMainWindow):
         self.gridLayoutResep.setVerticalSpacing(30)
         self.scrollArea.setWidget(self.scrollResep)
         self.scrollArea.verticalScrollBar().setStyleSheet("QScrollBar:vertical {background-color: #FDE7BD; border: none; border-radius: 15px; width: 8px; margin: 0px 0px 0px 0px;}\
-                                                QScrollBar::handle:vertical {background-color: #EE9C20;border-radius: 15px; min-height: 20px;}\
-                                                QScrollBar::add-line:vertical {border: none; background: none;}\
-                                                QScrollBar::sub-line:vertical {border: none; background: none;}")
+                                                        QScrollBar::handle:vertical {background-color: #EE9C20;border-radius: 15px; min-height: 20px;}\
+                                                        QScrollBar::add-line:vertical {border: none; background: none;}\
+                                                        QScrollBar::sub-line:vertical {border: none; background: none;}")
         
         self.notifikasi= QtWidgets.QLabel(self.scrollArea)
         self.notifikasi.setGeometry(QtCore.QRect(350, -5, 471, 31))
         self.notifikasi.setStyleSheet("background-color: rgb(238, 156, 32);\n"
-"font: 12pt \"MS Shell Dlg 2\";\n"
-"color : rgb(255, 255, 255);\n"
-"border: 0px solid #555;\n"
-"border-radius: 8px;\n"
-"border-style: outset;\n"
-"padding : 5px")
+                                    "font: 12pt \"MS Shell Dlg 2\";\n"
+                                    "color : rgb(255, 255, 255);\n"
+                                    "border: 0px solid #555;\n"
+                                    "border-radius: 8px;\n"
+                                    "border-style: outset;\n"
+                                    "padding : 5px")
         self.notifikasi.setAlignment(QtCore.Qt.AlignCenter)
         self.notifikasi.setObjectName("notifikasi")
         self.notifikasi.hide()
