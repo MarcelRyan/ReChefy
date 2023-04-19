@@ -58,28 +58,39 @@ ReChefy merupakan aplikasi berbasis desktop yang hadir sebagai teman memasak And
 
 ## Daftar Modul yang Diimplementasikan
 ### Welcome Page
-Berikut adalah tampilan dari Welcome Page.
+Berikut adalah tampilan dari Welcome Page
+![welcomePage](/uploads/c64220576df99c50c08640f13327a747/welcomePage.jpg)
 
 ### Menu
 Berikut adalah tampilan dari Menu
+![menu](/uploads/36c8033d575dd91d4ddc96132830d43a/menu.jpg)
 
 ### Daftar Artikel
 Berikut adalah tampilan dari Daftar Artikel
+![daftarArtikel](/uploads/52e1ae436769bba26da49801857a24d3/daftarArtikel.jpg)
 
 ### Lihat Artikel
 Berikut adalah tampilan dari Lihat Artikel
+![lihatArtikel](/uploads/e1660302d7b4c8490013a3205398cd09/lihatArtikel.jpg)
 
 ### Daftar Resep
 Berikut adalah tampilan dari Daftar Resep
+![daftarResep](/uploads/0e488a43d6e7178d525a380fe23dedf2/daftarResep.jpg)
+![cariResepFound](/uploads/ce4b623a7ccc39949353738a57f1801f/cariResepFound.jpg)
+![cariResepNotFound](/uploads/b6efb6c98d81987a71d6649fd80444c5/cariResepNotFound.jpg)
 
 ### Lihat Resep
 Berikut adalah tampilan dari Lihat Resep
+![lihatResepDefault](/uploads/692f2a537d17ca6c21c58aba3a4c59e4/lihatResepDefault.jpg)
+![lihatResepResepku](/uploads/d4c16919f004e21e6f3462327ec60f63/lihatResepResepku.jpg)
 
 ### Tambah Resep
 Berikut adalah tampilan dari Tambah Resep
+![tambahResep](/uploads/4512269cc4ea6459309164bba8bc6fe5/tambahResep.jpg)
 
 ### Sunting Resep
 Berikut adalah tampilan dari Sunting Resep
+![suntingResep](/uploads/3036615c2c66234458b0d9474340b367/suntingResep.jpg)
 
 
 ## Daftar Tabel Basis Data yang Diimplementasikan
