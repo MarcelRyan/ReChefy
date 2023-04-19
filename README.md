@@ -27,7 +27,6 @@ ReChefy merupakan aplikasi berbasis desktop yang hadir sebagai teman memasak And
 │   run.bat
 │
 └───src
-    │   .gitignore
     │   application.py
     │   addResep.py
     │   controller.py
