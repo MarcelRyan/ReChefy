@@ -185,7 +185,7 @@ class DaftarResep(QtWidgets.QMainWindow):
             labelResepku.mousePressEvent = lambda event, id=idresep: self.connectResep(id)
             labelResepku.move(110,0)
             labelResepku.raise_()
-        self.gridLayoutResep.addWidget(resepWidget, idx//4, idx%4, alignment=Qt.AlignCenter)
+        self.gridLayoutResep.addWidget(resepWidget, idx//4, idx%4, alignment=Qt.AlignTop)
         self.scrollResep.setLayout(self.gridLayoutResep)
     
     def notifAddResep(self) :
