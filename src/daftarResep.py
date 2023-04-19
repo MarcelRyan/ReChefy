@@ -80,6 +80,7 @@ class DaftarResep(QtWidgets.QMainWindow):
         self.searchButton.setIconSize(QSize(31, 31))
         self.searchButton.setFixedSize(QSize(31, 31))
         self.searchButton.move(1080,130)
+        self.searchBar.setText("")
         self.searchButton.clicked.connect(lambda : self.searchResep(databaseFunc.searchResepView(connection, self.searchBar.text()), connection, len(dataResep)))
         
         # search bar
@@ -203,6 +204,8 @@ class DaftarResep(QtWidgets.QMainWindow):
         timer.start(5000)
     
     def connectResep(self, id):
+        self.searchBar.setText("")
+        self.titleLabel.setText("Daftar Resep")
         self.parent.LihatResep.idResep = id
         self.parent.LihatResep.resetKomentar()
         self.parent.LihatResep.readDatabase()
@@ -242,13 +245,19 @@ class DaftarResep(QtWidgets.QMainWindow):
             self.scrollArea.setVerticalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
     
     def tambahResep(self):
+        self.searchBar.setText("")
+        self.titleLabel.setText("Daftar Resep")
         self.parent.AddResep.clear()
         self.parent.pages.setCurrentWidget(self.parent.AddResep)
     
     def goBack(self):
+        self.searchBar.setText("")
+        self.titleLabel.setText("Daftar Resep")
         self.parent.pages.setCurrentWidget(self.parent.Menu)
     
     def goHome(self):
+        self.searchBar.setText("")
+        self.titleLabel.setText("Daftar Resep")
         self.parent.pages.setCurrentWidget(self.parent.WelcomePage)
     
         
